@@ -14,15 +14,25 @@ configuration HybridHost
         [string]$customRdpPort,
         [string]$vSwitchNameHost = "InternalNAT",
         [String]$targetDrive = "V",
+        [String]$sourcePath = "$targetDrive\Source",
         [String]$targetVMPath = "$targetDrive" + ":\VMs",
         [String]$targetADPath = "$targetDrive" + ":\ADDS",
-        [String]$baseVHDFolderPath = "$targetVMPath\base"
+        [String]$baseVHDFolderPath = "$targetVMPath\Base",
+        [String]$azsHCIIsoUri = "https://aka.ms/2CNBagfhSZ8BM7jyEV8I",
+        [String]$akshciZipUri = "https://aka.ms/aks-hci-download",
+        [String]$azsHciVhdPath = "$baseVHDFolderPath\AzSHCI.vhdx",
+        [String]$azsHCIISOLocalPath = "$sourcePath\AzSHCI.iso",
+        [String]$akshciZipLocalPath = "$sourcePath\AksHciPreview.zip",
+        [Int]$azsHostCount = 2,
+        [Int]$azsHostDataDiskCount = 4,
+        [Int64]$dataDiskSize = 250GB
     ) 
     
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'xPSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'ComputerManagementDsc'
     Import-DscResource -ModuleName 'xHyper-v'
+    Import-DscResource -ModuleName 'cHyper-v'
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
     Import-DscResource -ModuleName 'xDHCpServer'
@@ -31,6 +41,8 @@ configuration HybridHost
     Import-DscResource -ModuleName 'DSCR_Shortcut'
     Import-DscResource -ModuleName 'xCredSSP'
     Import-DscResource -ModuleName 'xActiveDirectory'
+
+    $aszhciHostsMofUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Install-AzsRolesandFeatures.ps1"
 
     if ($enableDHCP -eq "Enabled") {
         $dhcpStatus = "Active"
@@ -51,11 +63,7 @@ configuration HybridHost
             ConfigurationMode  = 'ApplyOnly'
         }
 
-        # STAGE 1 -> PRE-HYPER-V REBOOT
-        # STAGE 2 -> POST-HYPER-V REBOOT
-        # STAGE 3 -> POST CREDSSP REBOOT
-
-        #### STAGE 1a - CREATE STORAGE SPACES V: & VM FOLDER ####
+        #### CREATE STORAGE SPACES V: & VM FOLDER ####
 
         Script StoragePool {
             SetScript  = {
@@ -115,7 +123,74 @@ configuration HybridHost
             }
         }
 
-        #### STAGE 1b - SET WINDOWS DEFENDER EXCLUSION FOR VM STORAGE ####
+        File "Source" {
+            DestinationPath = $sourcePath
+            Type            = 'Directory'
+            Force           = $true
+            DependsOn       = "[Script]FormatDisk"
+        }
+
+        File "VM-base" {
+            Type            = 'Directory'
+            DestinationPath = $baseVHDFolderPath
+            DependsOn       = "[File]VMfolder"
+        }
+
+        script "Download DSC Config for AzsHci Hosts" {
+            GetScript  = {
+                $result = Test-Path -Path "$using:sourcePath\Install-AzsRolesandFeatures.ps1"
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                Start-BitsTransfer -Source "$using:aszhciHostsMofUri" -Destination "$using:sourcePath\Install-AzsRolesandFeatures.ps1"          
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[File]Source"
+        }
+
+        script "Download AzureStack HCI bits" {
+            GetScript  = {
+                $result = Test-Path -Path $using:azsHCIISOLocalPath
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                Start-BitsTransfer -Source $using:azsHCIIsoUri -Destination $using:azsHCIISOLocalPath            
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[File]Source"
+        }
+
+        script "Download AKS-HCI bits" {
+            GetScript  = {
+                $result = Test-Path -Path $using:akshciZipLocalPath
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                Start-BitsTransfer -Source $using:akshciZipUri -Destination $using:akshciZipLocalPath
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[File]Source"
+        }
+
+        #### SET WINDOWS DEFENDER EXCLUSION FOR VM STORAGE ####
 
         Script defenderExclusions {
             SetScript  = {
@@ -133,7 +208,7 @@ configuration HybridHost
             DependsOn  = "[File]VMfolder"
         }
 
-        #### STAGE 1c - REGISTRY & SCHEDULED TASK TWEAKS ####
+        #### REGISTRY & SCHEDULED TASK TWEAKS ####
 
         Registry "Disable Internet Explorer ESC for Admin" {
             Key       = "HKLM:\SOFTWARE\Microsoft\Active Setup\Installed Components\{A509B1A7-37EF-4b3f-8CFC-4F3A74704073}"
@@ -219,7 +294,7 @@ configuration HybridHost
             TaskPath = '\Microsoft\Windows\Server Manager'
         }
 
-        #### STAGE 1d - CUSTOM FIREWALL BASED ON ARM TEMPLATE ####
+        #### CUSTOM FIREWALL BASED ON ARM TEMPLATE ####
 
         if ($customRdpPort -ne "3389") {
 
@@ -243,7 +318,7 @@ configuration HybridHost
             }
         }
 
-        #### STAGE 1e - ENABLE ROLES & FEATURES ####
+        #### ENABLE ROLES & FEATURES ####
 
         WindowsFeature DNS { 
             Ensure = "Present" 
@@ -354,7 +429,7 @@ configuration HybridHost
             DependsOn = "[WindowsFeature]Hyper-V" 
         }
 
-        #### STAGE 2a - HYPER-V vSWITCH CONFIG ####
+        #### HYPER-V vSWITCH CONFIG ####
 
         xVMHost "hpvHost"
         {
@@ -421,7 +496,7 @@ configuration HybridHost
             }
         }
 
-        #### STAGE 2b - PRIMARY NIC CONFIG ####
+        #### PRIMARY NIC CONFIG ####
 
         NetAdapterBinding DisableIPv6Host
         {
@@ -430,7 +505,7 @@ configuration HybridHost
             State          = 'Disabled'
         }
 
-        #### STAGE 2c - CONFIGURE InternaNAT NIC
+        #### CONFIGURE InternaNAT NIC
 
         script NAT {
             GetScript  = {
@@ -460,14 +535,14 @@ configuration HybridHost
             DependsOn      = "[Script]NAT"
         }
 
-        #### STAGE 2d - CONFIGURE DHCP SERVER
+        #### CONFIGURE DHCP SERVER
 
         xDhcpServerScope "HybridDhcpScope" { 
             Ensure        = 'Present'
             IPStartRange  = '192.168.0.3'
             IPEndRange    = '192.168.0.149' 
             ScopeId       = '192.168.0.0'
-            Name          = 'AKS-HCI Lab Range'
+            Name          = 'Hybrid Lab Range'
             SubnetMask    = '255.255.0.0'
             LeaseDuration = '01.00:00:00'
             State         = "$dhcpStatus"
@@ -504,7 +579,7 @@ configuration HybridHost
             }
         }
 
-        #### STAGE 2f - FINALIZE DHCP
+        #### FINALIZE DHCP
 
         Script SetDHCPDNSSetting {
             SetScript  = { 
@@ -533,7 +608,7 @@ configuration HybridHost
                 DependsOn                = "[xDnsServerPrimaryZone]SetPrimaryDNSZone"
             }
 
-            #### STAGE 2h - CONFIGURE CREDSSP & WinRM
+            #### CONFIGURE CREDSSP & WinRM
 
             xCredSSP Server {
                 Ensure         = "Present"
@@ -542,14 +617,14 @@ configuration HybridHost
                 SuppressReboot = $true
             }
             xCredSSP Client {
-                Ensure            = "Present"
-                Role              = "Client"
+                Ensure         = "Present"
+                Role           = "Client"
                 DelegateComputers = "$env:COMPUTERNAME" + ".$DomainName"
-                DependsOn         = "[xCredSSP]Server"
-                SuppressReboot    = $true
+                DependsOn      = "[xCredSSP]Server"
+                SuppressReboot = $true
             }
 
-            #### STAGE 3a - CONFIGURE WinRM
+            #### CONFIGURE WinRM
 
             Script ConfigureWinRM {
                 SetScript  = {
@@ -565,7 +640,218 @@ configuration HybridHost
             }
         }
 
-        #### STAGE 3b - INSTALL CHOCO, DEPLOY EDGE and Shortcuts
+        #### Start AzSHCI Node Creation ####
+
+        script "prepareVHDX" {
+            GetScript  = {
+                $result = Test-Path -Path $using:azsHciVhdPath
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                # Create Azure Stack HCI Host Image from ISO
+                Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
+                # Enable Hyper-V role on the Azure Stack HCI Host Image
+                Install-WindowsFeature -Vhd $using:azsHciVhdPath -Name Hyper-V
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[file]VM-Base", "[script]Download AzureStack HCI bits"
+        }
+
+        for ($i = 1; $i -lt $azsHostCount + 1; $i++) {
+            $suffix = '{0:D2}' -f $i
+            $vmname = $("AZSHCINODE" + $suffix)
+            $memory = 24gb
+
+            file "VM-Folder-$vmname" {
+                Ensure          = 'Present'
+                DestinationPath = "$targetVMPath\$vmname"
+                Type            = 'Directory'
+                DependsOn       = "[File]VMfolder"
+            }
+            
+            xVhd "NewOSDisk-$vmname"
+            {
+                Ensure     = 'Present'
+                Name       = "$vmname-OSDisk.vhdx"
+                Path       = "$targetVMPath\$vmname"
+                Generation = 'vhdx'
+                ParentPath = $azsHciVhdPath
+                Type       = 'Differencing'
+                DependsOn  = "[xVMSwitch]$vSwitchNameHost", "[script]prepareVHDX", "[file]VM-Folder-$vmname"
+            }
+
+            xVMHyperV "VM-$vmname"
+            {
+                Ensure         = 'Present'
+                Name           = $vmname
+                VhdPath        = "$targetVMPath\$vmname\$vmname-OSDisk.vhdx"
+                Path           = $targetVMPath
+                Generation     = 2
+                StartupMemory  = $memory
+                ProcessorCount = 8
+                DependsOn      = "[xVhd]NewOSDisk-$vmname"
+            }
+
+            xVMProcessor "Enable NestedVirtualization-$vmname"
+            {
+                VMName                         = $vmname
+                ExposeVirtualizationExtensions = $true
+                DependsOn                      = "[xVMHyperV]VM-$vmname"
+            }
+
+            script "remove default Network Adapter on VM-$vmname" {
+                GetScript  = {
+                    $VMNetworkAdapter = Get-VMNetworkAdapter -VMName $using:vmname -Name 'Network Adapter' -ErrorAction SilentlyContinue
+                    $result = if ($VMNetworkAdapter) { $false } else { $true }
+                    return @{
+                        VMName = $VMNetworkAdapter.VMName
+                        Name   = $VMNetworkAdapter.Name
+                        Result = $result
+                    }
+                }
+    
+                SetScript  = {
+                    $state = [scriptblock]::Create($GetScript).Invoke()
+                    Remove-VMNetworkAdapter -VMName $state.VMName -Name $state.Name                 
+                }
+    
+                TestScript = {
+                    # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                    $state = [scriptblock]::Create($GetScript).Invoke()
+                    return $state.Result
+                }
+                DependsOn  = "[xVMHyperV]VM-$vmname"
+            }
+
+            for ($k = 1; $k -le 2; $k++) {
+                $mgmtNicName = "Management$k"
+                xVMNetworkAdapter "New Network Adapter $mgmtNicName $vmname DHCP"
+                {
+                    Id         = $mgmtNicName
+                    Name       = $mgmtNicName
+                    SwitchName = $vSwitchNameHost
+                    VMName     = $vmname
+                    Ensure     = 'Present'
+                    DependsOn  = "[xVMHyperV]VM-$vmname"
+                }
+
+                cVMNetworkAdapterSettings "Enable $vmname $mgmtNicName Mac address spoofing and Teaming"
+                {
+                    Id                 = $mgmtNicName
+                    Name               = $mgmtNicName
+                    SwitchName         = $vSwitchNameHost
+                    VMName             = $vmname
+                    AllowTeaming       = 'on'
+                    MacAddressSpoofing = 'on'
+                    DependsOn          = "[xVMNetworkAdapter]New Network Adapter $mgmtNicName $vmname DHCP"
+                }
+            }
+
+            for ($l = 1; $l -le 4; $l++) {
+                $ipAddress = $('10.10.1' + $l + '.0' + $suffix)
+                $nicName = "ConvergedNic$l"
+
+                xVMNetworkAdapter "New Network Adapter Converged $vmname $nicName $ipAddress"
+                {
+                    Id         = $nicName
+                    Name       = $nicName
+                    SwitchName = $vSwitchNameHost
+                    VMName     = $vmname
+                    NetworkSetting = xNetworkSettings {
+                        IpAddress = $ipAddress
+                        Subnet    = "255.255.255.0"
+                    }
+                    Ensure     = 'Present'
+                    DependsOn  = "[xVMHyperV]VM-$vmname"
+                }
+                
+                cVMNetworkAdapterSettings "Enable $vmname $nicName Mac address spoofing and Teaming"
+                {
+                    Id                 = $nicName
+                    Name               = $nicName
+                    SwitchName         = $vSwitchNameHost
+                    VMName             = $vmname
+                    AllowTeaming       = 'on'
+                    MacAddressSpoofing = 'on'
+                    DependsOn          = "[xVMNetworkAdapter]New Network Adapter Converged $vmname $nicName $ipAddress"
+                }
+            }    
+
+            for ($j = 1; $j -lt $azsHostDataDiskCount + 1 ; $j++) { 
+                xvhd "$vmname-DataDisk$j"
+                {
+                    Ensure           = 'Present'
+                    Name             = "$vmname-DataDisk$j.vhdx"
+                    Path             = "$targetVMPath\$vmname"
+                    Generation       = 'vhdx'
+                    Type             = 'Dynamic'
+                    MaximumSizeBytes = $dataDiskSize
+                    DependsOn        = "[xVMHyperV]VM-$vmname"
+                }
+            
+                xVMHardDiskDrive "$vmname-DataDisk$j"
+                {
+                    VMName             = $vmname
+                    ControllerType     = 'SCSI'
+                    ControllerLocation = $j
+                    Path               = "$targetVMPath\$vmname\$vmname-DataDisk$j.vhdx"
+                    Ensure             = 'Present'
+                    DependsOn          = "[xVMHyperV]VM-$vmname"
+                }
+            }
+
+            script "UnattendXML for $vmname" {
+                GetScript  = {
+                    $name = $using:VmName
+                    $result = Test-Path -Path "$using:targetVMPath\$name\Unattend.xml"
+                    return @{ 'Result' = $result }
+                }
+
+                SetScript  = {
+                    try {
+                        $name = $using:VmName
+                        $mount = Mount-VHD -Path "$using:targetVMPath\$name\$name-OSDisk.vhdx" -Passthru -ErrorAction Stop
+                        Start-Sleep -Seconds 2
+                        $driveLetter = $mount | Get-Disk | Get-Partition | Get-Volume | Where-Object DriveLetter | Select-Object -ExpandProperty DriveLetter
+                        
+                        New-Item -Path $("$driveLetter" + ":" + "\Temp") -ItemType Directory -Force -ErrorAction Stop
+                        
+                        Copy-Item -Path "$using:sourcePath\Install-AzsRolesandFeatures.ps1" -Destination $("$driveLetter" + ":" + "\Temp") -Force -ErrorAction Stop
+
+                        New-BasicUnattendXML -ComputerName $name -LocalAdministratorPassword $($using:Admincreds).Password -Domain $using:DomainName -Username $using:Admincreds.Username `
+                            -Password $($using:Admincreds).Password -JoinDomain $using:DomainName -AutoLogonCount 1 -OutputPath "$using:targetVMPath\$name" -Force `
+                            -PowerShellScriptFullPath 'c:\temp\Install-AzsRolesandFeatures.ps1' -ErrorAction Stop
+
+                        #New-BasicUnattendXML -ComputerName $name -LocalAdministratorPassword $($using:Admincreds).Password -Domain $using:DomainName -Username $using:Admincreds.Username `
+                        #    -Password $($using:Admincreds).Password -JoinDomain $using:DomainName -OutputPath "$using:targetVMPath\$name" -Force
+
+                        Copy-Item -Path "$using:targetVMPath\$name\Unattend.xml" -Destination $("$driveLetter" + ":" + "\Windows\system32\SysPrep") -Force -ErrorAction Stop
+
+                        Start-Sleep -Seconds 2
+                    }
+                    finally {
+                        DisMount-VHD -Path "$using:targetVMPath\$name\$name-OSDisk.vhdx"
+                    }
+                    
+                    Start-VM -Name $name
+                }
+
+                TestScript = {
+                    # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                    $state = [scriptblock]::Create($GetScript).Invoke()
+                    return $state.Result
+                }
+                DependsOn  = "[xVhd]NewOSDisk-$vmname", "[script]Download DSC Config for AzsHci Hosts"
+            }
+        }
+
+        #### INSTALL CHOCO, DEPLOY EDGE and Shortcuts
 
         cChocoInstaller InstallChoco {
             InstallDir = "c:\choco"
