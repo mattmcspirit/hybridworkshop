@@ -14,7 +14,7 @@ configuration HybridHost
         [string]$customRdpPort,
         [string]$vSwitchNameHost = "InternalNAT",
         [String]$targetDrive = "V",
-        [String]$sourcePath = "$targetDrive\Source",
+        [String]$sourcePath = "$targetDrive" + ":\Source",
         [String]$targetVMPath = "$targetDrive" + ":\VMs",
         [String]$targetADPath = "$targetDrive" + ":\ADDS",
         [String]$baseVHDFolderPath = "$targetVMPath\Base",
