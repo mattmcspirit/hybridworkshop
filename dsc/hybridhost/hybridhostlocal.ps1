@@ -907,3 +907,17 @@ configuration HybridHost
         }
     }
 }
+
+$configuration = @{
+	AllNodes = @(
+		@{
+			NodeName = "localhost";
+			PSDscAllowDomainUser = $true;
+			PSDscAllowPlainTextPassword = $true;
+            $Admincreds = Get-Credential -Message "Password please" -UserName "hybrid.local\azureuser";
+		}
+	)
+}
+
+Hybridhost -ConfigurationData $configuration -Admincreds $AdminCreds -DomainName "hybrid.local" -environment "AD Domain" `
+-customRdpPort "3389" -enableDHCP "Enabled" -OutputPath $PSScriptRoot -Verbose
