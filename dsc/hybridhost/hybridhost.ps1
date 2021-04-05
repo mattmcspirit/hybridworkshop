@@ -729,6 +729,8 @@ configuration HybridHost
                 DependsOn  = "[xVMHyperV]VM-$vmname"
             }
 
+            <#
+
             for ($k = 1; $k -le 2; $k++) {
                 $mgmtNicName = "Management$k"
                 xVMNetworkAdapter "New Network Adapter $mgmtNicName $vmname DHCP"
@@ -781,7 +783,9 @@ configuration HybridHost
                     MacAddressSpoofing = 'on'
                     DependsOn          = "[xVMNetworkAdapter]New Network Adapter Converged $vmname $nicName $ipAddress"
                 }
-            }    
+            }
+            
+            #>
 
             for ($j = 1; $j -lt $azsHostDataDiskCount + 1 ; $j++) { 
                 xvhd "$vmname-DataDisk$j"
