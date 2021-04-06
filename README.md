@@ -15,7 +15,7 @@ In this workshop, we'll walk you through deploying both [Azure Stack HCI](https:
 
 Version
 -----------
-This guide has been tested and validated with the **March 2021 release** of AKS on Azure Stack HCI, and Azure Stack HCI 20H2 with the latest updates installed.
+This guide has been tested and validated with the **March 2021 release** of AKS on Azure Stack HCI, and **Azure Stack HCI 20H2** with the latest updates installed.
 
 Contents
 -----------
@@ -84,13 +84,13 @@ This guide will walk you through deploying a sandboxed infrastructure. To accomm
 
 The general flow will be as follows:
 
-![Evaluation guide workflow using nested virtualization](media/flow_chart_ga.png "Evaluation guide workflow using nested virtualization")
+**Part 1 - Complete the pre-requisites - deploy your Azure VM**: In this step, you'll create a VM in Azure using an Azure Resource Manager template. This VM will run Windows Server 2019 Datacenter, with the full desktop experience. PowerShell DSC will automatically configure this VM with the appropriate roles and features, download the necessary binaries, and configure 2 Azure Stack HCI 20H2 nodes, ready for clustering.
 
-**Part 1 - Deploy Windows Server 2019 Hyper-V host in Azure**: In this step, you'll create a suitable VM in Azure using PowerShell or an Azure Resource Manager template. This VM will run Windows Server 2019 Datacenter, with the full desktop experience.  On this system, you'll enable the necessary roles and features and accompanying management tools, and configure networking to enable network communication between sandbox VMs, and out to the internet.
+**Part 2 - Configure your Azure Stack HCI 20H2 Cluster**: In this step, you'll use **Windows Admin Center** to deploy an Azure Stack HCI 20H2 cluster - along with a File Share Witness, a Cluster Shared Volume, and finally, you'll register this cluster with Azure.
 
-**Part 2 - Deploy AKS on Azure Stack HCI**: In this step, you'll use **either Windows Admin Center, or PowerShell** to deploy AKS on Azure Stack HCI - this will consist of first deploying the necessary management cluster, then followed by a target cluster, for running workloads.
+**Part 3 - Deploy your AKS-HCI infrastructure**: In this step, you'll use **Windows Admin Center** to deploy AKS on Azure Stack HCI - this will consist of first deploying the necessary management cluster, then followed by a target cluster, for running workloads.
 
-**Part 3 - Explore AKS on Azure Stack HCI Environment**: With your deployment completed, you're now ready to explore many of the aspects within the AKS on Azure Stack HCI. We'll also provide links to further scenarios and resources to continue your evaluation.
+**Part 4 - Explore AKS on Azure Stack HCI Environment**: With your deployment completed, you're now ready to explore many of the aspects within AKS on Azure Stack HCI. We'll also provide links to further scenarios and resources to continue your evaluation.
 
 Get started
 -----------
