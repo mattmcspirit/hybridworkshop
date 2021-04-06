@@ -123,29 +123,31 @@ Again, this is just one **example** network configuration for the simple purpose
 
 ![Error message when configuring RDMA in a nested environment](/media/wac_enable_rdma.png "Error message when configuring RDMA in a nested environment")
 
-7. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In this **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
+7. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In this **nested environment**, we now have 2 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
 
-**NOTE** - we have a simple flat network in this configuration, however assuming Ethernet 1 was configured as your management NIC, and Ethernet 2 as your compute vSwitch, that leaves Ethernet 3 and 4 which can be renamed to Storage 1 and 2.
+**NOTE** - we have a simple flat network in this configuration. Some of the NICs have been claimed by the Management NIC team, The remaining NICs will be show in the table in WAC, so ensure they align with the information below. WAC won't allow you to proceed unless everything aligns correctly.
 
 | Node | Name | IP Address | Subnet Mask
 | :-- | :-- | :-- | :-- |
-| AZSHCINODE01 | Ethernet 2 | Leave as APIPA | 16
-| AZSHCINODE01 | Storage 1 | 10.10.10.1 | 24
-| AZSHCINODE01 | Storage 2 | 10.10.11.1 | 24
-| AZSHCINODE02 | Ethernet 2 | Leave as APIPA | 16
-| AZSHCINODE02 | Storage 1 | 10.10.10.2 | 24
-| AZSHCINODE02 | Storage 2 | 10.10.11.2 | 24
+| AZSHCINODE01 | Storage 1 | 10.10.11.1 | 24
+| AZSHCINODE01 | Storage 2 | 10.10.12.1 | 24
+| AZSHCINODE01 | VM1 | 10.10.13.1 | 24
+| AZSHCINODE01 | VM2 | 10.10.14.1 | 24
+| AZSHCINODE02 | Storage 1 | 10.10.11.2 | 24
+| AZSHCINODE02 | Storage 2 | 10.10.12.2 | 24
+| AZSHCINODE02 | VM1 | 10.10.13.2 | 24
+| AZSHCINODE02 | VM2 | 10.10.14.2 | 24
 
 When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.  Once complete, your configuration should look similar to this:
 
 ![Define networks in the Create Cluster wizard](/media/wac_define_network_ga.png "Define networks in the Create Cluster wizard")
 
-8. Once the networks have been verified, you can optionally review the networking test report, and once complete, click **Next**
+1. Once the networks have been verified, you can optionally review the networking test report, and once complete, click **Next**
 
-9. Once changes have been successfully applied, click **Next: Clustering**
+2. Once changes have been successfully applied, click **Next: Clustering**
 
 ### Clustering ###
-With the network configured for the evaluation environment, it's time to construct the local cluster.
+With the network configured for the workshop environment, it's time to construct the local cluster.
 
 1. At the start of the **Cluster** wizard, on the **Validate the cluster** page, click **Validate**.  You *may* be prompted with a **Credential Security Service Provider (CredSSP)** box - read the information, then click **Yes**
 
@@ -162,7 +164,7 @@ With the network configured for the evaluation environment, it's time to constru
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
 3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS**
-4. Under **IP address**, click **Specify one or more static addresses**, and enter **192.168.0.10** (assuming you've deployed less than 10 nodes, otherwise adjust accordingly), and click **Add**
+4. Under **IP address**, click **Specify one or more static addresses**, and enter **192.168.0.5**, and click **Add**
 5. Expand **Advanced** and review the settings, then click **Create cluster**
 
 ![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus_ga.png "Finalize cluster creation in the Create Cluster wizard")
