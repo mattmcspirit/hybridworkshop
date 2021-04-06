@@ -825,7 +825,7 @@ configuration HybridHost
                 DependsOn  = "[xVMHyperV]VM-$vmname"
             }
 
-            for ($k = 1; $k -le 2; $k++) {
+            for ($k = 1; $k -le 1; $k++) {
                 $mgmtNicName = "$vmname-Management$k"
                 xVMNetworkAdapter "New Network Adapter $mgmtNicName $vmname DHCP"
                 {
@@ -849,7 +849,7 @@ configuration HybridHost
                 }
             }
 
-            for ($l = 1; $l -le 4; $l++) {
+            for ($l = 1; $l -le 3; $l++) {
                 $ipAddress = $('10.10.1' + $l + '.' + $i)
                 $nicName = "$vmname-ConvergedNic$l"
 

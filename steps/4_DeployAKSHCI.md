@@ -219,13 +219,13 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
    3. **Node size**: Standard_K8S3_v1 (6 GB Memory, 4 CPU)
    4. **Node count**: 1
 
-![AKS node pools in Windows Admin Center](//media/aks_node_pools.png "AKS node pools in Windows Admin Center")
+![AKS node pools in Windows Admin Center](/media/aks_node_pools.png "AKS node pools in Windows Admin Center")
 
-8. Once your **Node pools** have been defined, click **Next: Authentication**
-9. For this evaluation, for **AD Authentication** click **Disabled** and then click **Next: Networking**
-10. On the **Networking** page, review the **defaults** and click **Next: Integration**
-11. On the **Integration** page, review the **Persistent storage defaults**, then click **Next: Review + Create**
-12. On the **Review + Create** page, review your chosen settings, then click **Create**
+1. Once your **Node pools** have been defined, click **Next: Authentication**
+2. For this evaluation, for **AD Authentication** click **Disabled** and then click **Next: Networking**
+3.  On the **Networking** page, review the **defaults** and click **Next: Integration**
+4.  On the **Integration** page, review the **Persistent storage defaults**, then click **Next: Review + Create**
+5.  On the **Review + Create** page, review your chosen settings, then click **Create**
 
 ![Finalize creation of AKS cluster in Windows Admin Center](/media/aks_create.png "Finalize creation of AKS cluster in Windows Admin Center")
 
