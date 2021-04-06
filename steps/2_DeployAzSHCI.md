@@ -150,9 +150,7 @@ When you click **Apply and test**, Windows Admin Center validates network connec
 ### Clustering ###
 With the network configured for the workshop environment, it's time to construct the local cluster.
 
-1. At the start of the **Cluster** wizard, on the **Validate the cluster** page, click **Validate**.  You *may* be prompted with a **Credential Security Service Provider (CredSSP)** box - read the information, then click **Yes**
-
-![Validate cluster in the Create Cluster wizard](/media/wac_credssp_ga.png "Validate cluster in the Create Cluster wizard")
+1. At the start of the **Cluster** wizard, on the **Validate the cluster** page, click **Validate**.
 
 2. Cluster validation will then start, and will take a few moments to complete - once completed, you should see a successful message.
 
