@@ -78,34 +78,34 @@ This section will walk through the key steps for you to set up the Azure Stack H
 ![Restart nodes in the Create Cluster wizard](/media/wac_restart_ga.png "Restart nodes in the Create Cluster wizard")
 
 ### Networking ###
-With the servers domain joined, configured with the appropriate features, updated and rebooted, you're ready to configure your network.  You have a number of different choices here, so we'll try to explain why we're making each selection, so you can better apply it to your environment further down the road.
+With the servers configured with the appropriate features, updated and rebooted, you're ready to configure your network.  You have a number of different choices here, so we'll try to explain why we're making each selection, so you can better apply it to your environment further down the road.
 
 Firstly, Windows Admin Center will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
 
 ![Verify network in the Create Cluster wizard](/media/wac_verify_network_ga.png "Verify network in the Create Cluster wizard")
 
-The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy.  This step specifically designates 1 or 2 adapters that will be used by the Windows Admin Center to orchestrate the cluster creation flow.  It's mandatory to select at least one of the adapters for management, and in a physical deployment, the 1GbE NICs are usually good candidates for this.
+The first key step with setting up the networking with Windows Admin Center, is to choose a management NIC that will be dedicated for management use.  You can choose either a single NIC, or two NICs for redundancy. This step specifically designates 1 or 2 adapters that will be used by the Windows Admin Center to orchestrate the cluster creation flow. It's mandatory to select at least one of the adapters for management, and in a physical deployment, the 1GbE NICs are usually good candidates for this.
 
-As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network to meet your needs.  We will work through the Windows Admin Center approach in this guide.
+As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network to meet your needs. We will work through the Windows Admin Center approach in this guide.
 
 #### Network Setup Overview ####
-Each of your Azure Stack HCI 20H2 nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
+Each of your Azure Stack HCI 20H2 nodes should have 6 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
-* 1 NIC will be dedicated to management.  It will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
-* 1 NIC will be dedicated to VM traffic.  A virtual switch will be attached to this NIC and the Azure Stack HCI 20H2 host will no longer use this NIC for it's own traffic.
-* 2 NICs will be dedicated to storage traffic.  They will reside on 2 separate subnets, 10.10.10.0/24 and 10.10.11.0/24. No virtual switches will be attached to these NICs.
+* 2 NICs will be dedicated to management and teamed. This team will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
+* 2 NICs will be teamed and dedicated to VM traffic. A virtual switch will be attached to this team and the Azure Stack HCI 20H2 host will no longer use these NICs for it's own traffic.
+* 2 NICs will be dedicated to storage traffic. They will reside on 2 separate subnets, 10.10.11.0/24 and 10.10.12.0/24. No virtual switches will be attached to these NICs.
 
 Again, this is just one **example** network configuration for the simple purpose of evaluation.
 
-1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, ensure you select the **One physical network adapter for management** box
+1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, ensure you select the **Two physical network adapters for management** box
 
 ![Select management adapter in the Create Cluster wizard](/media/wac_management_nic_ga.png "Select management adapter in the Create Cluster wizard")
 
-2. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only one that has an IP address assigned from a previous step. Once you've finished your selections, scroll to the bottom, then click **Apply and test**
+2. Then, for each node, **select the 2 highlighted NICs** that will be dedicated for management.  The reason only two NICs are highlighted, is because these are the only NICs that have an IP address on the same network as the WAC instance. Once you've finished your selections, scroll to the bottom, then click **Apply and test**. This will take a few moments.
 
-![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_ga.png "Select management adapters in the Create Cluster wizard")
+![Select management adapters in the Create Cluster wizard](/media/wac_teamedmgmt_ga.png "Select management adapters in the Create Cluster wizard")
 
-3. Windows Admin Center will then apply the configuration to your NIC. When complete and successful, click **Next**
+3. Windows Admin Center will then apply the configuration to your NICs. When complete and successful, click **Next**
 4. On the **Virtual Switch** page, you have a number of options
 
 ![Select vSwitch in the Create Cluster wizard](/media/wac_vswitches_ga.png "Select vSwitch in the Create Cluster wizard")
@@ -115,7 +115,7 @@ Again, this is just one **example** network configuration for the simple purpose
 * **Create two virtual switches** - in this configuration, you can create separate vSwitches, each attached to different sets of underlying NICs.  This may be useful if you wish to dedicate a set of underlying NICs to VM traffic, and another set to storage traffic, but wish to have vNICs used for storage communication instead of the underlying NICs.
 * You also have a check-box for **Skip virtual switch creation** - if you want to define things later, that's fine too
 
-5. Select the **Create one virtual switch for compute only**, and select the **Ethernet 2** NICs on each node, then click **Next**
+5. Select the **Create one virtual switch for compute only**, and select the NICs on each node with the **10.10.13.x and 10.10.14.x IP addresses**, then click **Next**
 
 ![Create single vSwitch for Compute in the Create Cluster wizard](/media/wac_compute_vswitch_ga.png "Create single vSwitch for Compute in the Create Cluster wizard")
 
