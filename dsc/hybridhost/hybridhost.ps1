@@ -605,7 +605,7 @@ configuration HybridHost
 
         xDhcpServerScope "HybridDhcpScope" { 
             Ensure        = 'Present'
-            IPStartRange  = '192.168.0.3'
+            IPStartRange  = '192.168.0.10'
             IPEndRange    = '192.168.0.149' 
             ScopeId       = '192.168.0.0'
             Name          = 'Hybrid Lab Range'
