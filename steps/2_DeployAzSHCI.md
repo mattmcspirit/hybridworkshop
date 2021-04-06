@@ -17,7 +17,6 @@ Contents
 - [Next Steps](#next-steps)
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
-- [Troubleshooting cluster validation issues](#troubleshooting-cluster-validation-issues)
 
 Architecture
 -----------
@@ -156,8 +155,6 @@ With the network configured for the workshop environment, it's time to construct
 2. Cluster validation will then start, and will take a few moments to complete - once completed, you should see a successful message.
 
 **NOTE** - Cluster validation is intended to catch hardware or configuration problems before a cluster goes into production. Cluster validation helps to ensure that the Azure Stack HCI 20H2 solution that you're about to deploy is truly dependable. You can also use cluster validation on configured failover clusters as a diagnostic tool. If you're interested in learning more about Cluster Validation, [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/deploy/validate "Cluster validation official documentation").
-
-**NOTE** - if you see an issues when trying to validate the cluster, [see the workarounds here](#troubleshooting-cluster-validation-issues).
 
 ![Validation complete in the Create Cluster wizard](/media/wac_validated_ga.png "Validation complete in the Create Cluster wizard")
 
@@ -471,17 +468,6 @@ With registration complete, either through Windows Admin Center, or through Powe
 
 ![Overview of the recently registered cluster in the Azure portal](/media/azure_portal_hcicluster.png "Overview of the recently registered cluster in the Azure portal")
 
-14. Next, still in the Azure portal, in the **search box** at the top of the screen, search for **Azure Active Directory** and then click on **Azure Active Directory**
-15. Click on **App Registrations**, then (you may need to click on **All applications**) in the box labeled "Start typing a name or Application ID to filter these results", enter **azshciclus** and in the results, click on your application
-
-![Application ID in App Registrations in Azure](/media/azure_ad_app_ga.png "Application ID in App Registrations in Azure")
-
-1.  Within the application, click on **API permissions**.  From there, you can see the **Configured permissions** which have been created as part of the **Register-AzureStackHCI** you ran earlier.  You can see that a number of services that have been granted appropriate permissions for billing and cluster management.
-
-Optionally, you can click on these services to see more information
-
-![Application ID API Permissions for App Registration in Azure](/media/api_permissions_ga.png "Application ID API Permissions for App Registration in Azure")
-
 **NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
 
 ### Congratulations! ###
@@ -489,76 +475,20 @@ You've now successfully deployed, configured and registered your Azure Stack HCI
 
 Next Steps
 -----------
-In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center.  With this complete, you can now [Explore the management of your Azure Stack HCI 20H2 environment](/nested/steps/5_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI 20H2 environment")
+In this step, you've successfully created a nested Azure Stack HCI 20H2 cluster using Windows Admin Center.  With this complete, you can now [Deploy your AKS-HCI infrastructure](/steps/3_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
 
 Product improvements
 -----------
-If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI 20H2, Windows Admin Center, or the Azure Arc integration and experience, let us know!  We want to hear from you!  [Head on over to our Azure Stack HCI 20H2 UserVoice page](https://feedback.azure.com/forums/929833-azure-stack-hci "Azure Stack HCI 20H2 UserVoice"), where you can share your thoughts and ideas about making the technologies better.  If however, you have an issue that you'd like some help with, read on...
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, AKS on Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
+
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+
+For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI 20H2 GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
 
 Raising issues
 -----------
-If you notice something is wrong with the evaluation guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
+If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If however, you're having a problem with Azure Stack HCI 20H2 **outside** of this evaluation guide, make sure you post to [our Microsoft Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Microsoft Q&A Forum"), where Microsoft experts and valuable members of the community will do their best to help you.
+If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
 
-Troubleshooting cluster validation issues
------------
-
-#### CredSSP issue ####
-During testing, you **may** see an issue initiating cluster validation due to a CredSSP issue.  To workaround this issue, on **HybridHost001**, you should run the following command:
-
-```powershell
-Disable-WsmanCredSSP -Role Client
-```
-
-And for **each of the nested Azure Stack HCI 20H2 nodes**, on your Hyper-V host, run the following 
-
-```powershell
-# Provide the domain credentials to log into the VM
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\labadmin"
-$domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-$nodeName = "AZSHCINODE01"
-Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
-    Disable-WsmanCredSSP -Role Server
-    Test-ComputerSecureChannel -Verbose -Repair
-    gpupdate /force
-    Restart-Computer -Force
-}
-```
-
-You should then be able to continue the validation process once all the nodes are back online.
-
-#### WinRM issue ####
-If you see a **WinRM** related issue when running validation, on the **HybridHost001** OS, run the following in PowerShell:
-
-```powershell
-Restart-Service WinRm
-Restart-Computer -Force
-```
-
-Also for **each of the nested Azure Stack HCI 20H2 nodes**, on your Hyper-V host, run the following 
-
-```powershell
-# Provide the domain credentials to log into the VM
-$domainName = "azshci.local"
-$domainAdmin = "$domainName\labadmin"
-$domainCreds = Get-Credential -UserName "$domainAdmin" -Message "Enter the password for the LabAdmin account"
-Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
-    Restart-Service WinRm
-    Restart-Computer -Force
-}
-```
-
-Then, back on **HybridHost001**, access the Windows Admin Center, if you restart the cluster creation wizard, Windows Admin Center should allow you to pick up where you left off previously.
-
-#### Test Report issue ####
-If you see an issue with an error relating to **Test report isn't available, try to validate again**, this is likely due to a bug where your Azure Stack HCI 20H2 nodes are in a different locale than the HybridHost001/Windows Admin Center machine.  To fix this, on **each of the nested Azure Stack HCI 20H2 nodes**, run the following in PowerShell:
-
-```powershell
-Get-WinSystemLocale # If not en-US you will have problems
-Set-WinSystemLocale -SystemLocale en-US
-Restart-Computer -Force
-```
-
-Then run validate again, and it should pass this step.  This bug is being actively worked on, and should be addressed soon.
+If you're having a problem with AKS on Azure Stack HCI **outside** of this guide, make sure you post to [our GitHub Issues page](https://github.com/Azure/aks-hci/issues "GitHub Issues"), where Microsoft experts and valuable members of the community will do their best to help you.
