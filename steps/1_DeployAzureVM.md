@@ -163,7 +163,12 @@ Select **RDP**. On the newly opened Connect blade, ensure the **Public IP** is s
 
 ![Configure RDP settings for Azure VM](/media/connect_to_vm_properties.png "Configure RDP settings for Azure VM")
 
-Once downloaded, locate the .rdp file on your local machine, and double-click to open it. Click **connect** and when prompted, enter the credentials you supplied when creating the VM earlier. Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
+Once downloaded, locate the .rdp file on your local machine, and double-click to open it. Click **connect** and when prompted, enter the credentials you supplied when creating the VM earlier.  **NOTE**, this should be a **domain account**, which by default, is **hybrid\azureuser**.
+
+**Username:** hybrid\azureuser
+**Password:** password-you-used-at-VM-deployment-time
+
+Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
 
 ### Optional - Update your Azure VM ###
 

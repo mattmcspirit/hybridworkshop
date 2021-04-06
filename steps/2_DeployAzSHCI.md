@@ -30,15 +30,6 @@ Before you begin
 -----------
 With Windows Admin Center, you now have the ability to construct Azure Stack HCI 20H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go.
 
-Before you start creating the cluster, it's important that we briefly review the steps that we've performed, and map them to the requirements:
-
-1. In the case of physical multi-node deployments, all physical nodes are running on suitable hardware
-2. All nodes are running the Azure Stack HCI 20H2 OS
-3. Windows Admin Center is installed and operational, on the same AD domain into which you'll deploy the cluster
-4. You have an account that's a local admin on each server
-
-As it stands, you should have met those requirements thus far, and should be in good shape to proceed on with cluster creation.
-
 Here are the major steps in the Create Cluster wizard in Windows Admin Center:
 
 * **Get Started** - ensures that each server meets the prerequisites for and features needed for cluster join
@@ -52,13 +43,13 @@ Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **lo
 * If you have 2 Azure Stack HCI 20H2 nodes, you will be able to create a **local cluster**
 * If you have 4 Azure Stack HCI 20H2 nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
 
-In this first release of the guide, we'll be focusing on deploying a **local cluster** but if you're interested in deploying a stretch cluster, you can [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/stretched-clusters "Stretched clusters overview on Microsoft Docs")
+In this workshop, we'll be focusing on deploying a **local cluster** but if you're interested in deploying a stretch cluster, you can [check out the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/stretched-clusters "Stretched clusters overview on Microsoft Docs")
 
 Creating a (local) cluster
 -----------
-If you have just 2 nodes, or if your preference is for a cluster running in a single site, this section will walk through the key steps for you to set up the Azure Stack HCI 20H2 cluster with the Windows Admin Center
+This section will walk through the key steps for you to set up the Azure Stack HCI 20H2 cluster with the Windows Admin Center
 
-1. Connect to **MGMT01**, and open your **Windows Admin Center** instance.
+1. Connect to your **HybridHost001**, and open **Windows Admin Center** using the shortcut on your desktop.
 2. Once logged into Windows Admin Center, under **All connections**, click **Add**
 3. On the **Add or create resources popup**, under **Server clusters**, click **Create new** to open the **Cluster Creation wizard**
 
