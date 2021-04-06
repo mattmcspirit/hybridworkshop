@@ -212,23 +212,20 @@ As part of this workshop, we're going to set up cluster quorum, using **Windows 
 
 ![Granting folder permissions for the file share witness](/media/grant_folder_permissions.png "Granting folder permissions for the file share witness")
 
-4. If you're not already, ensure you're logged into your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
+4. Once done, click Share, then click **Done** to close the window.
+5. Open your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
 
 ![Connect to your cluster with Windows Admin Center](/media/wac_azshciclus_ga.png "Connect to your cluster with Windows Admin Center")
 
-2. You may be prompted for credentials, so log in with your **hybrid\azureuser** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
-3. After a few moments of verification, the **cluster dashboard** will open. 
-4. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
-5. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **File Share Witness**
+6. You may be prompted for credentials, so log in with your **hybrid\azureuser** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
+7. After a few moments of verification, the **cluster dashboard** will open. 
+8. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
+9. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **File Share Witness**
+10. Enter **\\\hybridhost001\witness** for the **File share path** and click **Save**
 
-![Set up file share witness in Windows Admin Center](/media/wac_cloud_witness_new_ga.png "Set up file share witness in Windows Admin Center")
+![Set up file share witness in Windows Admin Center](/media/wac_fs_witness_new_ga.png "Set up file share witness in Windows Admin Center")
 
-
-17. With all the information gathered, return to the **Windows Admin Center** and complete the form with your values, then click **Save**
-
-![Providing storage account info in Windows Admin Center](/media/wac_azure_key_ga.png "Providing storage account info in Windows Admin Center")
-
-18. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
+11. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
 
 Connect and Register Azure Stack HCI 20H2 to Azure
 -----------
