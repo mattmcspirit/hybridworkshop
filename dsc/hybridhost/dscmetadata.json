@@ -13,6 +13,7 @@
         "xCredSSP",
         "xActiveDirectory",
         "WindowsDeploymentHelper",
-        "WindowsImageTools"
+        "WindowsImageTools",
+        "MSCatalog"
     ]
 }

@@ -15,6 +15,9 @@ configuration HybridHost
         [string]$vSwitchNameHost = "InternalNAT",
         [String]$targetDrive = "V",
         [String]$sourcePath = "$targetDrive" + ":\Source",
+        [String]$updatePath = "$sourcePath\Updates",
+        [String]$ssuPath = "$updatePath\SSU",
+        [String]$cuPath = "$updatePath\CU",
         [String]$targetVMPath = "$targetDrive" + ":\VMs",
         [String]$targetADPath = "$targetDrive" + ":\ADDS",
         [String]$baseVHDFolderPath = "$targetVMPath\Base",
@@ -26,7 +29,7 @@ configuration HybridHost
         [Int]$azsHostCount = 2,
         [Int]$azsHostDataDiskCount = 4,
         [Int64]$dataDiskSize = 250GB
-    ) 
+    )
     
     Import-DscResource -ModuleName 'PSDesiredStateConfiguration'
     Import-DscResource -ModuleName 'xPSDesiredStateConfiguration'
@@ -130,6 +133,27 @@ configuration HybridHost
             DependsOn       = "[Script]FormatDisk"
         }
 
+        File "Updates" {
+            DestinationPath = $updatePath
+            Type            = 'Directory'
+            Force           = $true
+            DependsOn       = "[File]Source"
+        }
+
+        File "CU" {
+            DestinationPath = $cuPath
+            Type            = 'Directory'
+            Force           = $true
+            DependsOn       = "[File]Updates"
+        }
+
+        File "SSU" {
+            DestinationPath = $ssuPath
+            Type            = 'Directory'
+            Force           = $true
+            DependsOn       = "[File]Updates"
+        }
+
         File "VM-base" {
             Type            = 'Directory'
             DestinationPath = $baseVHDFolderPath
@@ -188,6 +212,48 @@ configuration HybridHost
                 return $state.Result
             }
             DependsOn  = "[File]Source"
+        }
+
+        script "Download AzSHCI SSU" {
+            GetScript  = {
+                $result = Test-Path -Path "$ssuPath\*" -Include "*.msu"
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                $ssuSearchString = "Servicing Stack Update for Azure Stack HCI, version 20H2 for x64-based Systems"
+                $ssuID = "Azure Stack HCI"
+                $ssuUpdate = Get-MSCatalogUpdate -Search $ssuSearchString | Where-Object Products -eq $ssuID | Select-Object -First 1
+                $ssuUpdate | Save-MSCatalogUpdate -Destination $using:ssuPath
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[File]SSU"
+        }
+
+        script "Download AzSHCI CU" {
+            GetScript  = {
+                $result = Test-Path -Path "$cuPath\*" -Include "*.msu"
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                $cuSearchString = "Cumulative Update for Azure Stack HCI, version 20H2"
+                $cuID = "Azure Stack HCI"
+                $cuUpdate = Get-MSCatalogUpdate -Search $cuSearchString | Where-Object Products -eq $cuID | Where-Object Title -like "*$($cuSearchString)*" | Select-Object -First 1
+                $cuUpdate | Save-MSCatalogUpdate -Destination $using:cuPath
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[File]CU"
         }
 
         #### SET WINDOWS DEFENDER EXCLUSION FOR VM STORAGE ####
@@ -650,9 +716,26 @@ configuration HybridHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
-                Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
+                Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath -Package $using:ssuPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
                 # Enable Hyper-V role on the Azure Stack HCI Host Image
                 Install-WindowsFeature -Vhd $using:azsHciVhdPath -Name Hyper-V
+                Start-Sleep -Seconds 2
+                $mountPath = "$using:targetVMPath\Mount"
+                New-Item -ItemType Directory -Path "$mountPath" -Force | Out-Null
+                $scratchPath = "$using:targetVMPath\Scratch"
+                New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
+                Mount-WindowsImage -ImagePath $using:azsHciVhdPath -ScratchDirectory $scratchPath `
+                    -Index 1 -Path $mountPath -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log"
+                try {
+                    Add-WindowsPackage -Path $mountPath -PackagePath $cuPath -ScratchDirectory $scratchPath `
+                        -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log" -ErrorAction SilentlyContinue
+                }
+                catch {
+                    Write-Verbose -Message "One of the packages didn't install correctly, but process can continue."
+                }
+                Write-Verbose -Message "Saving the image"
+                Dismount-WindowsImage -Path $mountPath -ScratchDirectory $scratchPath -Save `
+                    -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log"
             }
 
             TestScript = {
@@ -660,7 +743,7 @@ configuration HybridHost
                 $state = [scriptblock]::Create($GetScript).Invoke()
                 return $state.Result
             }
-            DependsOn  = "[file]VM-Base", "[script]Download AzureStack HCI bits"
+            DependsOn  = "[file]VM-Base", "[script]Download AzureStack HCI bits", "[script]Download AzSHCI SSU", "[script]Download AzSHCI CU"
         }
 
         for ($i = 1; $i -lt $azsHostCount + 1; $i++) {
