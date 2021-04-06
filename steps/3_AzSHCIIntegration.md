@@ -268,7 +268,7 @@ You've now successfully registered your Azure Stack HCI 20H2 cluster!
 
 Next Steps
 -----------
-In this step, you've successfully registered your Azure Stack HCI 20H2 cluster. With this complete, you can now [Deploy your AKS-HCI infrastructure](/steps/3_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
+In this step, you've successfully registered your Azure Stack HCI 20H2 cluster. With this complete, you can now [Deploy your AKS-HCI infrastructure](/steps/4_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
 
 Product improvements
 -----------
