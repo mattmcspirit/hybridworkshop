@@ -67,7 +67,7 @@ This is just one VM size that we recommend - you can adjust accordingly to suit 
 
 For reference, the Standard_D16s_v4 VM size costs approximately US $0.77 per hour based on East US region, under a Visual Studio subscription.
 
-**E-series VMs (Memory optimized - Recommended for AKS on Azure Stack HCI) with at least 64GB memory**
+**E-series VMs (Memory optimized - Recommended for this Hybrid Workshop) with at least 64GB memory**
 
 | Size | vCPU | Memory: GiB | Temp storage (SSD): GiB | Premium Storage |
 |:--|---|---|---|---|
@@ -105,7 +105,7 @@ As part of the deployment, the following steps will be **automated for you**:
 7. Windows Admin Center will be installed and pre-installed extensions updated
 8. The Microsoft Edge browser will be installed
 9. The Azure Stack HCI 20H2 and AKS on Azure Stack HCI binaries will be downloaded
-10. 2 Azure Stack HCI 20H2 nodes will be created and deployed, ready to start cluster creation
+10. 2 x Azure Stack HCI 20H2 nodes will be created and deployed, ready to start cluster creation
 
 This automated deployment **should take around 30-35 minutes**.
 
