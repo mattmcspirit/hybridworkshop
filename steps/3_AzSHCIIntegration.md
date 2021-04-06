@@ -1,17 +1,30 @@
-Connect and Register Azure Stack HCI 20H2 to Azure
+Integrate Azure Stack HCI 20H2 with Azure
+==============
+Overview
 -----------
+
+With your Azure Stack HCI 20H2 cluster deployed successfully, you need to register this cluster to unlock full functionality.
+
+Contents
+-----------
+- [Overview](#overview)
+- [Contents](#contents)
+- [Prerequisites for registration](#prerequisites-for-registration)
+
 Azure Stack HCI 20H2 is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI 20H2 cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI 20H2 cluster, effectively extending the Azure management plane to Azure Stack HCI 20H2. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI 20H2, is that the Azure Arc registration is a native capability of Azure Stack HCI 20H2, so there is no agent required.
 
 **NOTE** - After registering your Azure Stack HCI 20H2 cluster, the **first 30 days usage will be free**.
 
-### Prerequisites for registration ###
+Prerequisites for registration
+-----------
+
 Firstly, **you need an Azure Stack HCI 20H2 cluster**, which we've just created, so you're good there.
 
 Your nodes need to have **internet connectivity** in order to register and communicate with Azure.  If you've been running nested in Azure, you should have this already set up correctly, but if you're running nested on a local physical machine, make any necessary adjustments to your InternalNAT switch to allow internet connections through to your nested Azure Stack HCI 20H2 nodes.
 
 You'll need an **Azure subscription**, along with appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
 
-#### What happens when you register Azure Stack HCI 20H2? ####
+### What happens when you register Azure Stack HCI 20H2? ###
 When you register your Azure Stack HCI 20H2 cluster, the process creates an Azure Resource Manager (ARM) resource to represent the on-prem cluster. This resource is provisioned by an Azure resource provider (RP) and placed inside a resource group, within your chosen Azure subscription.  If these Azure concepts are new to you, you can check out an [overview of them, and more, here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview "Azure Resource Manager overview").
 
 ![ARM architecture for Azure Stack HCI 20H2](/media/azure_arm.png "ARM architecture for Azure Stack HCI 20H2")
