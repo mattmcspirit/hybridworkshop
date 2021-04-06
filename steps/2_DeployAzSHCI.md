@@ -205,49 +205,21 @@ By deploying an Azure Stack HCI 20H2 cluster, you're providing high availability
 
 Quorum is designed to prevent split-brain scenarios which can happen when there is a partition in the network and subsets of nodes cannot communicate with each other. This can cause both subsets of nodes to try to own the workload and write to the same disk which can lead to numerous problems. However, this is prevented with Failover Clustering's concept of quorum which forces only one of these groups of nodes to continue running, so only one of these groups will stay online.
 
-In this step, we're going to utilize a **Cloud witness** to help provide quorum.  If you want to learn more about quorum, [check out the official documentation.](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/quorum "Official documentation about Cluster quorum")
+Typically, the recommendation is to utilize a **Cloud Witness**, where an Azure Storage Account is used to help provide quorum, but in the interest of time, we;re going to use a **File Share Witness**.  If you want to learn more about quorum, [check out the official documentation.](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/quorum "Official documentation about Cluster quorum")
 
-As part of this guide, we're going to set up cluster quorum, using **Windows Admin Center**.
+As part of this workshop, we're going to set up cluster quorum, using **Windows Admin Center**.
 
 1. If you're not already, ensure you're logged into your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
 
 ![Connect to your cluster with Windows Admin Center](/media/wac_azshciclus_ga.png "Connect to your cluster with Windows Admin Center")
 
-2. You may be prompted for credentials, so log in with your **azshci\labadmin** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
+2. You may be prompted for credentials, so log in with your **hybrid\azureuser** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
 3. After a few moments of verification, the **cluster dashboard** will open. 
 4. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
-5. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **Cloud witness**
+5. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **File Share Witness**
 
-![Set up cloud witness in Windows Admin Center](/media/wac_cloud_witness_new_ga.png "Set up cloud witness in Windows Admin Center")
+![Set up file share witness in Windows Admin Center](/media/wac_cloud_witness_new_ga.png "Set up file share witness in Windows Admin Center")
 
-6. Open a new tab in your browser, and navigate to **https://portal.azure.com** and login with your Azure credentials
-7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/nested/steps/1b_NestedInAzure.md#get-an-azure-subscription)
-8. Once logged into the Azure portal, click on **Create a Resource**, click **Storage**, then **Storage account**
-9. For the **Create storage account** blade, ensure the **correct subscription** is selected, then enter the following:
-
-    * Resource Group: **Create new**, then enter **azshcicloudwitness**, and click **OK**
-    * Storage account name: **azshcicloudwitness**
-    * Location: **Select your preferred region**
-    * Performance: **Only standard is supported**
-    * Account kind: **Storage (general purpose v1)** is the best option for cloud witness
-    * Replication: **Locally-redundant storage (LRS)** - Failover Clustering uses the blob file as the arbitration point, which requires some consistency guarantees when reading the data. Therefore you must select Locally-redundant storage for Replication type.
-
-![Set up storage account in Azure](/media/azure_cloud_witness_ga.png "Set up storage account in Azure")
-
-10. On the **Networking** and **Data protection** pages, accept the defaults and press **Next**
-11. On the **Advanced** page, ensure that **Blob public access** is **disabled**, and **Minimum TLS version** is set to **Version 1.2**
-12. When complete, click **Create** and your deployment will begin.  This should take a few moments.
-13. Once complete, in the **notification**, click on **Go to resource**
-14. On the left-hand navigation, under Settings, click **Access Keys**. When you create a Microsoft Azure Storage Account, it is associated with two Access Keys that are automatically generated - Primary Access key and Secondary Access key. For a first-time creation of Cloud Witness, use the **Primary Access Key**. There is no restriction regarding which key to use for Cloud Witness.
-15. Click on **Show keys** and take a copy of the **Storage account name** and **key1**
-
-![Configure Primary Access key in Azure](/media/azure_keys_ga.png "Configure Primary Access key in Azure")
-
-16. On the left-hand navigation, under Settings, click **Properties** and make a note of your **blob service endpoint**.
-
-![Blob Service endpoint in Azure](/media/azure_blob_ga.png "Blob Service endpoint in Azure")
-
-**NOTE** - The required service endpoint is the section of the Blob service URL **after blob.**, i.e. for our configuration, **core.windows.net**
 
 17. With all the information gathered, return to the **Windows Admin Center** and complete the form with your values, then click **Save**
 
@@ -266,9 +238,7 @@ Firstly, **you need an Azure Stack HCI 20H2 cluster**, which we've just created,
 
 Your nodes need to have **internet connectivity** in order to register and communicate with Azure.  If you've been running nested in Azure, you should have this already set up correctly, but if you're running nested on a local physical machine, make any necessary adjustments to your InternalNAT switch to allow internet connections through to your nested Azure Stack HCI 20H2 nodes.
 
-You'll need an **Azure subscription**, but seeing as you've just configured the **cloud witness** earlier, we'll assume that's taken care of.
-
-You'll need appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
+You'll need an **Azure subscription**, along with appropriate **Azure Active Directory permissions** to complete the registration process. If you don't already have them, you'll need to ask your Azure AD administrator to grant permissions or delegate them to you.  You can learn more about this below.
 
 #### What happens when you register Azure Stack HCI 20H2? ####
 When you register your Azure Stack HCI 20H2 cluster, the process creates an Azure Resource Manager (ARM) resource to represent the on-prem cluster. This resource is provisioned by an Azure resource provider (RP) and placed inside a resource group, within your chosen Azure subscription.  If these Azure concepts are new to you, you can check out an [overview of them, and more, here](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/overview "Azure Resource Manager overview").
@@ -307,7 +277,7 @@ The most restrictive option is to create a custom AD role with a custom consent 
 
 **NOTE** - This option requires an Azure AD Premium license and uses custom AD roles and custom consent policy features which are currently in public preview.
 
-If you choose to perform Option 3, you'll need to follow these steps on **MGMT01**, which we'll demonstrate mainly through PowerShell.
+If you choose to perform Option 3, you'll need to follow these steps on **HybridHost001**, which we'll demonstrate mainly through PowerShell.
 
 1. Firstly, configure the appropriate AzureAD modules, then **Connect to Azure AD**, and when prompted, **log in with your appropriate credentials**
 
@@ -373,7 +343,7 @@ To complete registration, you have 2 options - you can use **Windows Admin Cente
 
 #### Option 1 - Register using Windows Admin Center ####
 
-1. On **MGMT01**, logged in as **azshci\labadmin**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
+1. On **HybridHost001**, logged in as **azshci\labadmin**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
 2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
 
 ![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard.png "Azure registration status in Windows Admin Center")
@@ -405,9 +375,9 @@ To complete registration, you have 2 options - you can use **Windows Admin Cente
 You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
 
 #### Option 2 - Register using PowerShell ####
-We're going to perform the registration from the **MGMT01** machine, which we've been using with the Windows Admin Center.
+We're going to perform the registration from the **HybridHost001** machine, which we've been using with the Windows Admin Center.
 
-1. On **MGMT01**, open **PowerShell as administrator** and run the following code to install the PowerShell Module for Azure Stack HCI 20H2 on that machine.
+1. On **HybridHost001**, open **PowerShell as administrator** and run the following code to install the PowerShell Module for Azure Stack HCI 20H2 on that machine.
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
@@ -441,14 +411,14 @@ As you can see from the result, the cluster is yet to be registered, and the clu
 5. With your **Subscription ID** in hand, you can **register using the following Powershell commands**, from your open PowerShell window.
 
 ```powershell
-$azshciNodeCreds = Get-Credential -UserName "azshci\labadmin" -Message "Enter the Lab Admin password"
+$azshciNodeCreds = Get-Credential -UserName "hybric\azureuser" -Message "Enter the Lab Admin password"
 Register-AzStackHCI `
     -SubscriptionId "your-subscription-ID-here" `
     -ResourceName "azshciclus" `
     -ResourceGroupName "AZSHCICLUS_RG" `
     -Region "EastUS" `
     -EnvironmentName "AzureCloud" `
-    -ComputerName "AZSHCINODE01.azshci.local" `
+    -ComputerName "AZSHCINODE01.hybrid.local" `
     –Credential $azshciNodeCreds
 ```
 
@@ -463,7 +433,7 @@ Of these commands, many are optional:
 
 **Register-AzureStackHCI** runs syncronously, with progress reporting, and typically takes 1-2 minutes.  The first time you run it, it may take slightly longer, because it needs to install some dependencies, including additional Azure PowerShell modules.
 
-6. Once dependencies have been installed, you'll receive a popup on **MGMT01** to authenticate to Azure. Provide your **Azure credentials**.
+6. Once dependencies have been installed, you'll receive a popup on **HybridHost001** to authenticate to Azure. Provide your **Azure credentials**.
 
 ![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 
@@ -477,7 +447,7 @@ Of these commands, many are optional:
 Register-AzStackHCI : Azure Stack HCI 20H2 is not yet available in region <regionName>
 ```
 
-8. Once the cluster is registered, run the following command on **MGMT01** to check the updated status:
+8. Once the cluster is registered, run the following command on **HybridHost001** to check the updated status:
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
@@ -491,7 +461,7 @@ You can see the **ConnectionStatus** and **LastConnected** time, which is usuall
 ### View registration details in the Azure portal ###
 With registration complete, either through Windows Admin Center, or through PowerShell, you should take some time to explore the artifacts that are created in Azure, once registration successfully completes.
 
-1. On **MGMT01**, open the Edge browser and **log into https://portal.azure.com** to check the resources created there. In the **search box** at the top of the screen, search for **Resource groups** and then click on **Resource groups**
+1. On **HybridHost001**, open the Edge browser and **log into https://portal.azure.com** to check the resources created there. In the **search box** at the top of the screen, search for **Resource groups** and then click on **Resource groups**
 2. You should see a new **Resource group** listed, with the name you specified earlier, which in our case, is **AZSHCICLUS_RG**
 
 ![Registration resource group in Azure](/media/registration_rg_ga.png "Registration resource group in Azure")
@@ -535,7 +505,7 @@ Troubleshooting cluster validation issues
 -----------
 
 #### CredSSP issue ####
-During testing, you **may** see an issue initiating cluster validation due to a CredSSP issue.  To workaround this issue, on **MGMT01**, you should run the following command:
+During testing, you **may** see an issue initiating cluster validation due to a CredSSP issue.  To workaround this issue, on **HybridHost001**, you should run the following command:
 
 ```powershell
 Disable-WsmanCredSSP -Role Client
@@ -560,7 +530,7 @@ Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
 You should then be able to continue the validation process once all the nodes are back online.
 
 #### WinRM issue ####
-If you see a **WinRM** related issue when running validation, on the **MGMT01** OS, run the following in PowerShell:
+If you see a **WinRM** related issue when running validation, on the **HybridHost001** OS, run the following in PowerShell:
 
 ```powershell
 Restart-Service WinRm
@@ -580,10 +550,10 @@ Invoke-Command -VMName $nodeName -Credential $domainCreds -ScriptBlock {
 }
 ```
 
-Then, back on **MGMT01**, access the Windows Admin Center, if you restart the cluster creation wizard, Windows Admin Center should allow you to pick up where you left off previously.
+Then, back on **HybridHost001**, access the Windows Admin Center, if you restart the cluster creation wizard, Windows Admin Center should allow you to pick up where you left off previously.
 
 #### Test Report issue ####
-If you see an issue with an error relating to **Test report isn't available, try to validate again**, this is likely due to a bug where your Azure Stack HCI 20H2 nodes are in a different locale than the MGMT01/Windows Admin Center machine.  To fix this, on **each of the nested Azure Stack HCI 20H2 nodes**, run the following in PowerShell:
+If you see an issue with an error relating to **Test report isn't available, try to validate again**, this is likely due to a bug where your Azure Stack HCI 20H2 nodes are in a different locale than the HybridHost001/Windows Admin Center machine.  To fix this, on **each of the nested Azure Stack HCI 20H2 nodes**, run the following in PowerShell:
 
 ```powershell
 Get-WinSystemLocale # If not en-US you will have problems
