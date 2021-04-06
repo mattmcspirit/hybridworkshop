@@ -229,7 +229,7 @@ As part of this workshop, we're going to set up cluster quorum, using **Windows 
 
 Create volumes for VMs
 -----------
-In this step, you'll create some volumes on an Azure Stack HCI 20H2 cluster by using Windows Admin Center, and enable data deduplication and compression on volumes.
+In this step, you'll create a volume on the Azure Stack HCI 20H2 cluster by using Windows Admin Center, and enable data deduplication and compression.
 
 ### Create a two-way mirror volume ###
 
