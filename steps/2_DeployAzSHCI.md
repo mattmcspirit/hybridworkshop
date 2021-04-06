@@ -88,10 +88,10 @@ The first key step with setting up the networking with Windows Admin Center, is 
 As it stands, this is the way that the Windows Admin Center approaches the network configuration, however, if you were not using the Windows Admin Center, through PowerShell, there are a number of different ways to configure the network to meet your needs. We will work through the Windows Admin Center approach in this guide.
 
 #### Network Setup Overview ####
-Each of your Azure Stack HCI 20H2 nodes should have 6 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
+Each of your Azure Stack HCI 20H2 nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
-* 2 NICs will be dedicated to management and teamed. This team will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
-* 2 NICs will be teamed and dedicated to VM traffic. A virtual switch will be attached to this team and the Azure Stack HCI 20H2 host will no longer use these NICs for it's own traffic.
+* 1 NIC will be dedicated to management. This NIC will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
+* 1 NICs will be dedicated to VM traffic. A virtual switch will be attached to this NIC and the Azure Stack HCI 20H2 host will no longer use this NIC for it's own traffic.
 * 2 NICs will be dedicated to storage traffic. They will reside on 2 separate subnets, 10.10.11.0/24 and 10.10.12.0/24. No virtual switches will be attached to these NICs.
 
 Again, this is just one **example** network configuration for the simple purpose of evaluation.
@@ -102,7 +102,7 @@ Again, this is just one **example** network configuration for the simple purpose
 
 2. Then, for each node, **select the 2 highlighted NICs** that will be dedicated for management.  The reason only two NICs are highlighted, is because these are the only NICs that have an IP address on the same network as the WAC instance. Once you've finished your selections, scroll to the bottom, then click **Apply and test**. This will take a few moments.
 
-![Select management adapters in the Create Cluster wizard](/media/wac_teamedmgmt_ga.png "Select management adapters in the Create Cluster wizard")
+![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_ga.png "Select management adapters in the Create Cluster wizard")
 
 3. Windows Admin Center will then apply the configuration to your NICs. When complete and successful, click **Next**
 4. On the **Virtual Switch** page, you have a number of options
@@ -122,28 +122,30 @@ Again, this is just one **example** network configuration for the simple purpose
 
 ![Error message when configuring RDMA in a nested environment](/media/wac_enable_rdma.png "Error message when configuring RDMA in a nested environment")
 
-7. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In this **nested environment**, we now have 2 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
+7. On the **Define networks** page, this is where you can define the specific networks, separate subnets, and optionally apply VLANs.  In this **nested environment**, we now have 3 NICs remaining.  Configure your remaining NICs as follows, by clicking on a field in the table and entering the appropriate information.
 
-**NOTE** - we have a simple flat network in this configuration. Some of the NICs have been claimed by the Management NIC team, The remaining NICs will be show in the table in WAC, so ensure they align with the information below. WAC won't allow you to proceed unless everything aligns correctly.
+**NOTE** - we have a simple flat network in this configuration. One of the NICs have been claimed by the Management NIC, The remaining NICs will be show in the table in WAC, so ensure they align with the information below. WAC won't allow you to proceed unless everything aligns correctly.
 
 | Node | Name | IP Address | Subnet Mask
 | :-- | :-- | :-- | :-- |
 | AZSHCINODE01 | Storage 1 | 10.10.11.1 | 24
 | AZSHCINODE01 | Storage 2 | 10.10.12.1 | 24
-| AZSHCINODE01 | VM1 | 10.10.13.1 | 24
-| AZSHCINODE01 | VM2 | 10.10.14.1 | 24
+| AZSHCINODE01 | VM | 10.10.13.1 | 24
 | AZSHCINODE02 | Storage 1 | 10.10.11.2 | 24
 | AZSHCINODE02 | Storage 2 | 10.10.12.2 | 24
-| AZSHCINODE02 | VM1 | 10.10.13.2 | 24
-| AZSHCINODE02 | VM2 | 10.10.14.2 | 24
+| AZSHCINODE02 | VM | 10.10.13.2 | 24
 
 When you click **Apply and test**, Windows Admin Center validates network connectivity between the adapters in the same VLAN and subnet, which may take a few moments.  Once complete, your configuration should look similar to this:
 
 ![Define networks in the Create Cluster wizard](/media/wac_define_network_ga.png "Define networks in the Create Cluster wizard")
 
-1. Once the networks have been verified, you can optionally review the networking test report, and once complete, click **Next**
+**NOTE**, You *may* be prompted with a **Credential Security Service Provider (CredSSP)** box - read the information, then click **Yes**
 
-2. Once changes have been successfully applied, click **Next: Clustering**
+![Validate cluster in the Create Cluster wizard](/media/wac_credssp_ga.png "Validate cluster in the Create Cluster wizard")
+
+8. Once the networks have been verified, you can optionally review the networking test report, and once complete, click **Next**
+
+9. Once changes have been successfully applied, click **Next: Clustering**
 
 ### Clustering ###
 With the network configured for the workshop environment, it's time to construct the local cluster.
