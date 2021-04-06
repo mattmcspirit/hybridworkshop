@@ -114,7 +114,7 @@ Again, this is just one **example** network configuration for the simple purpose
 * **Create two virtual switches** - in this configuration, you can create separate vSwitches, each attached to different sets of underlying NICs.  This may be useful if you wish to dedicate a set of underlying NICs to VM traffic, and another set to storage traffic, but wish to have vNICs used for storage communication instead of the underlying NICs.
 * You also have a check-box for **Skip virtual switch creation** - if you want to define things later, that's fine too
 
-5. Select the **Create one virtual switch for compute only**, and select the NICs on each node with the **10.10.13.x and 10.10.14.x IP addresses**, then click **Next**
+1. Select the **Create one virtual switch for compute only**, and select the NIC on each node with the **10.10.13.x IP address**, then click **Next**
 
 ![Create single vSwitch for Compute in the Create Cluster wizard](/media/wac_compute_vswitch_ga.png "Create single vSwitch for Compute in the Create Cluster wizard")
 
