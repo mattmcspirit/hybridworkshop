@@ -161,10 +161,10 @@ With the network configured for the workshop environment, it's time to construct
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
 3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS**
-4. Under **IP address**, click **Specify one or more static addresses**, and enter **192.168.0.5**, and click **Add**
+4. Under **IP address**, click **Assign dynamically using DHCP**
 5. Expand **Advanced** and review the settings, then click **Create cluster**
 
-![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus_ga.png "Finalize cluster creation in the Create Cluster wizard")
+![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus_dhcp_ga.png "Finalize cluster creation in the Create Cluster wizard")
 
 6. With all settings confirmed, click **Create cluster**. This will take a few moments.  Once complete, click **Next: Storage**
 
@@ -206,7 +206,13 @@ Typically, the recommendation is to utilize a **Cloud Witness**, where an Azure 
 
 As part of this workshop, we're going to set up cluster quorum, using **Windows Admin Center**.
 
-1. If you're not already, ensure you're logged into your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
+1. Firstly, you're going to create a **shared folder** on **HybridHost001** - open **File Explorer** and navigate to **V:\Witness**
+2. **Right-click** on the Witness folder, select **Give access to**, then select **Specific people**
+3. In the **Network access** window, use the drop-down to select **Everyone** and set their permissions to **Read/Write** - this setting is for speed and simplicity. In a production environment, your folder would be shared specifically with the Cluster Object from Active Directory.
+
+![Granting folder permissions for the file share witness](/media/grant_folder_permissions.png "Granting folder permissions for the file share witness")
+
+4. If you're not already, ensure you're logged into your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
 
 ![Connect to your cluster with Windows Admin Center](/media/wac_azshciclus_ga.png "Connect to your cluster with Windows Admin Center")
 

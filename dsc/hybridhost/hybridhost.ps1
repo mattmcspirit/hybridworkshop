@@ -19,6 +19,7 @@ configuration HybridHost
         [String]$ssuPath = "$updatePath\SSU",
         [String]$cuPath = "$updatePath\CU",
         [String]$targetVMPath = "$targetDrive" + ":\VMs",
+        [String]$witnessPath = "$targetDrive" + ":\Witness",
         [String]$targetADPath = "$targetDrive" + ":\ADDS",
         [String]$baseVHDFolderPath = "$targetVMPath\Base",
         [String]$azsHCIIsoUri = "https://aka.ms/2CNBagfhSZ8BM7jyEV8I",
@@ -115,6 +116,12 @@ configuration HybridHost
         File "VMfolder" {
             Type            = 'Directory'
             DestinationPath = $targetVMPath
+            DependsOn       = "[Script]FormatDisk"
+        }
+
+        File "Witnessfolder" {
+            Type            = 'Directory'
+            DestinationPath = $witnessPath
             DependsOn       = "[Script]FormatDisk"
         }
 
