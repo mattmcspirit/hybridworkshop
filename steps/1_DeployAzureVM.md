@@ -20,6 +20,7 @@ Contents
 - [Azure VM Size Considerations](#azure-vm-size-considerations)
 - [Deploying the Azure VM](#deploying-the-azure-vm)
 - [Access your Azure VM](#access-your-azure-vm)
+- [Finish VM Setup](#finish-vm-setup)
 - [Next Steps](#next-steps)
 - [Troubleshooting](#troubleshooting)
 - [Product improvements](#product-improvements)
@@ -180,6 +181,10 @@ Now that you're successfully connected to the VM, it's a good idea to ensure you
 4. Restart if required, and once completed, re-connect your RDP session using the steps earlier.
 
 With the OS updated, and back online after any required reboot, you can proceed on to deploying AKS on Azure Stack HCI.
+
+Finish VM Setup
+-----------
+Once the Azure VM deployment process has completed, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
 
 Next Steps
 -----------
