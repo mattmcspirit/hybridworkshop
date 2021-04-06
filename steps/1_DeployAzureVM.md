@@ -1,4 +1,4 @@
-Deploy your Azure VM
+Deploy your Azure VM (Prerequisites)
 ==============
 Overview
 -----------
