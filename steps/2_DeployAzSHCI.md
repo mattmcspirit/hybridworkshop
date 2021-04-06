@@ -91,7 +91,7 @@ As it stands, this is the way that the Windows Admin Center approaches the netwo
 Each of your Azure Stack HCI 20H2 nodes should have 4 NICs.  For this simple evaluation, you'll dedicate the NICs in the following way:
 
 * 1 NIC will be dedicated to management. This NIC will reside on the 192.168.0.0/24 subnet. No virtual switch will be attached to this NIC.
-* 1 NICs will be dedicated to VM traffic. A virtual switch will be attached to this NIC and the Azure Stack HCI 20H2 host will no longer use this NIC for it's own traffic.
+* 1 NIC will be dedicated to VM traffic. A virtual switch will be attached to this NIC and the Azure Stack HCI 20H2 host will no longer use this NIC for it's own traffic.
 * 2 NICs will be dedicated to storage traffic. They will reside on 2 separate subnets, 10.10.11.0/24 and 10.10.12.0/24. No virtual switches will be attached to these NICs.
 
 Again, this is just one **example** network configuration for the simple purpose of evaluation.
@@ -100,7 +100,7 @@ Again, this is just one **example** network configuration for the simple purpose
 
 ![Select management adapter in the Create Cluster wizard](/media/wac_management_nic_ga.png "Select management adapter in the Create Cluster wizard")
 
-2. Then, for each node, **select the 2 highlighted NICs** that will be dedicated for management.  The reason only two NICs are highlighted, is because these are the only NICs that have an IP address on the same network as the WAC instance. Once you've finished your selections, scroll to the bottom, then click **Apply and test**. This will take a few moments.
+2. Then, for each node, **select the highlighted NIC** that will be dedicated for management.  The reason only one NIC is highlighted, is because this is the only NICs that has an IP address on the same network as the WAC instance. Once you've finished your selections, scroll to the bottom, then click **Apply and test**. This will take a few moments.
 
 ![Select management adapters in the Create Cluster wizard](/media/wac_singlemgmt_ga.png "Select management adapters in the Create Cluster wizard")
 
