@@ -186,7 +186,7 @@ Troubleshooting
 -----------
 From time to time, a transient, random deployment error may cause the Azure VM to show a failed deployment. This is typically caused by reboots and timeouts within the VM as part of the PowerShell DSC configuration process, in particular, when the Hyper-V role is enabled and the system reboots multiple times in quick succession. We've also seen instances where changes with Chocolatey Package Manager cause deployment issues.
 
-![Azure VM deployment error](/eval/media/vm_deployment_error.png "Azure VM deployment error")
+![Azure VM deployment error](/media/vm_deployment_error.png "Azure VM deployment error")
 
 If the error is related to the **HybridHost001/ConfigureHybridHost**, most likely the installation did complete successfully in the end, but to double-check, you can perform these steps:
 
@@ -197,7 +197,7 @@ If the error is related to the **HybridHost001/ConfigureHybridHost**, most likel
 # Check for last run
 Get-DscConfigurationStatus
 ```
-![Result of Get-DscConfigurationStatus](/eval/media/get-dscconfigurationstatus.png "Result of Get-DscConfigurationStatus")
+![Result of Get-DscConfigurationStatus](/media/get-dscconfigurationstatus.png "Result of Get-DscConfigurationStatus")
 
 3. As you can see, in this particular case, the PowerShell DSC configuration **status appears to have been successful**, however your results may show a different result. Just for good measure, you can re-apply the configuration by **running the following commands**:
 
@@ -213,7 +213,7 @@ Start-DscConfiguration -Path . -Wait -Force -Verbose
 Get-DscConfigurationStatus
 ```
 
-![Result of Get-DscConfigurationStatus](/eval/media/get-dscconfigurationstatus2.png "Result of Get-DscConfigurationStatus")
+![Result of Get-DscConfigurationStatus](/media/get-dscconfigurationstatus2.png "Result of Get-DscConfigurationStatus")
 
 **NOTE** - If this doesn't fix your issue, consider redeploying your Azure VM. If the issue persists, please **raise an issue!**
 
