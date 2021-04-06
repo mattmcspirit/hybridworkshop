@@ -40,9 +40,9 @@ The steps outlined in this guide are **specific to running inside an Azure VM**,
 
 Get an Azure subscription
 -----------
-To evaluate Azure Stack HCI and AKS on Azure Stack HCI in Azure, you'll need an Azure subscription.  If you already have one provided by your company, you can skip this step, but if not, you have a couple of options.
+To evaluate Azure Stack HCI 20H2 and AKS on Azure Stack HCI in Azure, you'll need an Azure subscription.  If you already have one provided by your company, you can skip this step, but if not, you have a couple of options.
 
-The first option would apply to Visual Studio subscribers, where you can use Azure at no extra charge. With your monthly Azure DevTest individual credit, Azure is your personal sandbox for dev/test. You can provision virtual machines, cloud services, and other Azure resources. Credit amounts vary by subscription level, but if you manage your AKS on Azure Stack HCI Host VM run-time efficiently, you can test the scenario well within your subscription limits.
+The first option would apply to Visual Studio subscribers, where you can use Azure at no extra charge. With your monthly Azure DevTest individual credit, Azure is your personal sandbox for dev/test. You can provision virtual machines, cloud services, and other Azure resources. Credit amounts vary by subscription level, but if you manage your Hybrid Host VM run-time efficiently, you can test the scenario well within your subscription limits.
 
 The second option would be to sign up for a [free trial](https://azure.microsoft.com/en-us/free/ "Azure free trial link"), which gives you $200 credit for the first 30 days, and 12 months of popular services for free. The credit for the first 30 days will give you plenty of headroom to validate AKS on Azure Stack HCI.
 
@@ -51,9 +51,9 @@ You can also use this same Azure subscription to integrate with Azure Arc, once 
 Azure VM Size Considerations
 -----------
 
-Now, before you deploy the VM in Azure, it's important to choose a **size** that's appropriate for your needs for this workshop, along with a preferred region. It's highly recommended to choose a VM size that has **at least 64GB memory**. This deployment, by default, recommends using a **Standard_E16s_v4**, which is a memory-optimized VM size, with 16 vCPUs, 128 GiB memory, and no temporary SSD storage. The OS drive will be the default 127 GiB in size and the Azure VM deployment will add an additional 8 data disks (32 GiB each by default), so you'll have around 256GiB to deploy AKS on Azure Stack HCI. You can also make this larger after deployment, if you wish.
+Now, before you deploy the VM in Azure, it's important to choose a **size** that's appropriate for your needs for this workshop, along with a preferred region. It's highly recommended to choose a VM size that has **at least 64GB memory**. This deployment, by default, recommends using a **Standard_E16s_v4**, which is a memory-optimized VM size, with 16 vCPUs, 128 GiB memory, and no temporary SSD storage. The OS drive will be the default 127 GiB in size and the Azure VM deployment will add an additional 8 data disks (32 GiB each by default), so you'll have around 256GiB to deploy Azure Stack HCI 20H2 and AKS on Azure Stack HCI. You can also make this larger after deployment, if you wish.
 
-This is just one VM size that we recommend - you can adjust accordingly to suit your needs, even after deployment. The point here is, think about how large an AKS on Azure Stack HCI infrastructure you'd like to deploy inside this Azure VM, and select an Azure VM size from there. Some potential examples would be:
+This is just one VM size that we recommend - you can adjust accordingly to suit your needs, even after deployment. The point here is, think about how large an Azure Stack HCI 20H2 and AKS on Azure Stack HCI infrastructure you'd like to deploy inside this Azure VM, and select an Azure VM size from there. Some potential examples would be:
 
 **D-series VMs (General purpose) with at least 64GB memory**
 
@@ -148,7 +148,7 @@ If your Azure VM fails to deploy successfully, and the error relates to the **Hy
 Access your Azure VM
 -----------
 
-With your Azure VM (HybridHost001) successfully deployed and configured, you're ready to connect to the VM to start the deployment of the Azure Stack HCI and AKS on Azure Stack HCI infrastructure.
+With your Azure VM (HybridHost001) successfully deployed and configured, you're ready to connect to the VM to start the deployment of the Azure Stack HCI 20H2 and AKS on Azure Stack HCI infrastructure.
 
 ### Connect to your Azure VM ###
 Firstly, you'll need to connect into the VM, with the easiest approach being via Remote Desktop.  If you're not already logged into the Azure portal, visit https://portal.azure.com/, and login with the same credentials used earlier.  Once logged in, using the search box on the dashboard, enter "**hybridhost**" and once the results are returned, **click on your HybridHost001 virtual machine**.
@@ -178,7 +178,7 @@ With the OS updated, and back online after any required reboot, you can proceed 
 
 Next Steps
 -----------
-In this step, you've successfully created and automatically configured your Azure VM, which will serve as the host for your AKS on Azure Stack HCI infrastructure. You have 2 choices on how to proceed, either a more graphical way, using Windows Admin Center or via PowerShell. Make your choice below:
+In this step, you've successfully created and automatically configured your Azure VM, which will serve as the host for your Azure Stack HCI 20H2 and AKS on Azure Stack HCI infrastructure. You're now ready to move on to 
 
 * [**Part 2** - Configure your Azure Stack HCI 20H2 Cluster](/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 20H2 Cluster")
 
@@ -221,14 +221,14 @@ Product improvements
 -----------
 If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, AKS on Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
 
-For **Azure Stack HCI**, [Head on over to the Azure Stack HCI Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
-For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
+For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI 20H2 GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
 
 Raising issues
 -----------
 If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
+If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
 
 If you're having a problem with AKS on Azure Stack HCI **outside** of this guide, make sure you post to [our GitHub Issues page](https://github.com/Azure/aks-hci/issues "GitHub Issues"), where Microsoft experts and valuable members of the community will do their best to help you.
