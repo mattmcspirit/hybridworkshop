@@ -716,10 +716,11 @@ configuration HybridHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
-                Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath -Package $using:ssuPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
-                # Enable Hyper-V role on the Azure Stack HCI Host Image
-                Install-WindowsFeature -Vhd $using:azsHciVhdPath -Name Hyper-V
-                Start-Sleep -Seconds 2
+                Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath `
+                    -Package $using:ssuPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
+
+                Start-Sleep -Seconds 5
+
                 $mountPath = "$using:targetVMPath\Mount"
                 New-Item -ItemType Directory -Path "$mountPath" -Force | Out-Null
                 $scratchPath = "$using:targetVMPath\Scratch"
@@ -733,9 +734,14 @@ configuration HybridHost
                 catch {
                     Write-Verbose -Message "One of the packages didn't install correctly, but process can continue."
                 }
-                Write-Verbose -Message "Saving the image"
+
                 Dismount-WindowsImage -Path $mountPath -ScratchDirectory $scratchPath -Save `
                     -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log"
+
+                    Start-Sleep -Seconds 5
+
+                # Enable Hyper-V role on the Azure Stack HCI Host Image
+                Install-WindowsFeature -Vhd $using:azsHciVhdPath -Name Hyper-V
             }
 
             TestScript = {
