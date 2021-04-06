@@ -13,6 +13,7 @@ Contents
 - [Before you begin](#before-you-begin)
 - [Creating a (local) cluster](#creating-a-local-cluster)
 - [Configuring the cluster witness](#configuring-the-cluster-witness)
+- [Create volumes for VMs](#create-volumes-for-vms)
 - [Next Steps](#next-steps)
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
@@ -225,6 +226,32 @@ As part of this workshop, we're going to set up cluster quorum, using **Windows 
 ![Set up file share witness in Windows Admin Center](/media/wac_fs_witness_new_ga.png "Set up file share witness in Windows Admin Center")
 
 11. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
+
+Create volumes for VMs
+-----------
+In this step, you'll create some volumes on an Azure Stack HCI 20H2 cluster by using Windows Admin Center, and enable data deduplication and compression on volumes.
+
+### Create a two-way mirror volume ###
+
+1. Once logged into the **Windows Admin Center** on **HybridHost001**, click on your previously deployed cluster, **azshciclus.hybrid.local**
+2. On the left hand navigation, under **Storage** select **Volumes**.  The central **Volumes** page shows you should have a single volume currently
+3. On the Volumes page, select the **Inventory** tab, and then select **Create**
+4. In the **Create volume** pane, enter **VMSTORAGE** for the volume name, and leave **Resiliency** as **Two-way mirror**
+5. In Size on HDD, specify **20GB** for the size of the volume, then click **Create**.
+
+![Create a volume on Azure Stack HCI 20H2](/media/wac_vm_storage_ga.png "Create a volume on Azure Stack HCI 20H2")
+
+6. Creating the volume can take a few minutes. Notifications in the upper-right will let you know when the volume is created. The new volume appears in the Inventory list
+
+![Volume created on Azure Stack HCI 20H2](/media/wac_vm_storage_deployed_ga.png "Volume created on Azure Stack HCI 20H2")
+
+
+
+3. In the **Enable deduplication** pane, use the drop-down to select **Hyper-V** then click **Enable Deduplication**. This should be enabled quickly, as there's no files on the volume.
+
+**NOTE** - You'll notice there there are 3 options; default, Hyper-V and Backup.  If you're interested in learning more about Deduplication in Azure Stack HCI 20H2, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
+
+You now have a volume created and ready to accept workloads. Whilst we deployed the volume using the Windows Admin Center, you can also do the same through PowerShell. If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes")
 
 ### Congratulations! ###
 You've now successfully deployed and configured your Azure Stack HCI 20H2 cluster!
