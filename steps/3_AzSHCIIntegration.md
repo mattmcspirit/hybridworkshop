@@ -10,6 +10,10 @@ Contents
 - [Overview](#overview)
 - [Contents](#contents)
 - [Prerequisites for registration](#prerequisites-for-registration)
+- [Complete Registration](#complete-registration)
+- [Next Steps](#next-steps)
+- [Product improvements](#product-improvements)
+- [Raising issues](#raising-issues)
 
 Azure Stack HCI 20H2 is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI 20H2 cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI 20H2 cluster, effectively extending the Azure management plane to Azure Stack HCI 20H2. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI 20H2, is that the Azure Arc registration is a native capability of Azure Stack HCI 20H2, so there is no agent required.
 
@@ -31,7 +35,7 @@ When you register your Azure Stack HCI 20H2 cluster, the process creates an Azur
 
 In addition to creating an Azure resource in your subscription, registering Azure Stack HCI 20H2 creates an app identity, conceptually similar to a user, in your Azure Active Directory tenant. The app identity inherits the cluster name. This identity acts on behalf on the Azure Stack HCI 20H2 cloud service, as appropriate, within your subscription.
 
-#### Understanding required Azure Active Directory permissions ####
+### Understanding required Azure Active Directory permissions ###
 If the user who registers Azure Stack HCI 20H2 is an Azure Active Directory global administrator or has been delegated sufficient permissions, this all happens automatically, and no additional action is required. If not, approval may be needed from your Azure Active Directory global administrator (or someone with appropriate permissions) to complete registration. Your global administrator can either explicitly grant consent to the app, or they can delegate permissions so that you can grant consent to the app.
 
 ![Azure Active Directory Permissions](/media/aad_permissions.png "Azure Active Directory Permissions")
@@ -122,7 +126,9 @@ $customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
 
 6. Assign the new custom AD role to the user who will register the Azure Stack HCI cluster with Azure by following [these instructions](https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/active-directory-users-assign-role-azure-portal "Guidance on creating a custom Azure AD role").
 
-### Complete Registration ###
+Complete Registration
+-----------
+
 To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
 
 #### Option 1 - Register using Windows Admin Center ####
@@ -195,7 +201,7 @@ As you can see from the result, the cluster is yet to be registered, and the clu
 5. With your **Subscription ID** in hand, you can **register using the following Powershell commands**, from your open PowerShell window.
 
 ```powershell
-$azshciNodeCreds = Get-Credential -UserName "hybric\azureuser" -Message "Enter the Lab Admin password"
+$azshciNodeCreds = Get-Credential -UserName "hybrid\azureuser" -Message "Enter the hybrid\azureuser password"
 Register-AzStackHCI `
     -SubscriptionId "your-subscription-ID-here" `
     -ResourceName "azshciclus" `
@@ -258,4 +264,24 @@ With registration complete, either through Windows Admin Center, or through Powe
 **NOTE** - If when you ran **Register-AzureStackHCI**, you don't have appropriate permissions in Azure Active Directory, to grant admin consent, you will need to work with your Azure Active Directory administrator to complete registration later. You can exit and leave the registration in status "**pending admin consent**," i.e. partially completed. Once consent has been granted, **simply re-run Register-AzureStackHCI** to complete registration.
 
 ### Congratulations! ###
-You've now successfully deployed, configured and registered your Azure Stack HCI 20H2 cluster!
+You've now successfully registered your Azure Stack HCI 20H2 cluster!
+
+Next Steps
+-----------
+In this step, you've successfully registered your Azure Stack HCI 20H2 cluster. With this complete, you can now [Deploy your AKS-HCI infrastructure](/steps/3_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
+
+Product improvements
+-----------
+If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, AKS on Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
+
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+
+For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI 20H2 GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
+
+Raising issues
+-----------
+If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
+
+If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
+
+If you're having a problem with AKS on Azure Stack HCI **outside** of this guide, make sure you post to [our GitHub Issues page](https://github.com/Azure/aks-hci/issues "GitHub Issues"), where Microsoft experts and valuable members of the community will do their best to help you.
