@@ -31,6 +31,7 @@ Contents
 - [Get started](#get-started)
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
+- [Credits](#credits)
 - [Contributions & Legal](#contributions--legal)
 
 What is Azure Stack HCI?
@@ -116,6 +117,10 @@ If you notice something is wrong with this guide, such as a step isn't working, 
 If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
 
 If you're having a problem with AKS on Azure Stack HCI **outside** of this guide, make sure you post to [our GitHub Issues page](https://github.com/Azure/aks-hci/issues "GitHub Issues"), where Microsoft experts and valuable members of the community will do their best to help you.
+
+Credits
+-----------
+Major kudos to **Yagmur Sahin** for his work on his [Azure Stack HCI](https://github.com/yagmurs/AzureStackHCIonAzure "Yagmur's Azure Stack HCI on Azure project") and [AKS-HCI on Azure](https://github.com/Azure/AksHcionAzureVM "Yagmur's AKS-HCI on Azure project") projects
 
 Contributions & Legal
 -----------
