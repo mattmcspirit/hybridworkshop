@@ -804,6 +804,8 @@ configuration HybridHost
                 $command = "dism /image:" + $updatepath + " /Cleanup-Image /spsuperseded"
                 Invoke-Expression $command
 
+                Dismount-VHD -path $using:azsHciVhdPath -confirm:$false
+
                 Start-Sleep -Seconds 5
 
                 # Enable Hyper-V role on the Azure Stack HCI Host Image
