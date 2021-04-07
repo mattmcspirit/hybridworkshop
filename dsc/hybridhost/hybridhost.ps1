@@ -48,6 +48,7 @@ configuration HybridHost
 
     $aszhciHostsMofUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Install-AzsRolesandFeatures.ps1"
     $updateAdUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Update-AD.ps1"
+    $regHciUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Register-AzSHCI.ps1"
 
     if ($enableDHCP -eq "Enabled") {
         $dhcpStatus = "Active"
@@ -194,6 +195,24 @@ configuration HybridHost
 
             SetScript  = {
                 Start-BitsTransfer -Source "$using:updateAdUri" -Destination "$using:sourcePath\Update-AD.ps1"          
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[File]Source"
+        }
+
+        script "Download Register-AzSHCI" {
+            GetScript  = {
+                $result = Test-Path -Path "$using:sourcePath\Register-AzSHCI.ps1"
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                Start-BitsTransfer -Source "$using:updateAdUri" -Destination "$using:sourcePath\Register-AzSHCI.ps1"
             }
 
             TestScript = {
