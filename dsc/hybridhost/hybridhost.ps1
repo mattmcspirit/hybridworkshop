@@ -761,15 +761,14 @@ configuration HybridHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
-                $mountPath = "C:\Mount"
-                New-Item -ItemType Directory -Path "$mountPath" -Force | Out-Null
+                
                 $scratchPath = "$using:targetVMPath\Scratch"
                 New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
 
                 Convert-WindowsImage -SourcePath $using:azsHCIISOLocalPath -SizeBytes 100GB -VHDPath $using:azsHciVhdPath `
                     -VHDFormat VHDX -VHDType Dynamic -VHDPartitionStyle GPT -Package $using:ssuPath -TempDirectory $using:targetVMPath -Verbose
 
-                    <#
+                <#
                 Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath `
                    -Package $using:ssuPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
                    #>
@@ -781,19 +780,29 @@ configuration HybridHost
 
                 Start-Sleep -Seconds 5
 
+                Mount-VHD -Path $using:azsHciVhdPath -Passthru -ErrorAction Stop -Verbose
+                Start-Sleep -Seconds 2
 
-                Mount-WindowsImage -ImagePath $using:azsHciVhdPath -ScratchDirectory $scratchPath `
-                    -Index 1 -Path $mountPath -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log"
-                try {
-                    Add-WindowsPackage -Path $mountPath -PackagePath $cuPath -ScratchDirectory $scratchPath `
-                        -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log" -ErrorAction SilentlyContinue
+                $disks = Get-CimInstance -ClassName Win32_DiskDrive | Where-Object Caption -eq "Microsoft Virtual Disk"            
+                foreach ($disk in $disks) {            
+                    $vols = Get-CimAssociatedInstance -CimInstance $disk -ResultClassName Win32_DiskPartition             
+                    foreach ($vol in $vols) {            
+                        $updatedrive = Get-CimAssociatedInstance -CimInstance $vol -ResultClassName Win32_LogicalDisk |            
+                        Where-Object VolumeName -ne 'System Reserved'          
+                    }            
                 }
-                catch {
-                    Write-Verbose -Message "One of the packages didn't install correctly, but process can continue."
-                }
+                $updatepath = $updatedrive.DeviceID + "\"
 
-                Dismount-WindowsImage -Path $mountPath -ScratchDirectory $scratchPath -Save `
-                    -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log"
+                $updates = get-childitem -path $using:cuPath -Recurse | Where-Object { ($_.extension -eq ".msu") -or ($_.extension -eq ".cab") } | Select-Object fullname
+                foreach ($update in $updates) {
+                    write-debug $update.fullname
+                    $command = "dism /image:" + $updatepath + " /add-package /packagepath:'" + $update.fullname + "'"
+                    write-debug $command
+                    Invoke-Expression $command
+                }
+            
+                $command = "dism /image:" + $updatepath + " /Cleanup-Image /spsuperseded"
+                Invoke-Expression $command
 
                 Start-Sleep -Seconds 5
 
