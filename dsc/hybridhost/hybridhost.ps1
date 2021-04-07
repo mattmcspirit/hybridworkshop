@@ -212,7 +212,7 @@ configuration HybridHost
             }
 
             SetScript  = {
-                Start-BitsTransfer -Source "$using:updateAdUri" -Destination "$using:sourcePath\Register-AzSHCI.ps1"
+                Start-BitsTransfer -Source "$using:regHciUri" -Destination "$using:sourcePath\Register-AzSHCI.ps1"
             }
 
             TestScript = {
