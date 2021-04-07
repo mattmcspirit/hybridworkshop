@@ -98,7 +98,7 @@ The next section will walk through configuring the AKS on Azure Stack HCI manage
 5. On the **System checks** page, enter the password for your **azureuser** account
 6. Once your credentials have been validated, Windows Admin Center will begin to validate it's own configuration, and the configuration of your target nodes, which in this case, is the Windows Server 2019 Hyper-V host (HybridHost001, running in your Azure VM)
 
-![System checks performed by Windows Admin Center](/media/wac_system_checks.png "System checks performed by Windows Admin Center")
+![System checks performed by Windows Admin Center](/media/wac_system_checks_single.png "System checks performed by Windows Admin Center")
 
 You'll notice that Windows Admin Center will validate memory, storage, networking, roles and features and more. If you've followed the guide correctly, you'll find you'll pass all the checks and can proceed.
 
@@ -109,7 +109,7 @@ You'll notice that Windows Admin Center will validate memory, storage, networkin
 
 9.  On the **Host configuration** page, under **Host details**, select your **V:**, and leave the other settings as default
 
-![Host configuration in Windows Admin Center](/media/aks_hostconfig_hostdetails.png "Host configuration in Windows Admin Center")
+![Host configuration in Windows Admin Center](/media/aks_hostconfig_hostdetails_single.png "Host configuration in Windows Admin Center")
 
 10. Under **VM Networking**, ensure that **InternalNAT** is selected for the **Internet-connected virtual switch**
 11. For **Enable virtual LAN identification**, leave this selected as **No**

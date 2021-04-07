@@ -115,7 +115,7 @@ As part of the deployment, the following steps will be **automated for you**:
 9. The Azure Stack HCI 20H2 and AKS on Azure Stack HCI binaries will be downloaded
 10. 2 x Azure Stack HCI 20H2 nodes will be created and deployed, ready to start cluster creation
 
-This automated deployment **should take around 30-35 minutes**.
+This automated deployment **should take around 50 minutes**, due to the image creation of the Azure Stack HCI 20H2 nodes - these are created, **offline patched** and deployed, which takes time.
 
 ### Creating the VM with an Azure Resource Manager JSON Template ###
 To keep things simple, and graphical, we'll show you how to deploy your VM via an Azure Resource Manager template.  To simplify things further, we'll use the following buttons.
@@ -185,9 +185,10 @@ This workshop lab is configured to maximize resource utilization and in some cas
 Run the following command **from an administrative PowerShell console**, accepting any prompts that appear.
 
 ```powershell
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted
-cd V:\Sources
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
+cd V:\Source
 .\Update-AD.ps1
+Restart-Service WinRM -Force
 ```
 
 Once the Azure VM deployment process has completed, and you've run the above command, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
