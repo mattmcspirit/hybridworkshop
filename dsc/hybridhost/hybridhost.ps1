@@ -47,6 +47,7 @@ configuration HybridHost
     Import-DscResource -ModuleName 'xActiveDirectory'
 
     $aszhciHostsMofUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Install-AzsRolesandFeatures.ps1"
+    $convertWinImageUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Convert-WindowsImage.ps1"
 
     if ($enableDHCP -eq "Enabled") {
         $dhcpStatus = "Active"
@@ -175,6 +176,24 @@ configuration HybridHost
 
             SetScript  = {
                 Start-BitsTransfer -Source "$using:aszhciHostsMofUri" -Destination "$using:sourcePath\Install-AzsRolesandFeatures.ps1"          
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[File]Source"
+        }
+
+        script "Download Convert-WindowsImage" {
+            GetScript  = {
+                $result = Test-Path -Path "$using:sourcePath\Convert-WindowsImage.ps1"
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                Start-BitsTransfer -Source "$using:convertWinImageUri" -Destination "$using:sourcePath\Convert-WindowsImage.ps1"          
             }
 
             TestScript = {
@@ -723,8 +742,18 @@ configuration HybridHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
+                $mountPath = "$using:targetVMPath\Mount"
+                New-Item -ItemType Directory -Path "$mountPath" -Force | Out-Null
+                $scratchPath = "$using:targetVMPath\Scratch"
+                New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
+
+                Convert-WindowsImage -SourcePath $using:azsHCIISOLocalPath -SizeBytes 100GB -VHDPath $using:azsHciVhdPath `
+                    -VHDFormat VHDX -VHDType Dynamic -VHDPartitionStyle GPT -Package $using:ssuPath -TempDirectory $using:targetVMPath -Verbose
+
+                    <#
                 Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath `
-                    -Package $using:ssuPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
+                   -Package $using:ssuPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
+                   #>
 
                 # Need to wait for disk to fully unmount
                 While ((Get-Disk).Count -gt 2) {
@@ -733,10 +762,7 @@ configuration HybridHost
 
                 Start-Sleep -Seconds 5
 
-                $mountPath = "$using:targetVMPath\Mount"
-                New-Item -ItemType Directory -Path "$mountPath" -Force | Out-Null
-                $scratchPath = "$using:targetVMPath\Scratch"
-                New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
+
                 Mount-WindowsImage -ImagePath $using:azsHciVhdPath -ScratchDirectory $scratchPath `
                     -Index 1 -Path $mountPath -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log"
                 try {
