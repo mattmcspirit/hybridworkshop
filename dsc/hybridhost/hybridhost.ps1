@@ -761,7 +761,7 @@ configuration HybridHost
 
             SetScript  = {
                 # Create Azure Stack HCI Host Image from ISO
-                $mountPath = "$using:targetVMPath\Mount"
+                $mountPath = "C:\Mount"
                 New-Item -ItemType Directory -Path "$mountPath" -Force | Out-Null
                 $scratchPath = "$using:targetVMPath\Scratch"
                 New-Item -ItemType Directory -Path "$scratchPath" -Force | Out-Null
