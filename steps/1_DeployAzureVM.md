@@ -180,18 +180,7 @@ Accept any certificate prompts, and within a few moments, you should be successf
 
 Please Read - Finish Setup
 -----------
-This workshop lab is configured to maximize resource utilization and in some cases, doesn't follow best-practices. As a result, sometimes, issues can arise. It's highly recommended to run following Powershell code to overcome possible **Kerberos related configuration issues**. The following code creates a new OU in Active Directory, pre-stages the computer accounts and delegates all computers in the OU to the Windows Admin Center computer (HybridHost001) and also allows full control access to Cluster CNO on the new OU.
-
-Run the following command **from an administrative PowerShell console**, accepting any prompts that appear.
-
-```powershell
-Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Force
-cd V:\Source
-.\Update-AD.ps1
-Restart-Service WinRM -Force
-```
-
-Once the Azure VM deployment process has completed, and you've run the above command, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
+Once the Azure VM deployment process has completed, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
 
 You can then optionally shut down your Azure VM, should you wish to continue your evaluation on another day.
 
