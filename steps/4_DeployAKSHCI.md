@@ -1,8 +1,8 @@
-Deploy your AKS-HCI infrastructure with Windows Admin Center
+Deploy your AKS-HCI infrastructure
 ==============
 Overview
 -----------
-With your Azure Stack HCI 20H2 cluster up and running, it's now time to deploy AKS on Azure Stack HCI. You'll first deploy the AKS on Azure Stack HCI management cluster onto your Azure Stack HCI 20H2 cluster, and then deploy a target cluster, onto which you can test deployment of a workload.
+It's now time to deploy AKS on Azure Stack HCI. You'll first deploy the AKS on Azure Stack HCI management cluster, and then deploy a target cluster, onto which you can test deployment of a workload.
 
 Contents
 -----------
@@ -27,6 +27,8 @@ From an architecture perspective, as shown earlier, this graphic showcases the d
 ![Architecture diagram for AKS on Azure Stack HCI in Azure](/media/nested_virt_akshci_ga.png "Architecture diagram for AKS on Azure Stack HCI in Azure")
 
 In this section, you'll use Windows Admin Center to deploy the AKS on Azure Stack HCI, including all the key components. First, the management cluster (kubernetes virtual appliance) provides the the core orchestration mechanism and interface for deploying and managing one or more target clusters. These target, or workload clusters contain worker nodes and are where application workloads run. If you're interested in learning more about the building blocks of the Kubernetes infrastructure, you can [read more here](https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-concepts "Kubernetes core concepts for Azure Kubernetes Service on Azure Stack HCI").
+
+As mentioned earlier, Azure Stack HCI and AKS-HCI will de deployed as 2 separate environments within the same Azure VM. In a production environment, you would run AKS-HCI **on top of** Azure Stack HCI, but in this nested environment, the performance of the multiple levels of nesting can have a negative impact, so in this case, they will be deployed side by side for evaluation.
 
 Allow popups in Edge browser
 -----------
