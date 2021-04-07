@@ -120,7 +120,7 @@ If you're having a problem with AKS on Azure Stack HCI **outside** of this guide
 
 Credits
 -----------
-Major kudos to **Yagmur Sahin** for his work on his [Azure Stack HCI](https://github.com/yagmurs/AzureStackHCIonAzure "Yagmur's Azure Stack HCI on Azure project") and [AKS-HCI on Azure](https://github.com/Azure/AksHcionAzureVM "Yagmur's AKS-HCI on Azure project") projects
+Major kudos to **Yagmur Sahin** for his work on his [Azure Stack HCI](https://github.com/yagmurs/AzureStackHCIonAzure "Yagmur's Azure Stack HCI on Azure project") and [AKS-HCI on Azure](https://github.com/Azure/AksHcionAzureVM "Yagmur's AKS-HCI on Azure project") projects - without his hard work as a starting point, I'd never have been able to put all of this together, so kudos to Yagmur - amazing work!
 
 Contributions & Legal
 -----------
