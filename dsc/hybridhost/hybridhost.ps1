@@ -726,6 +726,11 @@ configuration HybridHost
                 Convert-Wim2Vhd -DiskLayout UEFI -SourcePath $using:azsHCIISOLocalPath -Path $using:azsHciVhdPath `
                     -Package $using:ssuPath -Size 100GB -Dynamic -Index 1 -ErrorAction SilentlyContinue
 
+                # Need to wait for disk to fully unmount
+                While ((Get-Disk).Count -gt 2) {
+                    Start-Sleep -Seconds 5
+                }
+
                 Start-Sleep -Seconds 5
 
                 $mountPath = "$using:targetVMPath\Mount"
@@ -745,7 +750,7 @@ configuration HybridHost
                 Dismount-WindowsImage -Path $mountPath -ScratchDirectory $scratchPath -Save `
                     -Verbose -LogPath "$using:targetVMPath\DismUpdateInstall.log"
 
-                    Start-Sleep -Seconds 5
+                Start-Sleep -Seconds 5
 
                 # Enable Hyper-V role on the Azure Stack HCI Host Image
                 Install-WindowsFeature -Vhd $using:azsHciVhdPath -Name Hyper-V
