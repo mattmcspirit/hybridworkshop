@@ -26,7 +26,7 @@ From an architecture perspective, as shown earlier, this graphic showcases the d
 
 ![Architecture diagram for AKS on Azure Stack HCI in Azure](/media/nested_virt_akshci_ga.png "Architecture diagram for AKS on Azure Stack HCI in Azure")
 
-You've already deployed the Azure Stack HCI 20H2 infrastucture. In this section, you'll use Windows Admin Center to deploy the management cluster. This provides the the core orchestration mechanism and interface for deploying and managing one or more target clusters. These target, or workload clusters contain worker nodes and are where application workloads run. These are managed by a management cluster. If you're interested in learning more about the building blocks of the Kubernetes infrastructure, you can [read more here](https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-concepts "Kubernetes core concepts for Azure Kubernetes Service on Azure Stack HCI").
+In this section, you'll use Windows Admin Center to deploy the AKS on Azure Stack HCI, including all the key components. First, the management cluster (kubernetes virtual appliance) provides the the core orchestration mechanism and interface for deploying and managing one or more target clusters. These target, or workload clusters contain worker nodes and are where application workloads run. If you're interested in learning more about the building blocks of the Kubernetes infrastructure, you can [read more here](https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-concepts "Kubernetes core concepts for Azure Kubernetes Service on Azure Stack HCI").
 
 Allow popups in Edge browser
 -----------
@@ -94,7 +94,7 @@ The next section will walk through configuring the AKS on Azure Stack HCI manage
 3. Click on **Set up** to start the deployment process
 4. Firstly, review the prerequisites - your environment will meet all the prerequisites, so you should be fine to click **Next: System checks**
 5. On the **System checks** page, enter the password for your **azureuser** account
-6. Once your credentials have been validated, Windows Admin Center will begin to validate it's own configuration, and the configuration of your target nodes, which in this case, is the Azure Stack HCI 20H2 cluster
+6. Once your credentials have been validated, Windows Admin Center will begin to validate it's own configuration, and the configuration of your target nodes, which in this case, is the Windows Server 2019 Hyper-V host (HybridHost001, running in your Azure VM)
 
 ![System checks performed by Windows Admin Center](/media/wac_system_checks.png "System checks performed by Windows Admin Center")
 
@@ -109,12 +109,12 @@ You'll notice that Windows Admin Center will validate memory, storage, networkin
 
 ![Host configuration in Windows Admin Center](/media/aks_hostconfig_hostdetails.png "Host configuration in Windows Admin Center")
 
-10. Under **VM Networking**, ensure that **ComputeSwitch** is selected for the **Internet-connected virtual switch**
+10. Under **VM Networking**, ensure that **InternalNAT** is selected for the **Internet-connected virtual switch**
 11. For **Enable virtual LAN identification**, leave this selected as **No**
 12. For **Cloudagent IP** this is optional, so we will leave this blank
 13. For **IP address allocation method** choose **DHCP**
 
-![Host configuration in Windows Admin Center](/media/aks_hostconfig_vmnet.png "Host configuration in Windows Admin Center")
+![Host configuration in Windows Admin Center](/media/aks_hostconfig_vmnet_int.png "Host configuration in Windows Admin Center")
 
 14.  Under **Load balancer settings**, enter the range from **192.168.0.150** to **192.168.0.250** and then click **Next:Azure registration**
 
@@ -199,7 +199,7 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
 
 ![Enable Arc integration with Windows Admin Center](/media/aks_basics_arc.png "Enable Arc integration with Windows Admin Center")
 
-3. Still on the **Basics** page, under **Cluster details**, provide a **Kubernetes cluster name**, **Azure Kubernetes Service host**, which should be **azshciclus.hybrid.local**, enter your host credentials, then select the **Kubernetes version** from the drop down.
+3. Still on the **Basics** page, under **Cluster details**, provide a **Kubernetes cluster name**, **Azure Kubernetes Service host**, which should be **HybridHost001.hybrid.local**, enter your host credentials, then select the **Kubernetes version** from the drop down.
 
 ![AKS cluster details in Windows Admin Center](/media/aks_basics_cluster_details.png "AKS cluster details in Windows Admin Center")
 

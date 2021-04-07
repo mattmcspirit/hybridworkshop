@@ -160,7 +160,7 @@ With the network configured for the workshop environment, it's time to construct
 
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
-3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS**
+3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** (IMPORTANT - make sure you use AZSHCICLUS as the name of the cluster as we pre-created the AD object in Active Directory to reflect this name)
 4. Under **IP address**, click **Assign dynamically using DHCP**
 5. Expand **Advanced** and review the settings, then click **Create cluster**
 

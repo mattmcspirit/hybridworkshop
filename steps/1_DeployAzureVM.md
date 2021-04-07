@@ -33,7 +33,14 @@ From an architecture perspective, the following graphic showcases the different 
 
 ![Architecture diagram for AKS on Azure Stack HCI in Azure](/media/nested_virt_arch_ga.png "Architecture diagram for AKS on Azure Stack HCI in Azure")
 
-The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompaying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run a **2-node Azure Stack HCI 20H2 cluster**.  On top of this Azure Stack HCI 20H2 cluster, you'll deploy the AKS on Azure Stack HCI **management cluster**. This provides the the core orchestration mechanism and interface for deploying and managing one or more **target clusters**. These target, or workload clusters contain worker nodes and are where application workloads run. These are managed by a management cluster. If you're interested in learning more about the building blocks of the Kubernetes infrastructure, you can [read more here](https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-concepts "Kubernetes core concepts for Azure Kubernetes Service on Azure Stack HCI").
+The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompaying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run the following:
+
+* A **2-node Azure Stack HCI 20H2 cluster**.
+* An **AKS-HCI infrastructure**, which includes a management cluster (kubernetes virtual appliance) and a target cluster, which is where you ultimately run your applications.
+
+These will de deployed as 2 separate environments within the same Azure VM. In a production environment, you would run AKS-HCI **on top of** Azure Stack HCI, but in this nested environment, the performance of the multiple levels of nesting can have a negative impact, so in this case, they will be deployed side by side for evaluation.
+
+If you're interested in learning more about the building blocks of the Kubernetes infrastructure, you can [read more here](https://docs.microsoft.com/en-us/azure-stack/aks-hci/kubernetes-concepts "Kubernetes core concepts for Azure Kubernetes Service on Azure Stack HCI").
 
 Important Note
 -----------
@@ -175,67 +182,17 @@ Please Read - Finish Setup
 -----------
 This workshop lab is configured to maximize resource utilization and in some cases, doesn't follow best-practices. As a result, sometimes, issues can arise. It's highly recommended to run following Powershell code to overcome possible **Kerberos related configuration issues**. The following code creates a new OU in Active Directory, pre-stages the computer accounts and delegates all computers in the OU to the Windows Admin Center computer (HybridHost001) and also allows full control access to Cluster CNO on the new OU.
 
-Run the following command **from an administrative PowerShell console**:
+Run the following command **from an administrative PowerShell console**, accepting any prompts that appear.
 
 ```powershell
-$targetHost = "HybridHost001"
-$AzureStackHCIHosts = Get-VM -Name "*AZSHCINODE*"
-$AzureStackHCIClusterName = "AZSHCICLUS"
-$ouName = "AzSHCICluster"
-
-$dn = Get-ADOrganizationalUnit -Filter * | Where-Object name -eq $ouName
-if (-not ($dn)) {
-    $dn = New-ADOrganizationalUnit -Name $ouName -PassThru
-}
-        
-#Get Wac Computer Object
-$targetHostObject = Get-ADComputer -Filter * | Where-Object name -eq "HybridHost001"
-if (-not ($targetHostObject)) {
-    $targetHostObject = New-ADComputer -Name $targetHost -Enabled $false -PassThru
-}
-
-# Creates Azure Stack HCI hosts if not exist
-if ($AzureStackHCIHosts.Name) {
-    $AzureStackHCIHosts.Name | ForEach-Object {
-        $comp = Get-ADComputer -Filter * | Where-Object Name -eq $_
-        if (-not ($comp)) {
-            New-ADComputer -Name $_ -Enabled $false -Path $dn -PrincipalsAllowedToDelegateToAccount $targetHostObject
-        }
-        else {
-            $comp | Set-ADComputer -PrincipalsAllowedToDelegateToAccount $targetHostObject
-            $comp | Move-AdObject -TargetPath $dn
-        }
-    }
-}
-
-# Creates Azure Stack HCI Cluster CNO if not exist
-$AzureStackHCIClusterObject = Get-ADComputer -Filter * | Where-Object name -eq $AzureStackHCIClusterName
-if (-not ($AzureStackHCIClusterObject)) {
-    $AzureStackHCIClusterObject = New-ADComputer -Name $AzureStackHCIClusterName -Enabled $false `
-    -Path $dn -PrincipalsAllowedToDelegateToAccount $targetHostObject -PassThru
-}
-else {
-    $AzureStackHCIClusterObject | Set-ADComputer -PrincipalsAllowedToDelegateToAccount $targetHostObject
-    $AzureStackHCIClusterObject | Move-AdObject -TargetPath $dn
-}    
-
-#read OU DACL
-$acl = Get-Acl -Path "AD:\$dn"
-
-# Set properties to allow Cluster CNO to Full Control on the new OU
-$principal = New-Object System.Security.Principal.SecurityIdentifier ($AzureStackHCIClusterObject).SID
-$ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($principal, `
-[System.DirectoryServices.ActiveDirectoryRights]::GenericAll, [System.Security.AccessControl.AccessControlType]::Allow, `
-[DirectoryServices.ActiveDirectorySecurityInheritance]::All)
-
-#modify DACL
-$acl.AddAccessRule($ace)
-
-#Re-apply the modified DACL to the OU
-Set-ACL -ACLObject $acl -Path "AD:\$dn"
+Set-ExecutionPolicy -ExecutionPolicy Unrestricted
+cd V:\Sources
+.\Update-AD.ps1
 ```
 
-Once the Azure VM deployment process has completed, and you've run the above script, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
+Once the Azure VM deployment process has completed, and you've run the above command, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
+
+You can then optionally shut down your Azure VM, should you wish to continue your evaluation on another day.
 
 Next Steps
 -----------
