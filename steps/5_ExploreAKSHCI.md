@@ -24,7 +24,7 @@ During the deployment of AKS on Azure Stack HCI, **kubectl** was configured on y
 
 As part of this brief tutorial, you'll deploy an [Azure vote application](https://github.com/Azure-Samples/azure-voting-app-redis "Azure vote application on GitHub"). In order to deploy the application, you'll need a Kubernetes manifest file. A Kubernetes manifest file defines a desired state for the cluster, such as what container images to run. The manifest we'll use in this tutorial includes two Kubernetes deployments - one for the sample Azure Vote Python application, and the other for a Redis instance. Two Kubernetes services are also created - an internal service for the Redis instance, and an external service to access the Azure Vote application from the internet.
 
-Before you start, make sure you [review the manifest file here](/eval/yaml/azure-vote.yaml "Azure vote manifest file")
+Before you start, make sure you [review the manifest file here](/yaml/azure-vote.yaml "Azure vote manifest file")
 
 1. First, run the following command from an **administrative PowerShell command** to list your Kubernetes nodes
 
@@ -32,7 +32,7 @@ Before you start, make sure you [review the manifest file here](/eval/yaml/azure
 kubectl get nodes
 ```
 
-![Output of kubectl get nodes](/eval/media/kubectl_get_nodes.png "Output of kubectl get nodes")
+![Output of kubectl get nodes](/media/kubectl_get_nodes.png "Output of kubectl get nodes")
 
 **NOTE** - if you receive an error that *"kubectl is not recognized as the name of a cmdlet, function, script file or operable program"*, you can either log out of the Azure VM, then log back in, or run the following command from your PowerShell console: **choco install kubernetes-cli**, then **close and re-open PowerShell**.
 
@@ -41,10 +41,10 @@ If you've followed the steps in this eval guide, your output should look similar
 2. Next, from the same **PowerShell **console**** run the following command to deploy the application directly from GitHub:
 
 ```powershell
-kubectl apply -f https://raw.githubusercontent.com/Azure/aks-hci/main/eval/yaml/azure-vote.yaml
+kubectl apply -f https://raw.githubusercontent.com/Azure/aks-hci/main/yaml/azure-vote.yaml
 ```
 
-![Output of kubectl apply](/eval/media/kubectl_apply.png "Output of kubectl apply")
+![Output of kubectl apply](/media/kubectl_apply.png "Output of kubectl apply")
 
 3. Next, run the following command to monitor the progress of the deployment (using the --watch argument):
 
@@ -54,13 +54,13 @@ kubectl get service azure-vote-front --watch
 
 During deployment, you may see the **External-IP** showing as *Pending* - when this changes to an IP address, you can use **CTRL + C** to stop the watch process.
 
-![Output of kubectl get service](/eval/media/kubectl_get_service.png "Output of kubectl get service")
+![Output of kubectl get service](/media/kubectl_get_service.png "Output of kubectl get service")
 
 In our case, you can see that the service has been allocated the **192.168.0.152** IP address.
 
 4. At this point, you should then be able to **open Microsoft Edge** and after accepting the defaults, you should be able to navigate to that IP address
 
-![Azure vote app in Edge](/eval/media/azure_vote_app.png "Azure vote app in Edge")
+![Azure vote app in Edge](/media/azure_vote_app.png "Azure vote app in Edge")
 
 5. We have created a single replica of the Azure Vote front end and Redis instance. To see the number and state of pods in your cluster, use the **kubectl get command** as follows. The output should show one front end pod and one back-end pod:
 
@@ -68,7 +68,7 @@ In our case, you can see that the service has been allocated the **192.168.0.152
 kubectl get pods -n default
 ```
 
-![Output of kubectl get pods](/eval/media/kubectl_get_pods.png "Output of kubectl get pods")
+![Output of kubectl get pods](/media/kubectl_get_pods.png "Output of kubectl get pods")
 
 6. To change the number of pods in the azure-vote-front deployment, use the **kubectl scale command**. The following example **increases the number of front end pods to 5**
 
@@ -76,7 +76,7 @@ kubectl get pods -n default
 kubectl scale --replicas=5 deployment/azure-vote-front
 ```
 
-![Output of kubectl scale](/eval/media/kubectl_scale.png "Output of kubectl scale")
+![Output of kubectl scale](/media/kubectl_scale.png "Output of kubectl scale")
 
 7. Run **kubectl get pods** again to verify that additional pods have been created. After a minute or so, the additional pods are available in your cluster
 
@@ -84,7 +84,7 @@ kubectl scale --replicas=5 deployment/azure-vote-front
 kubectl get pods -n default
 ```
 
-![Output of kubectl get pods](/eval/media/kubectl_get_pods_scaled.png "Output of kubectl get pods")
+![Output of kubectl get pods](/media/kubectl_get_pods_scaled.png "Output of kubectl get pods")
 
 You should now have 5 pods for this application.
 
@@ -104,13 +104,13 @@ In this example, using the [previously deployed simple Linux application](#deplo
 1. Firstly, visit https://portal.azure.com/, and login with your credentials you've been using for the evaluation. 
 2. Once logged in, using the search box on the dashboard, enter "akshci" and once the results are returned, click on your AKSHCIHost virtual machine.
 
-![Virtual machine located in Azure](/eval/media/azure_vm_search.png "Virtual machine located in Azure")
+![Virtual machine located in Azure](/media/azure_vm_search.png "Virtual machine located in Azure")
 
 1. Once on the overview blade for your VM, **in the left-hand navigation**, click on **Networking**
 2. You'll see the existing network security group rules. On the right-hand side, click **Add inbound port rule**
 3. In the **Add inbound security rule** blade, make any adjustments, including the **Protocol**, the **Destination port ranges** and **Name** then click **Add**
 
-![Add inbound security rule in Azure](/eval/media/new_security_rule.png "Add inbound security rule in Azure")
+![Add inbound security rule in Azure](/media/new_security_rule.png "Add inbound security rule in Azure")
 
 **NOTE** - If you wish to expose multiple ports, you can create additional rules, or specify a range of ports within the same rule. You can also be more specific about the source traffic type, source port, and destination traffic type.
 
@@ -125,7 +125,7 @@ With the network security group rule configured, there are some additional steps
 kubectl get service azure-vote-front
 ```
 
-![Using kubectl to retrieve info about the application](/eval/media/kubectl_service.png "Using kubectl to retrieve info about the application")
+![Using kubectl to retrieve info about the application](/media/kubectl_service.png "Using kubectl to retrieve info about the application")
 
 2. As you can see from the image, this particular app has been assigned the IP address **192.168.0.153** and is accessible on port **80**
 3. To create a new Static NAT Mapping, run the following PowerShell command:
@@ -134,11 +134,11 @@ kubectl get service azure-vote-front
 Add-NetNatStaticMapping -NatName "AKSHCINAT" -Protocol TCP -ExternalIPAddress '0.0.0.0/24' -ExternalPort 80 `
     -InternalIPAddress '192.168.0.153' -InternalPort 80
 ```
-![Result of Add-NetNatStaticMapping](/eval/media/Add-NetNatStaticMapping.png "Result of Add-NetNatStaticMapping")
+![Result of Add-NetNatStaticMapping](/media/Add-NetNatStaticMapping.png "Result of Add-NetNatStaticMapping")
 
 4. The NAT static mapping should be successfully created, and you can now test the access of your application from outside of the Azure VM. You should try to access the web application using the **Azure VM Public IP** which you [noted down earlier](#add-an-inbound-rule-to-your-nsg).
 
-![Access web application using Azure Public IP](/eval/media/access_web_app.png "Access web application using Azure Public IP")
+![Access web application using Azure Public IP](/media/access_web_app.png "Access web application using Azure Public IP")
 
 **NOTE** - This process creates a NAT static mapping that's specific to that External IP and Port of that specific Kubernetes service you have deployed in the environment. You will need to repeat the process for additional applications. To learn more about PowerShell NetNat commands, [visit the official documentation](https://docs.microsoft.com/en-us/powershell/module/netnat "Official documentation for NetNat").
 
@@ -171,7 +171,7 @@ Get-VM | Stop-VM -Force
 
 2. Once all the VMs are switched off, you can then shut down your Hyper-V host. Visit https://portal.azure.com/, and login with your Azure credentials.  Once logged in, using the search box on the dashboard, enter "akshci" and once the results are returned, click on your AKSHCIHost001 virtual machine.
 
-![Virtual machine located in Azure](/eval/media/azure_vm_search.png "Virtual machine located in Azure")
+![Virtual machine located in Azure](/media/azure_vm_search.png "Virtual machine located in Azure")
 
 3. Once on the overview blade for your VM, along the **top navigation**, click **Stop**, and then click **OK**.  Your VM will then be deallocated and **compute charges** will cease.
 
