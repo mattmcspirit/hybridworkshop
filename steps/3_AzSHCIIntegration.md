@@ -136,29 +136,25 @@ To complete registration, you have 2 options - you can use **Windows Admin Cente
 1. On **HybridHost001**, logged in as **azshci\labadmin**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
 2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
 
-![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard.png "Azure registration status in Windows Admin Center")
-
-3. Click on **Install PowerShell modules** to trigger Windows Admin Center to download and install the appropriate PowerShell modules to the Azure Stack HCI 20H2 node. This may take a few moments.
-
 ![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_2.png "Azure registration status in Windows Admin Center")
 
-4. Once installed, you can begin the registration process by clicking **Register this cluster**
-5. If you haven't already, you'll be prompted to register Windows Admin Center with an Azure tenant.  Follow the instructions to **Copy the code** and then click on the link to configure device login.
-6. When prompted for credentials, **enter your Azure credentials** for a tenant you'd like to register the Windows Admin Center
-7. Back in Windows Admin Center, you'll notice your tenant information has been added.  You can now click **Connect** to connect Windows Admin Center to Azure
+3. You can begin the registration process by clicking **Register this cluster**
+4. If you haven't already, you'll be prompted to register Windows Admin Center with an Azure tenant. Follow the instructions to **Copy the code** and then click on the link to configure device login.
+5. When prompted for credentials, **enter your Azure credentials** for a tenant you'd like to register the Windows Admin Center
+6. Back in Windows Admin Center, you'll notice your tenant information has been added. You can now click **Connect** to connect Windows Admin Center to Azure
 
 ![Connecting Windows Admin Center to Azure](/media/wac_azure_connect.png "Connecting Windows Admin Center to Azure")
 
-8. Click on **Sign in** and when prompted for credentials, **enter your Azure credentials** and you should see a popup that asks for you to accept the permissions, so click **Accept**
+7. Click on **Sign in** and when prompted for credentials, **enter your Azure credentials** and you should see a popup that asks for you to accept the permissions, so click **Accept**
 
 ![Permissions for Windows Admin Center](/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
 
-9. Back in Windows Admin Center, you may need to refresh the page if your 'Register this cluster' link is not active. Once active, click **Register this cluster** and you should be presented with a window requesting more information.
-10. Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**, then click **Register**.  This will take a few moments.
+8. Back in Windows Admin Center, you may need to refresh the page if your 'Register this cluster' link is not active. Once active, click **Register this cluster** and you should be presented with a window requesting more information.
+9.  Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**, then click **Register**.  This will take a few moments.
 
 ![Final step for registering Azure Stack HCI with Windows Admin Center](/media/wac_azure_register.png "Final step for registering Azure Stack HCI with Windows Admin Center")
 
-11. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
+10. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
 
 ![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_3.png "Azure registration status in Windows Admin Center")
 
