@@ -20,7 +20,7 @@ Contents
 - [Azure VM Size Considerations](#azure-vm-size-considerations)
 - [Deploying the Azure VM](#deploying-the-azure-vm)
 - [Access your Azure VM](#access-your-azure-vm)
-- [Finish VM Setup](#finish-vm-setup)
+- [Please Read - Finish Setup](#please-read---finish-setup)
 - [Next Steps](#next-steps)
 - [Troubleshooting](#troubleshooting)
 - [Product improvements](#product-improvements)
@@ -171,24 +171,73 @@ Once downloaded, locate the .rdp file on your local machine, and double-click to
 
 Accept any certificate prompts, and within a few moments, you should be successfully logged into the Windows Server 2019 VM.
 
-### Optional - Update your Azure VM ###
-
-Now that you're successfully connected to the VM, it's a good idea to ensure your OS is running the latest security updates and patches. VMs deployed from marketplace images in Azure, should already contain most of the latest updates, however it's worthwhile checking for any additional updates, and applying them as necessary.
-
-1. Open the **Start Menu** and search for **Update**
-2. In the results, select **Check for Updates**
-3. In the Updates window, click **Check for updates**. If any are required, ensure they are downloaded and installed.
-4. Restart if required, and once completed, re-connect your RDP session using the steps earlier.
-
-With the OS updated, and back online after any required reboot, you can proceed on to deploying AKS on Azure Stack HCI.
-
-Finish VM Setup
+Please Read - Finish Setup
 -----------
-Once the Azure VM deployment process has completed, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
+This workshop lab is configured to maximize resource utilization and in some cases, doesn't follow best-practices. As a result, sometimes, issues can arise. It's highly recommended to run following Powershell code to overcome possible **Kerberos related configuration issues**. The following code creates a new OU in Active Directory, pre-stages the computer accounts and delegates all computers in the OU to the Windows Admin Center computer (HybridHost001) and also allows full control access to Cluster CNO on the new OU.
+
+Run the following command **from an administrative PowerShell console**:
+
+```powershell
+$targetHost = "HybridHost001"
+$AzureStackHCIHosts = @("AZSHCINODE01", "AZSHCINODE02")
+$AzureStackHCIClusterName = "AZSHCICLUS"
+$servers = $AzureStackHCIHosts + $AzureStackHCIClusterName
+$ouName = "AsSHCICluster"
+
+$dn = Get-ADOrganizationalUnit -Filter * | Where-Object name -eq $ouName
+if (-not ($dn)) {
+    $dn = New-ADOrganizationalUnit -Name $ouName -PassThru
+}
+        
+#Get Wac Computer Object
+$targetHostObject = Get-ADComputer -Filter * | Where-Object name -eq "HybridHost001"
+if (-not ($targetHostObject)) {
+    $targetHostObject = New-ADComputer -Name $targetHost -Enabled $false -PassThru
+}
+
+# Creates Azure Stack HCI hosts if not exist
+if ($AzureStackHCIHosts.Name) {
+    $AzureStackHCIHosts.Name | ForEach-Object {
+        $comp = Get-ADComputer -Filter * | Where-Object name -eq $_
+        if (-not ($comp)) {
+            New-ADComputer -Name $_ -Enabled $false -Path $dn -PrincipalsAllowedToDelegateToAccount $targetHostObject
+        }
+        else {
+            $comp | Set-ADComputer -PrincipalsAllowedToDelegateToAccount $targetHostObject
+            $comp | Move-AdObject -TargetPath $dn
+        }
+    }
+}
+
+# Creates Azure Stack HCI Cluster CNO if not exist
+$AzureStackHCIClusterObject = Get-ADComputer -Filter * | Where-Object name -eq $AzureStackHCIClusterName
+if (-not ($AzureStackHCIClusterObject)) {
+    $AzureStackHCIClusterObject = New-ADComputer -Name $AzureStackHCIClusterName -Enabled $false -Path $dn -PrincipalsAllowedToDelegateToAccount $targetHostObject -PassThru
+}
+else {
+    $AzureStackHCIClusterObject | Set-ADComputer -PrincipalsAllowedToDelegateToAccount $targetHostObject
+    $AzureStackHCIClusterObject | Move-AdObject -TargetPath $dn
+}    
+
+#read OU DACL
+$acl = Get-Acl -Path "AD:\$dn"
+
+# Set properties to allow Cluster CNO to Full Control on the new OU
+$principal = New-Object System.Security.Principal.SecurityIdentifier ($AzureStackHCIClusterObject).SID
+$ace = New-Object System.DirectoryServices.ActiveDirectoryAccessRule($principal, [System.DirectoryServices.ActiveDirectoryRights]::GenericAll, [System.Security.AccessControl.AccessControlType]::Allow, [DirectoryServices.ActiveDirectorySecurityInheritance]::All)
+
+#modify DACL
+$acl.AddAccessRule($ace)
+
+#Re-apply the modified DACL to the OU
+Set-ACL -ACLObject $acl -Path "AD:\$dn"
+```
+
+Once the Azure VM deployment process has completed, and you've run the above script, your Azure Stack HCI 20H2 nodes are still processing changes, including adding roles and features inside the nested hosts. Please allow ~5 minutes for this process to complete and stabilize.
 
 Next Steps
 -----------
-In this step, you've successfully created and automatically configured your Azure VM, which will serve as the host for your Azure Stack HCI 20H2 and AKS on Azure Stack HCI infrastructure. You're now ready to move on to 
+In this step, you've successfully created and automatically configured your Azure VM, which will serve as the host for your Azure Stack HCI 20H2 and AKS on Azure Stack HCI infrastructure. You're now ready to move on to the next step.
 
 * [**Part 2** - Configure your Azure Stack HCI 20H2 Cluster](/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 20H2 Cluster")
 
