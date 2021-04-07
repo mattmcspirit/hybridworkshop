@@ -47,7 +47,6 @@ configuration HybridHost
     Import-DscResource -ModuleName 'xActiveDirectory'
 
     $aszhciHostsMofUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Install-AzsRolesandFeatures.ps1"
-    $convertWinImageUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Convert-WindowsImage.ps1"
     $updateAdUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Update-AD.ps1"
 
     if ($enableDHCP -eq "Enabled") {
@@ -177,24 +176,6 @@ configuration HybridHost
 
             SetScript  = {
                 Start-BitsTransfer -Source "$using:aszhciHostsMofUri" -Destination "$using:sourcePath\Install-AzsRolesandFeatures.ps1"          
-            }
-
-            TestScript = {
-                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
-                $state = [scriptblock]::Create($GetScript).Invoke()
-                return $state.Result
-            }
-            DependsOn  = "[File]Source"
-        }
-
-        script "Download Convert-WindowsImage" {
-            GetScript  = {
-                $result = Test-Path -Path "$using:sourcePath\Convert-WindowsImage.ps1"
-                return @{ 'Result' = $result }
-            }
-
-            SetScript  = {
-                Start-BitsTransfer -Source "$using:convertWinImageUri" -Destination "$using:sourcePath\Convert-WindowsImage.ps1"          
             }
 
             TestScript = {
