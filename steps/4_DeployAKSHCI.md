@@ -203,7 +203,7 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
 
 3. Still on the **Basics** page, under **Cluster details**, provide a **Kubernetes cluster name**, **Azure Kubernetes Service host**, which should be **HybridHost001.hybrid.local**, enter your host credentials, then select the **Kubernetes version** from the drop down.
 
-![AKS cluster details in Windows Admin Center](/media/aks_basics_cluster_details.png "AKS cluster details in Windows Admin Center")
+![AKS cluster details in Windows Admin Center](/media/aks_basics_cluster_details_single.png "AKS cluster details in Windows Admin Center")
 
 4. Under **Primary node pool**, accept the defaults, and then click **Next: Node pools**
 
@@ -213,11 +213,6 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
 6. In the **Add a node pool** blade, enter the following, then click **Add**
    1. **Node pool name**: LinuxPool1
    2. **OS type**: Linux
-   3. **Node size**: Standard_K8S3_v1 (6 GB Memory, 4 CPU)
-   4. **Node count**: 1
-7. Repeat step 6, to add a **Windows node** and the following info, then click **Add**
-   1. **Node pool name**: WindowsPool1
-   2. **OS type**: Windows
    3. **Node size**: Standard_K8S3_v1 (6 GB Memory, 4 CPU)
    4. **Node count**: 1
 
