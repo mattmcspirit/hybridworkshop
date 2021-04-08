@@ -133,7 +133,7 @@ To complete registration, you have 2 options - you can use **Windows Admin Cente
 
 #### Option 1 - Register using Windows Admin Center ####
 
-1. On **HybridHost001**, logged in as **azshci\labadmin**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
+1. On **HybridHost001**, logged in as **hybrid\azureuser**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
 2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
 
 ![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_2.png "Azure registration status in Windows Admin Center")
