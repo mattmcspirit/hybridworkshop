@@ -261,7 +261,7 @@ configuration HybridHost
 
         script "Download AzSHCI SSU" {
             GetScript  = {
-                $result = Test-Path -Path "$ssuPath\*" -Include "*.msu"
+                $result = Test-Path -Path "$using:ssuPath\*" -Include "*.msu"
                 return @{ 'Result' = $result }
             }
 
@@ -282,7 +282,7 @@ configuration HybridHost
 
         script "Download AzSHCI CU" {
             GetScript  = {
-                $result = Test-Path -Path "$cuPath\*" -Include "*.msu"
+                $result = Test-Path -Path "$using:cuPath\*" -Include "*.msu"
                 return @{ 'Result' = $result }
             }
 
