@@ -129,12 +129,14 @@ $customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
 Complete Registration
 -----------
 
-To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
+To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**. For this lab, it's recommended to use the PowerShell approach, due to a few unpredictible erros in the lab environment, likely due to WAC installed on the domain controller.
 
 #### Option 1 - Register using PowerShell ####
 We're going to perform the registration from the **HybridHost001** machine, which we've been using with the Windows Admin Center.
 
-1. On **HybridHost001**, open **PowerShell as administrator** and run the following code to install the PowerShell Module for Azure Stack HCI 20H2 on that machine.
+1. On **HybridHost001**, open **PowerShell ISE as administrator**
+2. In the file menu, click **Open** and navigate to **V:\Source** and open **Register-AzSHCI**
+3. When the script file opens, select and run the following code to install the PowerShell Module for Azure Stack HCI 20H2 on that machine.
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
@@ -145,7 +147,7 @@ Install-Module Az.StackHCI
 
 In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
 
-2. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status.  The following code assumes you are still in the remote PowerShell session open from the previous commands.
+4. With the Az.StackHCI modules installed, it's now time to register your Azure Stack HCI 20H2 cluster to Azure, however first, it's worth exploring how to check existing registration status.  The following code assumes you are still in the remote PowerShell session open from the previous commands.
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
@@ -157,15 +159,15 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 
 As you can see from the result, the cluster is yet to be registered, and the cluster status identifies as **Clustered**. Azure Stack HCI 20H2 needs to register within 30 days of installation per the Azure Online Services Terms. If not clustered after 30 days, the **ClusterStatus** will show **OutOfPolicy**, and if not registered after 30 days, the **RegistrationStatus** will show **OutOfPolicy**.
 
-3. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
+5. To register the cluster, you'll first need to get your **Azure subscription ID**.  An easy way to do this is to quickly **log into https://portal.azure.com**, and in the **search box** at the top of the screen, search for **subscriptions** and then click on **Subscriptions**
 
 ![Azure Subscriptions](/media/azure_subscriptions_ga.png "Azure Subscriptions")
 
-4. Your **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
+6. Your **subscription** should be shown in the main window.  If you have more than one subscription listed here, click the correct one, and in the new blade, copy the **Subscription ID**.
 
 **NOTE** - If you don't see your desired subscription, in the top right-corner of the Azure portal, click on your user account, and click **Switch directory**, then select an alternative directory.  Once in the chosen directory, repeat the search for your **Subscription ID** and copy it down.
 
-5. With your **Subscription ID** in hand, you can **register using the following Powershell commands**, from your open PowerShell window.
+7. With your **Subscription ID** in hand, you can **register using the following Powershell commands**, from your open PowerShell window.
 
 ```powershell
 $azshciNodeCreds = Get-Credential -UserName "hybrid\azureuser" -Message "Enter the hybrid\azureuser password"
@@ -190,11 +192,11 @@ Of these commands, many are optional:
 
 **Register-AzureStackHCI** runs syncronously, with progress reporting, and typically takes 1-2 minutes.  The first time you run it, it may take slightly longer, because it needs to install some dependencies, including additional Azure PowerShell modules.
 
-6. Once dependencies have been installed, you'll receive a popup on **HybridHost001** to authenticate to Azure. Provide your **Azure credentials**.
+8. Once dependencies have been installed, you'll receive a popup on **HybridHost001** to authenticate to Azure. Provide your **Azure credentials**.
 
 ![Login to Azure](/media/azure_login_reg.png "Login to Azure")
 
-7. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
+9. Once successfully authenticated, the registration process will begin, and will take a few moments. Once complete, you should see a message indicating success, as per below:
 
 ![Register Azure Stack HCI 20H2 with PowerShell](/media/register_azshci_ga.png "Register Azure Stack HCI 20H2 with PowerShell")
 
@@ -204,7 +206,7 @@ Of these commands, many are optional:
 Register-AzStackHCI : Azure Stack HCI 20H2 is not yet available in region <regionName>
 ```
 
-8. Once the cluster is registered, run the following command on **HybridHost001** to check the updated status:
+10. Once the cluster is registered, run the following command on **HybridHost001** to check the updated status:
 
 ```powershell
 Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
