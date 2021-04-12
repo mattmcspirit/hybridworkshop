@@ -131,36 +131,7 @@ Complete Registration
 
 To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
 
-#### Option 1 - Register using Windows Admin Center ####
-
-1. On **HybridHost001**, logged in as **hybrid\azureuser**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
-2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
-
-![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_2.png "Azure registration status in Windows Admin Center")
-
-3. You can begin the registration process by clicking **Register this cluster**
-4. If you haven't already, you'll be prompted to register Windows Admin Center with an Azure tenant. Follow the instructions to **Copy the code** and then click on the link to configure device login.
-5. When prompted for credentials, **enter your Azure credentials** for a tenant you'd like to register the Windows Admin Center
-6. Back in Windows Admin Center, you'll notice your tenant information has been added. You can now click **Connect** to connect Windows Admin Center to Azure
-
-![Connecting Windows Admin Center to Azure](/media/wac_azure_connect.png "Connecting Windows Admin Center to Azure")
-
-7. Click on **Sign in** and when prompted for credentials, **enter your Azure credentials** and you should see a popup that asks for you to accept the permissions, so click **Accept**
-
-![Permissions for Windows Admin Center](/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
-
-8. Back in Windows Admin Center, you may need to refresh the page if your 'Register this cluster' link is not active. Once active, click **Register this cluster** and you should be presented with a window requesting more information.
-9.  Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**, then click **Register**.  This will take a few moments.
-
-![Final step for registering Azure Stack HCI with Windows Admin Center](/media/wac_azure_register.png "Final step for registering Azure Stack HCI with Windows Admin Center")
-
-10. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
-
-![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_3.png "Azure registration status in Windows Admin Center")
-
-You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
-
-#### Option 2 - Register using PowerShell ####
+#### Option 1 - Register using PowerShell ####
 We're going to perform the registration from the **HybridHost001** machine, which we've been using with the Windows Admin Center.
 
 1. On **HybridHost001**, open **PowerShell as administrator** and run the following code to install the PowerShell Module for Azure Stack HCI 20H2 on that machine.
@@ -243,6 +214,35 @@ Invoke-Command -ComputerName AZSHCINODE01 -ScriptBlock {
 ![Check updated registration status with PowerShell](/media/registration_status.png "Check updated registration status with PowerShell")
 
 You can see the **ConnectionStatus** and **LastConnected** time, which is usually within the last day unless the cluster is temporarily disconnected from the Internet. An Azure Stack HCI 20H2 cluster can operate fully offline for up to 30 consecutive days.
+
+#### Option 2 - Register using Windows Admin Center ####
+
+1. On **HybridHost001**, logged in as **hybrid\azureuser**, open the Windows Admin Center, and on the **All connections** page, select your azshciclus
+2. When the cluster dashboard has loaded, in the top-right corner, you'll see the **status of the Azure registration/connection**
+
+![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_2.png "Azure registration status in Windows Admin Center")
+
+3. You can begin the registration process by clicking **Register this cluster**
+4. If you haven't already, you'll be prompted to register Windows Admin Center with an Azure tenant. Follow the instructions to **Copy the code** and then click on the link to configure device login.
+5. When prompted for credentials, **enter your Azure credentials** for a tenant you'd like to register the Windows Admin Center
+6. Back in Windows Admin Center, you'll notice your tenant information has been added. You can now click **Connect** to connect Windows Admin Center to Azure
+
+![Connecting Windows Admin Center to Azure](/media/wac_azure_connect.png "Connecting Windows Admin Center to Azure")
+
+7. Click on **Sign in** and when prompted for credentials, **enter your Azure credentials** and you should see a popup that asks for you to accept the permissions, so click **Accept**
+
+![Permissions for Windows Admin Center](/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
+
+8. Back in Windows Admin Center, you may need to refresh the page if your 'Register this cluster' link is not active. Once active, click **Register this cluster** and you should be presented with a window requesting more information.
+9.  Choose your **Azure subscription** that you'd like to use to register, along with an **Azure resource group** and **region**, then click **Register**.  This will take a few moments.
+
+![Final step for registering Azure Stack HCI with Windows Admin Center](/media/wac_azure_register.png "Final step for registering Azure Stack HCI with Windows Admin Center")
+
+10. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
+
+![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_3.png "Azure registration status in Windows Admin Center")
+
+You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
 
 ### View registration details in the Azure portal ###
 With registration complete, either through Windows Admin Center, or through PowerShell, you should take some time to explore the artifacts that are created in Azure, once registration successfully completes.
