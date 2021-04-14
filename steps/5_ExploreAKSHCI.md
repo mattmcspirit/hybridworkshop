@@ -41,7 +41,7 @@ If you've followed the steps in this eval guide, your output should look similar
 2. Next, from the same **PowerShell **console**** run the following command to deploy the application directly from GitHub:
 
 ```powershell
-kubectl apply -f https://raw.githubusercontent.com/Azure/aks-hci/main/yaml/azure-vote.yaml
+kubectl apply -f https://raw.githubusercontent.com/Azure/aks-hci/main/eval/yaml/azure-vote.yaml
 ```
 
 ![Output of kubectl apply](/media/kubectl_apply.png "Output of kubectl apply")
