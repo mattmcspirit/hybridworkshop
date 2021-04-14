@@ -170,7 +170,7 @@ With the network configured for the workshop environment, it's time to construct
 
 ![Cluster creation successful in the Create Cluster wizard](/media/wac_cluster_success_ga.png "Cluster creation successful in the Create Cluster wizard")
 
-### Storage ###
+
 With the cluster successfully created, you're now good to proceed on to configuring your storage.  Whilst less important in a fresh nested environment, it's always good to start from a clean slate, so first, you'll clean the drives before configuring storage.
 
 1. On the storage landing page within the Create Cluster wizard, click **Erase Drives**, and when prompted, with **You're about to erase all existing data**, click **Erase drives**.  Once complete, you should have a successful confirmation message, then click **Next**
@@ -193,8 +193,14 @@ With the cluster successfully created, you're now good to proceed on to configur
 
 ![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled_ga.png "Storage Spaces Direct enabled in the Create Cluster wizard")
 
-6. With Storage Spaces Direct enabled, click **Finish**
-7. On the **confirmation page**, click on **Go to connections list**
+6. With Storage Spaces Direct enabled, click **Next:SDN**
+
+### SDN ###
+
+With Storage configured, for the purpose of this lab, we will skip the SDN configuration.
+
+1. On the **Define the Network Controller cluster** page, click **Skip**
+2. On the **confirmation page**, click on **Go to connections list**
 
 Configuring the cluster witness
 -----------
