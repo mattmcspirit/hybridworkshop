@@ -13,4 +13,4 @@ Register-AzStackHCI `
     -Region "EastUS" `
     -EnvironmentName "AzureCloud" `
     -ComputerName "AZSHCINODE01.hybrid.local" `
-    –Credential $azshciNodeCreds
+    -Credential $azshciNodeCreds
