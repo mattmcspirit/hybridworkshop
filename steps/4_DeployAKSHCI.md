@@ -107,6 +107,12 @@ You'll notice that Windows Admin Center will validate memory, storage, networkin
 
 ![Enable CredSSP in Windows Admin Center](/media/aks_hostconfig_credssp.png "Enable CredSSP in Windows Admin Center")
 
+**NOTE** - if nyou receive a WinRM error, open an **Administrative PowerShell console** and run the following command and then retry:
+
+```powershell
+Restart-Service WinRm -Force
+```
+
 9.  On the **Host configuration** page, under **Host details**, select your **V:**, and leave the other settings as default
 
 ![Host configuration in Windows Admin Center](/media/aks_hostconfig_hostdetails_single.png "Host configuration in Windows Admin Center")
