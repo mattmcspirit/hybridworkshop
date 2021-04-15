@@ -96,7 +96,7 @@ Each of your Azure Stack HCI 20H2 nodes should have 4 NICs.  For this simple eva
 
 Again, this is just one **example** network configuration for the simple purpose of evaluation.
 
-1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, ensure you select the **Two physical network adapters for management** box
+1. Back in the Windows Admin Center, on the **Select the adapters to use for management** page, ensure you select the **One physical network adapters for management** box
 
 ![Select management adapter in the Create Cluster wizard](/media/wac_management_nic_ga.png "Select management adapter in the Create Cluster wizard")
 
