@@ -112,7 +112,7 @@ As part of the deployment, the following steps will be **automated for you**:
 6. The DHCP role and accompanying management tools will be installed and DHCP fully configured. DHCP Scope will be **enabled**
 7. Windows Admin Center will be installed and pre-installed extensions updated
 8. The Microsoft Edge browser will be installed
-9. The Azure Stack HCI 20H2 and AKS on Azure Stack HCI binaries will be downloaded
+9. The Azure Stack HCI 20H2 binaries will be downloaded
 10. 2 x Azure Stack HCI 20H2 nodes will be created and deployed, ready to start cluster creation
 
 This automated deployment **should take around 50 minutes**, due to the image creation of the Azure Stack HCI 20H2 nodes - these are created, **offline patched** and deployed, which takes time.

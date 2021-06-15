@@ -3,7 +3,7 @@ Azure Stack Skilling Workshop
 
 ## Welcome to the Azure Stack Skilling Workshop ##
 
-In this workshop, we'll walk you through deploying both [Azure Stack HCI](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the Azure Stack HCI landing page"), and  [Azure Kubernetes Service (AKS) on Azure Stack HCI (currently in preview) in an Azure VM](https://docs.microsoft.com/en-us/azure-stack/aks-hci/overview "link to the What is Azure Kubernetes Service on Azure Stack HCI documentation landing page"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
+In this workshop, we'll walk you through deploying both [Azure Stack HCI](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the Azure Stack HCI landing page"), and  [Azure Kubernetes Service (AKS) on Azure Stack HCI in an Azure VM](https://docs.microsoft.com/en-us/azure-stack/aks-hci/overview "link to the What is Azure Kubernetes Service on Azure Stack HCI documentation landing page"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
 
 * Deploying and configuring a Windows Server 2019 Azure VM to host the infrastructure
 * Deployment and configuration of a 2-node Azure Stack HCI Cluster using Windows Admin Center
@@ -45,7 +45,7 @@ If you're interested in learning more about what Azure Stack HCI 20H2 is, make s
 What is AKS on Azure Stack HCI?
 -----------
 
-If you've landed on this page, and you're still wondering what AKS on Azure Stack HCI is, Azure Kubernetes Service on Azure Stack HCI, **currently in public preview**, is an on-premises implementation of Azure Kubernetes Service (AKS), which automates running containerized applications at scale. Azure Kubernetes Service is now in preview on Azure Stack HCI 20H2 and Windows Server 2019 Datacenter-based clusters, making it quicker to get started hosting Linux and Windows containers in your datacenter.
+If you've landed on this page, and you're still wondering what AKS on Azure Stack HCI is, Azure Kubernetes Service on Azure Stack HCI is an on-premises implementation of Azure Kubernetes Service (AKS), which automates running containerized applications at scale. Azure Kubernetes Service can run on Azure Stack HCI 20H2 and Windows Server 2019 Datacenter-based clusters, making it quicker to get started hosting Linux and Windows containers in your datacenter.
 
 If you're interested in learning more about what AKS on Azure Stack HCI is, make sure you [check out the official documentation](https://docs.microsoft.com/en-us/azure-stack/aks-hci/overview "What is Azure Kubernetes Service on Azure Stack HCI documentation"), before coming back to continue your workshop experience. We'll refer to the docs in various places in the guide, to help you build your knowledge of AKS on Azure Stack HCI.
 
