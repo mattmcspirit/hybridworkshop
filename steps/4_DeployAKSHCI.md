@@ -235,7 +235,7 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
 8. For this evaluation, for **AD Authentication** click **Disabled** and then click **Next: Networking**
 9. On the **Networking** page, review the **defaults**. For this deployment, you'll deploy this kubernetes cluster on the existing virtual network that was created when you installed AKS-HCI in the previous steps.
 
-![AKS virtual networking in Windows Admin Center](/eval/media/aks_virtual_networking.png "AKS virtual networking in Windows Admin Center")
+![AKS virtual networking in Windows Admin Center](/media/aks_virtual_networking.png "AKS virtual networking in Windows Admin Center")
 
 10. Click on the **aks-default-network**, ensure **Flannel** network configuration is selected, and then click **Next: Review + Create**
 11. On the **Review + Create** page, review your chosen settings, then click **Create**
