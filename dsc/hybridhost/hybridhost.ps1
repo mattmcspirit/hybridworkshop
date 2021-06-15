@@ -23,10 +23,8 @@ configuration HybridHost
         [String]$targetADPath = "$targetDrive" + ":\ADDS",
         [String]$baseVHDFolderPath = "$targetVMPath\Base",
         [String]$azsHCIIsoUri = "https://aka.ms/2CNBagfhSZ8BM7jyEV8I",
-        [String]$akshciZipUri = "https://aka.ms/aks-hci-download",
         [String]$azsHciVhdPath = "$baseVHDFolderPath\AzSHCI.vhdx",
         [String]$azsHCIISOLocalPath = "$sourcePath\AzSHCI.iso",
-        [String]$akshciZipLocalPath = "$sourcePath\AksHciPreview.zip",
         [Int]$azsHostCount = 2,
         [Int]$azsHostDataDiskCount = 4,
         [Int64]$dataDiskSize = 250GB
@@ -231,24 +229,6 @@ configuration HybridHost
 
             SetScript  = {
                 Start-BitsTransfer -Source $using:azsHCIIsoUri -Destination $using:azsHCIISOLocalPath            
-            }
-
-            TestScript = {
-                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
-                $state = [scriptblock]::Create($GetScript).Invoke()
-                return $state.Result
-            }
-            DependsOn  = "[File]Source"
-        }
-
-        script "Download AKS-HCI bits" {
-            GetScript  = {
-                $result = Test-Path -Path $using:akshciZipLocalPath
-                return @{ 'Result' = $result }
-            }
-
-            SetScript  = {
-                Start-BitsTransfer -Source $using:akshciZipUri -Destination $using:akshciZipLocalPath
             }
 
             TestScript = {
