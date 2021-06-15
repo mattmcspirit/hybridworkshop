@@ -53,7 +53,7 @@ Your Azure VM deployment automatically installed Windows Admin Center 2103, howe
 3. Once complete, navigate to **Settings**, then **Extensions**
 4. Click on **Installed extensions** and you should see **Azure Kubernetes Service** listed as installed
 
-![Installed extensions in Windows Admin Center](/eval/media/installed_extensions.png "Installed extensions in Windows Admin Center")
+![Installed extensions in Windows Admin Center](/media/installed_extensions.png "Installed extensions in Windows Admin Center")
 
 In order to deploy AKS-HCI with Windows Admin Center, you need to connect your Windows Admin Center instance to Azure.
 
@@ -62,11 +62,11 @@ In order to deploy AKS-HCI with Windows Admin Center, you need to connect your W
 7.   When prompted for credentials, **enter your Azure credentials** for a tenant you'd like to use to register the Windows Admin Center
 8.   Back in Windows Admin Center, you'll notice your tenant information has been added.  You can now click **Connect** to connect Windows Admin Center to Azure
 
-![Connecting Windows Admin Center to Azure](/eval/media/wac_azure_connect.png "Connecting Windows Admin Center to Azure")
+![Connecting Windows Admin Center to Azure](/media/wac_azure_connect.png "Connecting Windows Admin Center to Azure")
 
 9.  Click on **Sign in** and when prompted for credentials, **enter your Azure credentials** and you should see a popup that asks for you to accept the permissions. Make sure you select **Consent on behalf of your organization** then click **Accept**
 
-![Permissions for Windows Admin Center](/eval/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
+![Permissions for Windows Admin Center](/media/wac_azure_permissions.png "Permissions for Windows Admin Center")
 
 *******************************************************************************************************
 
@@ -81,12 +81,12 @@ In order to successfully deploy AKS on Azure Stack HCI with Windows Admin Center
 1. Still in Windows Admin Center, click on the **Settings** gear in the top-right corner
 2. Under **Gateway**, click **Azure**. You should see your previously registered Azure AD app:
 
-![Your Azure AD app in Windows Admin Center](/eval/media/wac_azureadapp.png "Your Azure AD app in Windows Admin Center")
+![Your Azure AD app in Windows Admin Center](/media/wac_azureadapp.png "Your Azure AD app in Windows Admin Center")
 
 3. Click on **View in Azure** to be taken to the Azure AD app portal, where you should see information about this app, including permissions required. If you're prompted to log in, provide appropriate credentials.
 4. Once logged in, under **Configured permissions**, you should see a few permissions listed with the status **Granted for...** and the name of your tenant. The **Microsoft Graph (5)** API permissions will show as **not granted** but this will be updated upon deployment
 
-![Confirm Azure AD app permissions in Windows Admin Center](/eval/media/wac_azuread_grant.png "Confirm Azure AD app permissions in Windows Admin Center")
+![Confirm Azure AD app permissions in Windows Admin Center](/media/wac_azuread_grant.png "Confirm Azure AD app permissions in Windows Admin Center")
 
 *******************************************************************************************************
 
