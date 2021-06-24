@@ -15,7 +15,7 @@ In this workshop, we'll walk you through deploying both [Azure Stack HCI](https:
 
 Version
 -----------
-This guide has been tested and validated with the **March 2021 release** of AKS on Azure Stack HCI, and **Azure Stack HCI 20H2** with the latest updates installed.
+This guide has been tested and validated with the **May 2021 release** of AKS on Azure Stack HCI, and **Azure Stack HCI 20H2** with the latest updates installed.
 
 Contents
 -----------
