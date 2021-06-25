@@ -17,7 +17,7 @@ Contents
 
 Azure Stack HCI 20H2 is delivered as an Azure service and needs to register within 30 days of installation per the Azure Online Services Terms.  With our cluster configured, we'll now register your Azure Stack HCI 20H2 cluster with **Azure Arc** for monitoring, support, billing, and hybrid services. Upon registration, an Azure Resource Manager resource is created to represent each on-premises Azure Stack HCI 20H2 cluster, effectively extending the Azure management plane to Azure Stack HCI 20H2. Information is periodically synced between the Azure resource and the on-premises cluster.  One great aspect of Azure Stack HCI 20H2, is that the Azure Arc registration is a native capability of Azure Stack HCI 20H2, so there is no agent required.
 
-**NOTE** - After registering your Azure Stack HCI 20H2 cluster, the **first 30 days usage will be free**.
+**NOTE** - After registering your Azure Stack HCI 20H2 cluster, the **first 60 days usage will be free**.
 
 Prerequisites for registration
 -----------
