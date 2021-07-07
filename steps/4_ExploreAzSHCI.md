@@ -107,7 +107,7 @@ Next Steps
 -----------
 In this step, you've successfully created a volume on your Azure Stack HCI 20H2 cluster to host virtual machines. In addition, you created a virtual machine and live migrated it using Windows Admin Center.
 
-With this complete, you can now [Deploy your AKS-HCI infrastructure](/steps/5_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
+With this complete, you can now [deploy your AKS-HCI infrastructure](/steps/5_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
 
 This part of the workshop covers only a handful of key topics and capabilities that Azure Stack HCI 20H2 can provide.  In addition, we'd strongly advise you to check out some of the key areas below:
 
