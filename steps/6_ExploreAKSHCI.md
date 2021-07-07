@@ -131,7 +131,7 @@ kubectl get service azure-vote-front
 3. To create a new Static NAT Mapping, run the following PowerShell command:
 
 ```powershell
-Add-NetNatStaticMapping -NatName "AKSHCINAT" -Protocol TCP -ExternalIPAddress '0.0.0.0/24' -ExternalPort 80 `
+Add-NetNatStaticMapping -NatName "HYBRIDNAT" -Protocol TCP -ExternalIPAddress '0.0.0.0/24' -ExternalPort 80 `
     -InternalIPAddress '192.168.0.153' -InternalPort 80
 ```
 ![Result of Add-NetNatStaticMapping](/media/Add-NetNatStaticMapping.png "Result of Add-NetNatStaticMapping")
