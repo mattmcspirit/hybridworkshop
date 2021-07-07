@@ -178,7 +178,7 @@ Register-AzStackHCI `
     -Region "EastUS" `
     -EnvironmentName "AzureCloud" `
     -ComputerName "AZSHCINODE01.hybrid.local" `
-    –Credential $azshciNodeCreds
+    –Credential $azshciNodeCreds `
 ```
 
 Of these commands, many are optional:
@@ -205,6 +205,8 @@ Of these commands, many are optional:
 ```
 Register-AzStackHCI : Azure Stack HCI 20H2 is not yet available in region <regionName>
 ```
+
+**NOTE** - if upon registering, you receive an error stating "Azure Arc integration isn't available for the version of Azure Stack HCI installed on node(s)", this can be safely ignored
 
 10. Once the cluster is registered, run the following command on **HybridHost001** to check the updated status:
 
@@ -243,6 +245,10 @@ You can see the **ConnectionStatus** and **LastConnected** time, which is usuall
 10. Once completed, you should see updated status on the Windows Admin Center dashboard, showing that the cluster has been correctly registered.
 
 ![Azure registration status in Windows Admin Center](/media/wac_azure_reg_dashboard_3.png "Azure registration status in Windows Admin Center")
+
+**NOTE** - If you receive an error message like the one below, this can be ignored, your cluster will still be registered successfully.
+
+![Azure Arc Registration issue in Windows Admin Center](/media/wac_azure_arc_register_error.png "Azure Arc Registration issue in Windows Admin Center")
 
 You can now proceed on to [Viewing registration details in the Azure portal](#View-registration-details-in-the-Azure-portal)
 

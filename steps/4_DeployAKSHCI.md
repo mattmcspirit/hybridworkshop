@@ -280,16 +280,16 @@ Get-AksHciCluster
 
 ![Output of Get-AksHciCluster](/media/get_akshcicluster_wac.png "Output of Get-AksHciCluster")
 
-3. Next, you'll scale your Kubernetes cluster to have **2 Linux worker nodes**:
+3. Next, you'll scale your Kubernetes cluster to have **2 Linux worker nodes** and **1 Windows worker node**:
 
 ```powershell
-Set-AksHciClusterNodeCount –Name akshciclus001 -linuxNodeCount 2 -windowsNodeCount 1
+Set-AksHciCluster –Name akshciclus001 -linuxNodeCount 2 -windowsNodeCount 1
 ```
 
 **NOTE** - You can also scale your Control Plane nodes for this particular cluster, however it has to be **scaled independently from the worker nodes** themselves. You can scale the Control Plane nodes using the command. Before you run this command however, check that you have an extra 16GB memory left of your HybridHost001 OS - if your host has been deployed with 64GB RAM, you may not have enough capacity for an additonal 2 Control Plane VMs.
 
 ```powershell
-Set-AksHciClusterNodeCount –Name akshciclus001 -controlPlaneNodeCount 3
+Set-AksHciCluster –Name akshciclus001 -controlPlaneNodeCount 3
 ```
 
 **NOTE** - the control plane node count should be an **odd** number, such as 1, 3, 5 etc.
