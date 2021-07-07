@@ -23,7 +23,7 @@ In this step, you'll create a volume on the Azure Stack HCI 20H2 cluster by usin
 1. Once logged into the **Windows Admin Center** on **HybridHost001**, click on your previously deployed cluster, **azshciclus.hybrid.local**
 2. On the left hand navigation, under **Storage** select **Volumes**.  The central **Volumes** page shows you should have a single volume currently
 3. On the Volumes page, select the **Inventory** tab, and then select **Create**
-4. In the **Create volume** pane, enter **VMSTORAGE** for the volume name, and leave **Resiliency** as **Two-way mirror**
+4. In the **Create volume** pane, leave the default for for the volume name, and leave **Resiliency** as **Two-way mirror**
 5. In Size on HDD, specify **250GB** for the size of the volume
 6. Under **More options**, tick the box for **Use deduplication and compression**
 7. Under **Data type**, use the drop-down to select **Hyper-V**, then click **Create**.
@@ -36,10 +36,7 @@ In this step, you'll create a volume on the Azure Stack HCI 20H2 cluster by usin
 
 **NOTE** - You'll notice there there are 3 options for **Data type**; default, Hyper-V and Backup.  If you're interested in learning more about Deduplication in Azure Stack HCI 20H2, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
 
-You now have a volume created and ready to accept workloads. Whilst we deployed the volume using the Windows Admin Center, you can also do the same through PowerShell. If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes").
-
-* For more information on planning volumes with Azure Stack HCI 20H2, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI 20H2").
-* If you're interested in learning more about Deduplication in Azure Stack HCI 20H2, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
+You now have a volume created and ready to accept workloads. Whilst we deployed the volume using the Windows Admin Center, you can also do the same through PowerShell. If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes"). For more information on planning volumes with Azure Stack HCI 20H2, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI 20H2").
 
 Deploy a virtual machine
 -----------
@@ -55,7 +52,7 @@ You should still be over on **HybridHost001**, but if you're not, log into Hybri
 
     * Generation: **Generation 2 (Recommended)**
     * Host: **Leave as recommended**
-    * Path: **C:\ClusterStorage\VMSTORAGE**
+    * Path: **C:\ClusterStorage\Volume01**
     * Virtual processors: **1**
     * Startup memory (GB): **0.5**
     * Network: **ComputeSwitch**
