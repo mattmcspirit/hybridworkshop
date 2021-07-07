@@ -182,7 +182,7 @@ You've reached the end of the evaluation guide.  In this guide you have:
 * Deployed/Configured a Windows Server 2019 Hyper-V host in Azure to run your nested sandbox environment
 * Deployed the AKS on Azure Stack HCI management cluster on your Windows Server 2019 Hyper-V environment
 * Deployed a target cluster to run applications and services
-* Optionally integrated with Azure Arc
+* Optionally integrated with Azure Arc and deployed a sample application
 * Set the foundation for further learning!
 
 Great work!

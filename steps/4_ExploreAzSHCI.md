@@ -10,6 +10,7 @@ Contents
 - [Contents](#contents)
 - [Create volumes for VMs](#create-volumes-for-vms)
 - [Deploy a virtual machine](#deploy-a-virtual-machine)
+- [Congratulations!](#congratulations)
 - [Next Steps](#next-steps)
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
@@ -89,6 +90,18 @@ The final step we'll cover is using Windows Admin Center to live migrate VM001 f
 5. In the **Move Virtual Machine** pane, ensure **Failover Cluster** is selected, and leave the default **Best available cluster node** to allow Windows Admin Center to pick where to migrate the VM to, then click **Move**
 6. The live migration will then begin, and within a few seconds, the VM should be running on a different node.
 7. On the left hand navigation, under **Compute** select **Virtual machines** to return to the VM dashboard view, which aggregates information across your cluster, for all of your VMs.
+
+Congratulations!
+-----------
+You've reached the end of the first half of this workshop. So far, you have:
+
+* Deployed/Configured a Windows Server 2019 Hyper-V host in Azure to run your nested sandbox environment
+* Configured an Azure Stack HCI 20H2 cluster, in nested virtual machines
+* Integrated the cluster with a cloud witness in Azure, and registered with Azure for billing
+* Used Windows Admin Center to create a volume, then deploy and migrate a virtual machine.
+* Set the foundation for further learning!
+
+Great work!
 
 Next Steps
 -----------
