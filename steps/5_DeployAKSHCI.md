@@ -224,7 +224,7 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
 
 5. On the **Node pools** page, click on **+Add node pool**
 6. In the **Add a node pool** blade, enter the following, then click **Add**
-   1. **Node pool name**: LinuxPool1
+   1. **Node pool name**: linuxnodepool
    2. **OS type**: Linux
    3. **Node size**: Standard_K8S3_v1 (6 GB Memory, 4 CPU)
    4. **Node count**: 1
@@ -237,7 +237,7 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
 
 ![AKS virtual networking in Windows Admin Center](/media/aks_virtual_networking.png "AKS virtual networking in Windows Admin Center")
 
-10. Click on the **aks-default-network**, ensure **Flannel** network configuration is selected, and then click **Next: Review + Create**
+10. Click on the **aks-default-network**, ensure **Calico** network configuration is selected, and then click **Next: Review + Create**
 11. On the **Review + Create** page, review your chosen settings, then click **Create**
 
 ![Finalize creation of AKS cluster in Windows Admin Center](/media/aks_create.png "Finalize creation of AKS cluster in Windows Admin Center")
@@ -278,13 +278,37 @@ Get-Command -Module AksHci
 Get-AksHciCluster
 ```
 
-![Output of Get-AksHciCluster](/media/get_akshcicluster_wac.png "Output of Get-AksHciCluster")
+![Output of Get-AksHciCluster](/media/get_akshcicluster_wac1.png "Output of Get-AksHciCluster")
 
-3. Next, you'll scale your Kubernetes cluster to have **2 Linux worker nodes** and **1 Windows worker node**:
+3. Next, you'll scale your Kubernetes cluster to have **2 Linux worker nodes** and **1 Windows worker node**. You'll do this by specifying a node pool to update.
+
+**************************************
+
+If you're not familiar with the concept of node pools, a node pool is a group of nodes, or virtual machines that run your applications, within a Kubernetes cluster that have the same configuration, giving you more granular control over your clusters. You can deploy multiple Windows node pools and multiple Linux node pools of different sizes, within the same Kubernetes cluster.
+
+**************************************
+
+First, you can confirm your node pool name and details by running the following command:
 
 ```powershell
-Set-AksHciCluster –Name akshciclus001 -linuxNodeCount 2 -windowsNodeCount 1
+Get-AksHciNodePool -clusterName akshciclus001
 ```
+
+![Output of Get-AksHciNodePool](/media/get_akshcinodepool_wac.png "Output of Get-AksHciNoePool")
+
+Then, to add a Windows node pool, run the following command:
+
+```powershell
+New-AksHciNodePool -clusterName akshciclus001 -name windowspool -count 1
+```
+
+This will create a new Windows node pool for your existing cluster, and deploy a single worker node into that cluster.  You can then scale the number of Linux worker nodes in your cluster by running the following command:
+
+```powershell
+Set-AksHciNodePool -clusterName akshciclus001 -name linuxnodepool -count 2
+```
+
+**************************
 
 **NOTE** - You can also scale your Control Plane nodes for this particular cluster, however it has to be **scaled independently from the worker nodes** themselves. You can scale the Control Plane nodes using the command. Before you run this command however, check that you have an extra 16GB memory left of your HybridHost001 OS - if your host has been deployed with 64GB RAM, you may not have enough capacity for an additonal 2 Control Plane VMs.
 
@@ -294,13 +318,16 @@ Set-AksHciCluster –Name akshciclus001 -controlPlaneNodeCount 3
 
 **NOTE** - the control plane node count should be an **odd** number, such as 1, 3, 5 etc.
 
+
+**************************
+
 4. Once these steps have been completed, you can verify the details by running the following command:
 
 ```powershell
 Get-AksHciCluster
 ```
 
-![Output of Get-AksHciCluster](/media/get_akshcicluster_wac2.png "Output of Get-AksHciCluster")
+![Output of Get-AksHciCluster](/media/get_akshcicluster_wac3.png "Output of Get-AksHciCluster")
 
 To access this **akshciclus001** cluster using **kubectl** (which was installed on your host as part of the overall installation process), you'll first need the **kubeconfig file**.
 
@@ -310,6 +337,10 @@ To access this **akshciclus001** cluster using **kubectl** (which was installed 
 Get-AksHciCredential -Name akshciclus001
 dir $env:USERPROFILE\.kube
 ```
+
+***********************
+NOTE - if you receive an error that "kubectl is not recognized as the name of a cmdlet, function, script file or operable program", you can either log out of the Azure VM, then log back in, or run the following command from your PowerShell console: choco install kubernetes-cli, then close and re-open PowerShell.
+***********************
 
 Next Steps
 -----------
