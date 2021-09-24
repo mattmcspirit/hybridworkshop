@@ -45,7 +45,7 @@ To give the optimal experience with Windows Admin Center, you should enable **Mi
 
 Configure Windows Admin Center
 -----------
-Your Azure VM deployment automatically installed Windows Admin Center 2103, however there are some additional configuration steps that must be performed before you can use it to deploy AKS on Azure Stack HCI.
+Your Azure VM deployment automatically installed the latest version of Windows Admin Center, however there are some additional configuration steps that must be performed before you can use it to deploy AKS on Azure Stack HCI.
 
 1. **Double-click the Windows Admin Center** shortcut on the desktop.
 2. Once Windows Admin Center is open, you may receive notifications in the top-right corner, indicating that some extensions are updating automatically. **Let these finish updating before proceeding**. Windows Admin Center may refresh automatically during this process.
@@ -53,6 +53,12 @@ Your Azure VM deployment automatically installed Windows Admin Center 2103, howe
 4. Click on **Installed extensions** and you should see **Azure Kubernetes Service** listed as installed
 
 ![Installed extensions in Windows Admin Center](/media/installed_extensions.png "Installed extensions in Windows Admin Center")
+
+____________
+
+**NOTE** - Ensure that your Azure Kubernetes Service extension is the **latest available version**. If the **Status** is **Installed**, you have the latest version. If the **Status** shows **Update available (1.#.#)**, ensure you apply this update and refresh before proceeding.
+
+_____________
 
 In order to deploy AKS-HCI with Windows Admin Center, you need to connect your Windows Admin Center instance to Azure.
 
