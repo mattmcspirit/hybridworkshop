@@ -305,7 +305,7 @@ Get-AksHciNodePool -clusterName akshciclus001
 Then, to add a Windows node pool, run the following command:
 
 ```powershell
-New-AksHciNodePool -clusterName akshciclus001 -name windowspool -count 1
+New-AksHciNodePool -clusterName akshciclus001 -osType windows -name windowspool -count 1
 ```
 
 This will create a new Windows node pool for your existing cluster, and deploy a single worker node into that cluster.  You can then scale the number of Linux worker nodes in your cluster by running the following command:
