@@ -352,7 +352,7 @@ Next Steps
 -----------
 In this step, you've successfully deployed the AKS on Azure Stack HCI management cluster using Windows Admin Center, optionally integrated with Azure Arc, and subsequently, deployed and scaled a Kubernetes cluster that you can move forward with to the next stage, in which you can deploy your applications.
 
-* [**Part 5** - Explore AKS on Azure Stack HCI](/steps/6_ExploreAKSHCI.md "Explore AKS on Azure Stack HCI")
+* [**Part 6** - Explore AKS on Azure Stack HCI](/steps/6_ExploreAKSHCI.md "Explore AKS on Azure Stack HCI")
 
 Product improvements
 -----------
