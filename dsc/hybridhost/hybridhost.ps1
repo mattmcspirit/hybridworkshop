@@ -1,4 +1,4 @@
-configuration HybridHost
+configuration AzSHCIHost
 {
     param 
     ( 
@@ -38,15 +38,15 @@ configuration HybridHost
     Import-DscResource -ModuleName 'StorageDSC'
     Import-DscResource -ModuleName 'NetworkingDSC'
     Import-DscResource -ModuleName 'xDHCpServer'
-    Import-DscResource -ModuleName 'xDNSServer'
+    Import-DscResource -ModuleName 'DnsServerDsc'
     Import-DscResource -ModuleName 'cChoco'
     Import-DscResource -ModuleName 'DSCR_Shortcut'
     Import-DscResource -ModuleName 'xCredSSP'
-    Import-DscResource -ModuleName 'xActiveDirectory'
+    Import-DscResource -ModuleName 'ActiveDirectoryDsc'
 
-    $aszhciHostsMofUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Install-AzsRolesandFeatures.ps1"
-    $updateAdUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Update-AD.ps1"
-    $regHciUri = "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/helpers/Register-AzSHCI.ps1"
+    $aszhciHostsMofUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Install-AzsRolesandFeatures.ps1"
+    $updateAdUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Update-AD.ps1"
+    $regHciUri = "https://raw.githubusercontent.com/Azure/AzureStackHCI-EvalGuide/main/deployment/helpers/Register-AzSHCI.ps1"
 
     if ($enableDHCP -eq "Enabled") {
         $dhcpStatus = "Active"
@@ -55,7 +55,7 @@ configuration HybridHost
 
     [System.Management.Automation.PSCredential]$DomainCreds = New-Object System.Management.Automation.PSCredential ("${DomainName}\$($Admincreds.UserName)", $Admincreds.Password)
 
-    $ipConfig = (Get-NetAdapter -Physical | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
+    $ipConfig = (Get-NetAdapter -Physical | Where-Object { $_.InterfaceDescription -like "*Hyper-V*" } | Get-NetIPConfiguration | Where-Object IPv4DefaultGateway)
     $netAdapters = Get-NetAdapter -Name ($ipConfig.InterfaceAlias) | Select-Object -First 1
     $InterfaceAlias = $($netAdapters.Name)
 
@@ -465,9 +465,9 @@ configuration HybridHost
                 DependsOn = "[WindowsFeature]ADDSInstall"
             }
          
-            xADDomain FirstDS {
+            ADDomain FirstDS {
                 DomainName                    = $DomainName
-                DomainAdministratorCredential = $DomainCreds
+                Credential                    = $DomainCreds
                 SafemodeAdministratorPassword = $DomainCreds
                 DatabasePath                  = "$targetADPath" + "\NTDS"
                 LogPath                       = "$targetADPath" + "\NTDS"
@@ -600,13 +600,13 @@ configuration HybridHost
 
         script NAT {
             GetScript  = {
-                $nat = "HYBRIDNAT"
+                $nat = "HybridNAT"
                 $result = if (Get-NetNat -Name $nat -ErrorAction SilentlyContinue) { $true } else { $false }
                 return @{ 'Result' = $result }
             }
         
             SetScript  = {
-                $nat = "HYBRIDNAT"
+                $nat = "HybridNAT"
                 New-NetNat -Name $nat -InternalIPInterfaceAddressPrefix "192.168.0.0/16"          
             }
         
@@ -653,7 +653,7 @@ configuration HybridHost
 
         if ($environment -eq "Workgroup") {
 
-            xDnsServerPrimaryZone SetPrimaryDNSZone {
+            DnsServerPrimaryZone SetPrimaryDNSZone {
                 Name          = "$DomainName"
                 Ensure        = 'Present'
                 DependsOn     = "[script]NAT"
@@ -661,12 +661,21 @@ configuration HybridHost
                 DynamicUpdate = 'NonSecureAndSecure'
             }
     
-            xDnsServerPrimaryZone SetReverseLookupZone {
+            DnsServerPrimaryZone SetReverseLookupZone {
                 Name          = '0.168.192.in-addr.arpa'
                 Ensure        = 'Present'
-                DependsOn     = "[xDnsServerPrimaryZone]SetPrimaryDNSZone"
+                DependsOn     = "[DnsServerPrimaryZone]SetPrimaryDNSZone"
                 ZoneFile      = '0.168.192.in-addr.arpa.dns'
                 DynamicUpdate = 'NonSecureAndSecure'
+            }
+        }
+        elseif ($environment -eq "AD Domain") {
+
+            DnsServerPrimaryZone SetReverseLookupZone {
+                Name      = '0.168.192.in-addr.arpa'
+                Ensure    = 'Present'
+                DependsOn = "[ADDomain]FirstDS"
+                ZoneFile  = '0.168.192.in-addr.arpa.dns'
             }
         }
 
@@ -689,14 +698,14 @@ configuration HybridHost
             {
                 InterfaceAlias           = "$InterfaceAlias"
                 ConnectionSpecificSuffix = "$DomainName"
-                DependsOn                = "[xDnsServerPrimaryZone]SetPrimaryDNSZone"
+                DependsOn                = "[DnsServerPrimaryZone]SetPrimaryDNSZone"
             }
     
             DnsConnectionSuffix AddSpecificSuffixNATNic
             {
                 InterfaceAlias           = "vEthernet `($vSwitchNameHost`)"
                 ConnectionSpecificSuffix = "$DomainName"
-                DependsOn                = "[xDnsServerPrimaryZone]SetPrimaryDNSZone"
+                DependsOn                = "[DnsServerPrimaryZone]SetPrimaryDNSZone"
             }
 
             #### CONFIGURE CREDSSP & WinRM
@@ -867,6 +876,7 @@ configuration HybridHost
             }
 
             for ($k = 1; $k -le 1; $k++) {
+                $ipAddress = $('192.168.0.' + ($i + 1))
                 $mgmtNicName = "$vmname-Management$k"
                 xVMNetworkAdapter "New Network Adapter $mgmtNicName $vmname DHCP"
                 {
@@ -874,6 +884,12 @@ configuration HybridHost
                     Name       = $mgmtNicName
                     SwitchName = $vSwitchNameHost
                     VMName     = $vmname
+                    NetworkSetting = xNetworkSettings {
+                        IpAddress      = $ipAddress
+                        Subnet         = "255.255.0.0"
+                        DefaultGateway = "192.168.0.1"
+                        DnsServer      = "192.168.0.1"
+                    }
                     Ensure     = 'Present'
                     DependsOn  = "[xVMHyperV]VM-$vmname"
                 }
@@ -964,7 +980,6 @@ configuration HybridHost
                             -Password $($using:Admincreds).Password -JoinDomain $using:DomainName -AutoLogonCount 1 -OutputPath "$using:targetVMPath\$name" -Force `
                             -PowerShellScriptFullPath 'c:\temp\Install-AzsRolesandFeatures.ps1' -ErrorAction Stop
 
-
                         Copy-Item -Path "$using:targetVMPath\$name\Unattend.xml" -Destination $("$driveLetter" + ":" + "\Windows\system32\SysPrep") -Force -ErrorAction Stop
 
                         Start-Sleep -Seconds 2
@@ -981,6 +996,67 @@ configuration HybridHost
                     return $state.Result
                 }
                 DependsOn  = "[xVhd]NewOSDisk-$vmname", "[script]Download DSC Config for AzsHci Hosts"
+            }
+        }
+
+        #### Update AD with Cluster Info ####
+
+        script "UpdateAD" {
+            GetScript  = {
+                $result = Test-Path -Path "$using:sourcePath\UpdateAD.txt"
+                return @{ 'Result' = $result }
+            }
+
+            SetScript  = {
+                Set-Location "$using:sourcePath\"
+                .\Update-AD.ps1
+                New-item -Path "$using:sourcePath\" -Name "UpdateAD.txt" -ItemType File -Force
+            }
+
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            DependsOn  = "[script]UnattendXML for $vmname"
+        }
+
+        #### Update WAC Extensions ####
+
+        script "WACupdater" {
+            GetScript  = {
+                # Specify the WAC gateway
+                $wac = "https://$env:COMPUTERNAME"
+
+                # Add the module to the current session
+                $module = "$env:ProgramFiles\Windows Admin Center\PowerShell\Modules\ExtensionTools\ExtensionTools.psm1"
+
+                Import-Module -Name $module -Verbose -Force
+                
+                # List the WAC extensions
+                $extensions = Get-Extension $wac | Where-Object { $_.isLatestVersion -like 'False' }
+                
+                $result = if ($extensions.count -gt 0) { $false } else { $true }
+
+                return @{
+                    Wac        = $WAC
+                    extensions = $extensions
+                    result     = $result
+                }
+            }
+            TestScript = {
+                # Create and invoke a scriptblock using the $GetScript automatic variable, which contains a string representation of the GetScript.
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                return $state.Result
+            }
+            SetScript  = {
+                $state = [scriptblock]::Create($GetScript).Invoke()
+                $date = get-date -f yyyy-MM-dd
+                $logFile = Join-Path -Path "C:\Users\Public" -ChildPath $('WACUpdateLog-' + $date + '.log')
+                New-Item -Path $logFile -ItemType File -Force
+                ForEach ($extension in $state.extensions) {    
+                    Update-Extension $state.wac -ExtensionId $extension.Id -Verbose | Out-File -Append -FilePath $logFile -Force
+                }
             }
         }
 

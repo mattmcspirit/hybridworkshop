@@ -11,9 +11,9 @@ Contents
 - [Contents](#contents)
 - [Architecture](#architecture)
 - [Before you begin](#before-you-begin)
+- [Allow popups in Edge browser](#allow-popups-in-edge-browser)
 - [Creating a (local) cluster](#creating-a-local-cluster)
 - [Configuring the cluster witness](#configuring-the-cluster-witness)
-- [Create volumes for VMs](#create-volumes-for-vms)
 - [Next Steps](#next-steps)
 - [Product improvements](#product-improvements)
 - [Raising issues](#raising-issues)
@@ -27,9 +27,46 @@ As shown on the architecture graphic below, in this step, you'll take the nodes 
 
 Before you begin
 -----------
-With Windows Admin Center, you now have the ability to construct Azure Stack HCI 20H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go.
+With Windows Admin Center, you now have the ability to construct Azure Stack HCI 20H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your Cluster Creation extension is fully up to date and making a few changes to the Edge browser.
 
-Here are the major steps in the Create Cluster wizard in Windows Admin Center:
+### Set Microsoft Edge as default browser ###
+
+To streamline things later, we'll set Microsoft Edge as the default browser over Internet Explorer.
+
+1. Inside your **AzSHCIHost001 VM**, click on Start, then type "**default browser**" (without quotes) and then under **Best match**, select **Choose a default web browser**
+
+![Set the default browser](/media/default_browser.png "Set the default browser")
+
+2. In the **Default apps** settings view, under **Web browser**, click on **Internet Explorer**
+3. In the **Choose an app** popup, select **Microsoft Edge** then **close the Settings window**
+
+Allow popups in Edge browser
+-----------
+To give the optimal experience with Windows Admin Center, you should enable **Microsoft Edge** to allow popups for Windows Admin Center.
+
+1. Still inside your **AzSHCIHost001 VM**, double-click the **Microsoft Edge icon** on your desktop
+2. Navigate to **edge://settings/content/popups**
+3. Click the slider button to **disable** pop-up blocking
+4. Close the **settings tab**.
+
+### Configure Windows Admin Center ###
+
+Your Azure VM deployment automatically installed the latest version of Windows Admin Center, however there are some additional configuration steps that must be performed before you can use it to deploy Azure Stack HCI.
+
+1. **Double-click the Windows Admin Center** shortcut on the desktop.
+2. Once Windows Admin Center is open, you may receive notifications in the top-right corner, indicating that some extensions are updating automatically. **Let these finish updating before proceeding**. Windows Admin Center may refresh automatically during this process.
+3. Once complete, navigate to **Settings**, then **Extensions**
+4. Click on **Installed extensions** and you should see **Cluster Creation** listed as installed
+
+![Installed extensions in Windows Admin Center](/media/installed_extensions_cluster.png "Installed extensions in Windows Admin Center")
+
+____________
+
+**NOTE** - Ensure that your Cluster Creation extension is the **latest available version**. If the **Status** is **Installed**, you have the latest version. If the **Status** shows **Update available (1.#.#)**, ensure you apply this update and refresh before proceeding.
+
+_____________
+
+You're now ready to begin deployment of your Azure Stack HCI cluster with Windows Admin Center. Here are the major steps in the Create Cluster wizard in Windows Admin Center:
 
 * **Get Started** - ensures that each server meets the prerequisites for and features needed for cluster join
 * **Networking** - assigns and configures network adapters and creates the virtual switches for each server
@@ -66,7 +103,7 @@ This section will walk through the key steps for you to set up the Azure Stack H
 
 ![Joined the domain in the Create Cluster wizard](/media/wac_domain_joined_ga.png "Joined the domain in the Create Cluster wizard")
 
-1. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will typically request you install required features. In this case, all features have been previously installed to save time, as this would take a few moments. Once reviewed, click **Next**
+5. On the **Install features** page, Windows Admin Center will query the nodes for currently installed features, and will typically request you install required features. In this case, all features have been previously installed to save time, as this would take a few moments. Once reviewed, click **Next**
 
 ![Installing required features in the Create Cluster wizard](/media/wac_installed_features_ga.png "Installing required features in the Create Cluster wizard")
 
@@ -161,10 +198,10 @@ With the network configured for the workshop environment, it's time to construct
 1. Optionally, if you want to review the validation report, click on **Download report** and open the file in your browser.
 2. Back in the **Validate the cluster** screen, click **Next**
 3. On the **Create the cluster** page, enter your **cluster name** as **AZSHCICLUS** (IMPORTANT - make sure you use AZSHCICLUS as the name of the cluster as we pre-created the AD object in Active Directory to reflect this name)
-4. Under **IP address**, click **Assign dynamically using DHCP**
+4. Under **IP address**, click **Specify one or more static addresses**, and enter **192.168.0.4**
 5. Expand **Advanced** and review the settings, then click **Create cluster**
 
-![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus_dhcp_ga.png "Finalize cluster creation in the Create Cluster wizard")
+![Finalize cluster creation in the Create Cluster wizard](/media/wac_create_clus_static_ga.png "Finalize cluster creation in the Create Cluster wizard")
 
 6. With all settings confirmed, click **Create cluster**. This will take a few moments.  Once complete, click **Next: Storage**
 
@@ -208,30 +245,54 @@ By deploying an Azure Stack HCI 20H2 cluster, you're providing high availability
 
 Quorum is designed to prevent split-brain scenarios which can happen when there is a partition in the network and subsets of nodes cannot communicate with each other. This can cause both subsets of nodes to try to own the workload and write to the same disk which can lead to numerous problems. However, this is prevented with Failover Clustering's concept of quorum which forces only one of these groups of nodes to continue running, so only one of these groups will stay online.
 
-Typically, the recommendation is to utilize a **Cloud Witness**, where an Azure Storage Account is used to help provide quorum, but in the interest of time, we;re going to use a **File Share Witness**.  If you want to learn more about quorum, [check out the official documentation.](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/quorum "Official documentation about Cluster quorum")
+In this step, we're going to utilize a **Cloud witness** to help provide quorum.  If you want to learn more about quorum, [check out the official documentation.](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/quorum "Official documentation about Cluster quorum")
 
-As part of this workshop, we're going to set up cluster quorum, using **Windows Admin Center**.
+As part of this guide, we're going to set up cluster quorum, using **Windows Admin Center**.
 
-1. Firstly, you're going to create a **shared folder** on **HybridHost001** - open **File Explorer** and navigate to **V:\Witness**
-2. **Right-click** on the Witness folder, select **Give access to**, then select **Specific people**
-3. In the **Network access** window, use the drop-down to select **Everyone** and set their permissions to **Read/Write** - this setting is for speed and simplicity. In a production environment, your folder would be shared specifically with the Cluster Object from Active Directory.
-
-![Granting folder permissions for the file share witness](/media/grant_folder_permissions.png "Granting folder permissions for the file share witness")
-
-4. Once done, click Share, then click **Done** to close the window.
-5. Open your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
+1. If you're not already, ensure you're logged into your **Windows Admin Center** instance, and click on your **azshciclus** cluster that you created earlier
 
 ![Connect to your cluster with Windows Admin Center](/media/wac_azshciclus_ga.png "Connect to your cluster with Windows Admin Center")
 
-6. You may be prompted for credentials, so log in with your **hybrid\azureuser** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
-7. After a few moments of verification, the **cluster dashboard** will open. 
-8. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
-9. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **File Share Witness**
-10. Enter **\\\hybridhost001\witness** for the **File share path** and click **Save**
+2. You may be prompted for credentials, so log in with your **hybrid\azureuser** credentials and tick the **Use these credentials for all connections** box. You should then be connected to your **azshciclus cluster**
+3. After a few moments of verification, the **cluster dashboard** will open. 
+4. On the **cluster dashboard**, at the very bottom-left of the window, click on **Settings**
+5. In the **Settings** window, click on **Witness** and under **Witness type**, use the drop-down to select **Cloud witness**
 
-![Set up file share witness in Windows Admin Center](/media/wac_fs_witness_new_ga.png "Set up file share witness in Windows Admin Center")
+![Set up cloud witness in Windows Admin Center](/media/wac_cloud_witness_new_ga.png "Set up cloud witness in Windows Admin Center")
 
-11. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
+6. Open a new tab in your browser, and navigate to **https://portal.azure.com** and login with your Azure credentials
+7. You should already have a subscription from an earlier step, but if not, you should [review those steps and create one, then come back here](/steps/1_DeployAzureVM.md#get-an-azure-subscription)
+8. Once logged into the Azure portal, click on **Create a Resource**, click **Storage**, then **Storage account**
+9. For the **Create storage account** blade, ensure the **correct subscription** is selected, then enter the following:
+
+    * Resource Group: **Create new**, then enter **azshcicloudwitness**, and click **OK**
+    * Storage account name: **azshcicloudwitness**
+    * Region: **Select your preferred region**
+    * Performance: **Only standard is supported**
+    * Redundancy: **Locally-redundant storage (LRS)** - Failover Clustering uses the blob file as the arbitration point, which requires some consistency guarantees when reading the data. Therefore you must select Locally-redundant storage for Replication type.
+
+![Set up storage account in Azure](/media/azure_cloud_witness_ga.png "Set up storage account in Azure")
+
+10.  On the **Advanced** page, ensure that **Enable blob public access** is **unchecked**, and **Minimum TLS version** is set to **Version 1.2**
+11.  On the **Networking**, **Data protection** and **Tags** pages, accept the defaults and press **Next**
+12.  When complete, click **Create** and your deployment will begin.  This should take a few moments.
+13.  Once complete, in the **notification**, click on **Go to resource**
+14.  On the left-hand navigation, under Settings, click **Access Keys**. When you create a Microsoft Azure Storage Account, it is associated with two Access Keys that are automatically generated - Primary Access key and Secondary Access key. For a first-time creation of Cloud Witness, use the **Primary Access Key**. There is no restriction regarding which key to use for Cloud Witness.
+15.  Click on **Show keys** and take a copy of the **Storage account name** and **key1**
+
+![Configure Primary Access key in Azure](/media/azure_keys_ga.png "Configure Primary Access key in Azure")
+
+16. On the left-hand navigation, under Settings, click **Properties** and make a note of your **blob service endpoint**.
+
+![Blob Service endpoint in Azure](/media/azure_blob_ga.png "Blob Service endpoint in Azure")
+
+**NOTE** - The required service endpoint is the section of the Blob service URL **after blob.**, i.e. for our configuration, **core.windows.net**
+
+17. With all the information gathered, return to the **Windows Admin Center** and complete the form with your values, then click **Save**
+
+![Providing storage account info in Windows Admin Center](/media/wac_azure_key_ga.png "Providing storage account info in Windows Admin Center")
+
+18. Within a few moments, your witness settings should be successfully applied and you have now completed configuring the quorum settings for the **azshciclus** cluster.
 
 ### Congratulations! ###
 You've now successfully deployed and configured your Azure Stack HCI 20H2 cluster!

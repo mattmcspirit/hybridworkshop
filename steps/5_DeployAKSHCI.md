@@ -32,7 +32,7 @@ As mentioned earlier, Azure Stack HCI and AKS-HCI will de deployed as 2 separate
 
 Allow popups in Edge browser
 -----------
-To give the optimal experience with Windows Admin Center, you should enable **Microsoft Edge** to allow popups for Windows Admin Center.
+To give the optimal experience with Windows Admin Center, you should enable **Microsoft Edge** to allow popups for Windows Admin Center. If you performed this step earlier, you can skip this step.
 
 1. Still inside your **HybridHost001 VM**, double-click the **Microsoft Edge icon** on your desktop
 2. Navigate to **edge://settings/content/popups**
@@ -60,7 +60,7 @@ ____________
 
 _____________
 
-In order to deploy AKS-HCI with Windows Admin Center, you need to connect your Windows Admin Center instance to Azure.
+In order to deploy AKS-HCI with Windows Admin Center, you need to connect your Windows Admin Center instance to Azure. If you performed this step earlier when registering Azure Stack HCI, you can skip ahead.
 
 5. Still in **Settings**, under **Gateway** click on **Azure**.
 6. Click **Register**, and in the **Get started with Azure in Windows Admin Center** blade, follow the instructions to **Copy the code** and then click on the link to configure device login.
@@ -290,7 +290,15 @@ Get-AksHciCluster
 
 **************************************
 
-If you're not familiar with the concept of node pools, a node pool is a group of nodes, or virtual machines that run your applications, within a Kubernetes cluster that have the same configuration, giving you more granular control over your clusters. You can deploy multiple Windows node pools and multiple Linux node pools of different sizes, within the same Kubernetes cluster.
+### Node Pools, Taints and Max Pod Counts ###
+
+If you're not familiar with the concept of **node pools**, a node pool is a **group of nodes**, or virtual machines that run your applications, within a Kubernetes cluster that have the same configuration, giving you more granular control over your clusters. You can deploy multiple Windows node pools and multiple Linux node pools of different sizes, within the same Kubernetes cluster.
+
+Another configuration option that can be applied to a node pool is the concept of **taints**. A taint can be specified for a particular node pool at cluster and node pool creation time, and essential allow you to prevent pods being placed on specific nodes based on characteristics that you specify. You can learn more about [taints here](https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/ "Information about taints").
+
+This guide doesn't require you to specify a taint, but if you do wish to explore the commands for adding a taint to a node pool, make sure you read the [official docs](https://docs.microsoft.com/en-us/azure-stack/aks-hci/use-node-pools#specify-a-taint-for-a-node-pool "Official docs on taints").
+
+In addition to taints, we have recently added suport for configuring the **maximum number of pods** that can run on a node with PowerShell, with the **-nodeMaxPodCount** parameter. You can specify this parameter when creating a cluster, or when creating a new node pool.
 
 **************************************
 
@@ -305,7 +313,7 @@ Get-AksHciNodePool -clusterName akshciclus001
 Then, to add a Windows node pool, run the following command:
 
 ```powershell
-New-AksHciNodePool -clusterName akshciclus001 -osType windows -name windowspool -count 1
+New-AksHciNodePool -clusterName akshciclus001 -osType windows -name windowsnodepool -count 1
 ```
 
 This will create a new Windows node pool for your existing cluster, and deploy a single worker node into that cluster.  You can then scale the number of Linux worker nodes in your cluster by running the following command:

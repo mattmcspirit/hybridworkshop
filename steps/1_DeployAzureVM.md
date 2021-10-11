@@ -36,7 +36,7 @@ From an architecture perspective, the following graphic showcases the different 
 The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompaying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run the following:
 
 * A **2-node Azure Stack HCI 20H2 cluster**.
-* An **AKS-HCI infrastructure**, which includes a management cluster (kubernetes virtual appliance) and a target cluster, which is where you ultimately run your applications.
+* An **AKS-HCI infrastructure**, which includes a management cluster (Kubernetes virtual appliance) and a target cluster, which is where you ultimately run your applications.
 
 These will de deployed as 2 separate environments within the same Azure VM. In a production environment, you would run AKS-HCI **on top of** Azure Stack HCI, but in this nested environment, the performance of the multiple levels of nesting can have a negative impact, so in this case, they will be deployed side by side for evaluation.
 
@@ -205,16 +205,21 @@ If the error is related to the **HybridHost001/ConfigureHybridHost**, most likel
 # Check for last run
 Get-DscConfigurationStatus
 ```
-![Result of Get-DscConfigurationStatus](/media/get-dscconfigurationstatus.png "Result of Get-DscConfigurationStatus")
+**NOTE** - if you receive an error message similar to "Get-DscConfigurationStatus : Cannot invoke the Get-DscConfigurationStatus cmdlet. The <Some DSC Process> cmdlet is in progress and must return before Get-DscConfigurationStatus can be invoked" you will need to **wait** until the current DSC process has completed. Once completed, you should be able to successfully run the command.
 
-3. As you can see, in this particular case, the PowerShell DSC configuration **status appears to have been successful**, however your results may show a different result. Just for good measure, you can re-apply the configuration by **running the following commands**:
+3. When you run Get-DscConfigurationStatus, if you get a status of Failure you can re-run the DSC configuration by running the following commands:
 
 ```powershell
 cd "C:\Packages\Plugins\Microsoft.Powershell.DSC\*\DSCWork\hybridhost.0\HybridHost"
+Set-DscLocalConfigurationManager  -Path . -Force
 Start-DscConfiguration -Path . -Wait -Force -Verbose
 ```
 
-4. If all goes well, you should see the DSC configuration reapplied without issues. If you then re-run the following PowerShell command, you should see success:
+4. Depending on where the initial failure happened, your VM may reboot and you will be disconnected. If that's the case, log back into the VM and wait for deployment to complete. See #2 above to check progress. Generally speaking, once you see the **Edge** and **Windows Admin Center** icons on your desktop, the process has completed.
+
+![Azure VM DSC deployment complete](/media/deployment_complete.png "Azure VM DSC deployment complete")
+
+5. If all goes well, you should see the DSC configuration reapplied without issues. If you then re-run the following PowerShell command, you should see success, with over 100 resources deployed/configured.
 
 ```powershell
 # Check for last run

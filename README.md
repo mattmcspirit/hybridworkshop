@@ -15,7 +15,7 @@ In this workshop, we'll walk you through deploying both [Azure Stack HCI](https:
 
 Version
 -----------
-This guide has been tested and validated with the **August 2021 release** of AKS on Azure Stack HCI, and **Azure Stack HCI 20H2** with the latest updates installed.
+This guide has been tested and validated with the **September 2021 release** of AKS on Azure Stack HCI, and **Azure Stack HCI 20H2** with the latest updates installed.
 
 Contents
 -----------
@@ -52,7 +52,7 @@ If you're interested in learning more about what AKS on Azure Stack HCI is, make
 Why follow this guide?
 -----------
 
-This workshop guide will walk you through standing up a sandboxed, isolated AKS on Azure Stack HCI environment using **nested virtualization** in Azure.  Whilst not designed as a production scenario, the important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional AKS on Azure Stack HCI scenarios in the future, so keep checking back for additional scenarios over time.
+This workshop guide will walk you through standing up a sandboxed, isolated Azure Stack HCI and AKS on Azure Stack HCI environment using **nested virtualization** in Azure.  Whilst not designed as a production scenario, the important takeaway here is, by following this guide, you'll lay down a solid foundation on to which you can explore additional scenarios in the future.
 
 Evaluation using Nested Virtualization
 -----------
@@ -89,13 +89,11 @@ The general flow will be as follows:
 
 **Part 2 - Configure your Azure Stack HCI 20H2 Cluster**: In this step, you'll use **Windows Admin Center** to deploy an Azure Stack HCI 20H2 cluster - along with a File Share Witness, a Cluster Shared Volume, and finally, you'll register this cluster with Azure.
 
-**Part 3 - Integrate Azure Stack HCI 20H2 with Azure**: In this step, you'll use **Windows Admin Center** to register your Azure Stacl HCI Cluster with Azure and explore what's presented in the portal
+**Part 3 - Integrate Azure Stack HCI 20H2 with Azure**: In this step, you'll use **Windows Admin Center** to register your Azure Stack HCI Cluster with Azure and explore what's presented in the portal
 
-**Part 4 - Explore the management of your Azure Stack HCI 20H2 environment**: In this step, you will Explore the management of your Azure Stack HCI 20H2 environment
+**Part 4 - Deploy your AKS-HCI infrastructure**: In this step, you'll use **Windows Admin Center** to deploy AKS on Azure Stack HCI - this will consist of first deploying the necessary management cluster, then followed by a target cluster, for running workloads.
 
-**Part 5 - Deploy your AKS-HCI infrastructure**: In this step, you'll use **Windows Admin Center** to deploy AKS on Azure Stack HCI - this will consist of first deploying the necessary management cluster, then followed by a target cluster, for running workloads.
-
-**Part 6 - Explore AKS on Azure Stack HCI Environment**: With your deployment completed, you're now ready to explore many of the aspects within AKS on Azure Stack HCI. We'll also provide links to further scenarios and resources to continue your learning.
+**Part 5 - Explore AKS on Azure Stack HCI Environment**: With your deployment completed, you're now ready to explore many of the aspects within AKS on Azure Stack HCI. We'll also provide links to further scenarios and resources to continue your learning.
 
 Get started
 -----------
@@ -103,9 +101,8 @@ Get started
 * [**Part 1** - Complete the prerequisites - deploy your Azure VM](/steps/1_DeployAzureVM.md "Complete the prerequisites - deploy your Azure VM")
 * [**Part 2** - Configure your Azure Stack HCI 20H2 Cluster](/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 20H2 Cluster")
 * [**Part 3** - Integrate Azure Stack HCI 20H2 with Azure](/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 20H2 with Azure")
-* [**Part 4** - Explore the management of your Azure Stack HCI 20H2 environment](/steps/4_ExploreAzSHCI.md "Explore the management of your Azure Stack HCI 20H2 environment")
-* [**Part 5** - Deploy your AKS-HCI infrastructure](/steps/5_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
-* [**Part 6** - Explore the AKS on Azure Stack HCI Environment](/steps/6_ExploreAKSHCI.md "Explore the AKS on Azure Stack HCI Environment")
+* [**Part 4** - Deploy your AKS-HCI infrastructure](/steps/4_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
+* [**Part 5** - Explore the AKS on Azure Stack HCI Environment](/steps/5_ExploreAKSHCI.md "Explore the AKS on Azure Stack HCI Environment")
 
 Product improvements
 -----------
