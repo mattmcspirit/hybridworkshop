@@ -1,4 +1,4 @@
-configuration AzSHCIHost
+configuration HybridHost
 {
     param 
     ( 
