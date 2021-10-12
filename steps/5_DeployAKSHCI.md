@@ -256,16 +256,15 @@ Whichever option you chose, you will now be at the start of the **Create kuberne
 
 ![Completed deployment of AKS cluster in Windows Admin Center](/media/aks_create_complete.png "Completed deployment of AKS cluster in Windows Admin Center")
 
-14. Back in the **Azure Kubernetes Service on Azure Stack HCI landing page**, you should now see your cluster listed
+14. Back in the **Azure Kubernetes Service on Azure Stack HCI landing page**, you should now see your cluster listed. You may wish to download your **Kubernetes cluster kubeconfig** file in order to access this Kubernetes cluster via **kubectl** later, by selecting the cluster, and clicking **Download cluster kubeconfig**.
 
 ![AKS cluster in Windows Admin Center](/media/aks_dashboard.png "AKS cluster in Windows Admin Center")
 
-16. On the dashboard, if you chose to integrate with Azure Arc, you should be able to click the **Azure instance** link to be taken to the Azure Arc view in the Azure portal.
+15. On the dashboard, if you chose to integrate with Azure Arc, you should be able to click the **Azure instance** link to be taken to the Azure Arc view in the Azure portal.
 
 ![AKS cluster in Azure Arc](/media/aks_in_arc.png "AKS cluster in Azure Arc")
 
-17. In addition, you may wish to download your **Kubernetes cluster kubeconfig** file in order to access this Kubernetes cluster via **kubectl** later.
-18. Once you have your Kubeconfig file, you can click **Finish**
+16. Once you have your Kubeconfig file, you can click **Finish**
 
 Scale your Kubernetes cluster (Target cluster)
 -----------
