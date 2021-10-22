@@ -1,8 +1,8 @@
-Explore the management of your Azure Stack HCI 20H2 environment
+Explore the management of your Azure Stack HCI 21H2 environment
 ==============
 Overview
 -----------
-With the Azure Stack HCI cluster deployed, you can now begin to explore some of the additional capabilities within Azure Stack HCI 20H2 and Windows Admin Center. We'll cover a few recommended activities below, to expose you to some of the key elements of the Windows Admin Center, but for the rest, we'll [direct you over to the official documentation](https://docs.microsoft.com/en-us/azure-stack/hci/ "Azure Stack HCI 20H2 documentation").
+With the Azure Stack HCI cluster deployed, you can now begin to explore some of the additional capabilities within Azure Stack HCI 21H2 and Windows Admin Center. We'll cover a few recommended activities below, to expose you to some of the key elements of the Windows Admin Center, but for the rest, we'll [direct you over to the official documentation](https://docs.microsoft.com/en-us/azure-stack/hci/ "Azure Stack HCI 21H2 documentation").
 
 Contents
 -----------
@@ -17,7 +17,7 @@ Contents
 
 Create volumes for VMs
 -----------
-In this step, you'll create a volume on the Azure Stack HCI 20H2 cluster by using Windows Admin Center, and enable data deduplication and compression.
+In this step, you'll create a volume on the Azure Stack HCI 21H2 cluster by using Windows Admin Center, and enable data deduplication and compression.
 
 ### Create a two-way mirror volume ###
 
@@ -29,15 +29,15 @@ In this step, you'll create a volume on the Azure Stack HCI 20H2 cluster by usin
 6. Under **More options**, tick the box for **Use deduplication and compression**
 7. Under **Data type**, use the drop-down to select **Hyper-V**, then click **Create**.
 
-![Create a volume on Azure Stack HCI 20H2](/media/wac_vm_storage_ga.png "Create a volume on Azure Stack HCI 20H2")
+![Create a volume on Azure Stack HCI 21H2](/media/wac_vm_storage_ga.png "Create a volume on Azure Stack HCI 21H2")
 
 8. Creating the volume can take a few minutes. Notifications in the upper-right will let you know when the volume is created. The new volume appears in the Inventory list
 
-![Volume created on Azure Stack HCI 20H2](/media/wac_vm_storage_deployed_ga.png "Volume created on Azure Stack HCI 20H2")
+![Volume created on Azure Stack HCI 21H2](/media/wac_vm_storage_deployed_ga.png "Volume created on Azure Stack HCI 21H2")
 
-**NOTE** - You'll notice there there are 3 options for **Data type**; default, Hyper-V and Backup.  If you're interested in learning more about Deduplication in Azure Stack HCI 20H2, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
+**NOTE** - You'll notice there there are 3 options for **Data type**; default, Hyper-V and Backup.  If you're interested in learning more about Deduplication in Azure Stack HCI 21H2, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
 
-You now have a volume created and ready to accept workloads. Whilst we deployed the volume using the Windows Admin Center, you can also do the same through PowerShell. If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes"). For more information on planning volumes with Azure Stack HCI 20H2, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI 20H2").
+You now have a volume created and ready to accept workloads. Whilst we deployed the volume using the Windows Admin Center, you can also do the same through PowerShell. If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes"). For more information on planning volumes with Azure Stack HCI 21H2, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI 21H2").
 
 Deploy a virtual machine
 -----------
@@ -96,7 +96,7 @@ Congratulations!
 You've reached the end of the first half of this workshop. So far, you have:
 
 * Deployed/Configured a Windows Server 2019 Hyper-V host in Azure to run your nested sandbox environment
-* Configured an Azure Stack HCI 20H2 cluster, in nested virtual machines
+* Configured an Azure Stack HCI 21H2 cluster, in nested virtual machines
 * Integrated the cluster with a cloud witness in Azure, and registered with Azure for billing
 * Used Windows Admin Center to create a volume, then deploy and migrate a virtual machine.
 * Set the foundation for further learning!
@@ -105,11 +105,11 @@ Great work!
 
 Next Steps
 -----------
-In this step, you've successfully created a volume on your Azure Stack HCI 20H2 cluster to host virtual machines. In addition, you created a virtual machine and live migrated it using Windows Admin Center.
+In this step, you've successfully created a volume on your Azure Stack HCI 21H2 cluster to host virtual machines. In addition, you created a virtual machine and live migrated it using Windows Admin Center.
 
 With this complete, you can now [deploy your AKS-HCI infrastructure](/steps/5_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
 
-This part of the workshop covers only a handful of key topics and capabilities that Azure Stack HCI 20H2 can provide.  In addition, we'd strongly advise you to check out some of the key areas below:
+This part of the workshop covers only a handful of key topics and capabilities that Azure Stack HCI 21H2 can provide.  In addition, we'd strongly advise you to check out some of the key areas below:
 
 * [Explore Windows Admin Center](https://docs.microsoft.com/en-us/azure-stack/hci/get-started "Explore Windows Admin Center")
 * [Manage virtual machines](https://docs.microsoft.com/en-us/azure-stack/hci/manage/vm "Manage virtual machines")
@@ -124,14 +124,14 @@ Product improvements
 -----------
 If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, AKS on Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
 
-For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
-For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI 20H2 GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
+For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI 21H2 GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
 
 Raising issues
 -----------
 If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
+If you're having an issue with Azure Stack HCI 21H2 **outside** of this guide, [head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
 
 If you're having a problem with AKS on Azure Stack HCI **outside** of this guide, make sure you post to [our GitHub Issues page](https://github.com/Azure/aks-hci/issues "GitHub Issues"), where Microsoft experts and valuable members of the community will do their best to help you.

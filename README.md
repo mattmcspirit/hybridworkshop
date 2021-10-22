@@ -15,7 +15,7 @@ In this workshop, we'll walk you through deploying both [Azure Stack HCI](https:
 
 Version
 -----------
-This guide has been tested and validated with the **September 2021 release** of AKS on Azure Stack HCI, and **Azure Stack HCI 20H2** with the latest updates installed.
+This guide has been tested and validated with the **September 2021 release** of AKS on Azure Stack HCI, and **Azure Stack HCI 21H2** with the latest updates installed.
 
 Contents
 -----------
@@ -36,16 +36,16 @@ Contents
 
 What is Azure Stack HCI?
 -----------
-Azure Stack HCI 20H2 is a hyperconverged cluster solution that runs virtualized Windows and Linux workloads in a hybrid on-premises environment. Azure hybrid services enhance the cluster with capabilities such as cloud-based monitoring, site recovery, and backup, as well as a central view of all of your Azure Stack HCI 20H2 deployments in the Azure portal. You can manage the cluster with your existing tools including Windows Admin Center, System Center, and PowerShell.
+Azure Stack HCI 21H2 is a hyperconverged cluster solution that runs virtualized Windows and Linux workloads in a hybrid on-premises environment. Azure hybrid services enhance the cluster with capabilities such as cloud-based monitoring, site recovery, and backup, as well as a central view of all of your Azure Stack HCI 21H2 deployments in the Azure portal. You can manage the cluster with your existing tools including Windows Admin Center, System Center, and PowerShell.
 
-Initially based on Windows Server 2019, Azure Stack HCI 20H2 is now a specialized OS, running on your hardware, delivered as an Azure service with a subscription-based licensing model and hybrid capabilities built-in. Although Azure Stack HCI 20H2 is based on the same core operating system components as Windows Server, it's an entirely new product line focused on being the best virtualization host.
+Initially based on Windows Server 2019, Azure Stack HCI 21H2 is now a specialized OS, running on your hardware, delivered as an Azure service with a subscription-based licensing model and hybrid capabilities built-in. Although Azure Stack HCI 21H2 was originally based on the same core operating system components as Windows Server, it's an entirely separate product line focused on being the best virtualization host.
 
-If you're interested in learning more about what Azure Stack HCI 20H2 is, make sure you [check out the official documentation](https://docs.microsoft.com/en-us/azure-stack/hci/overview "What is Azure Stack HCI documentation"), before coming back to continue your workshop experience. We'll refer to the docs in various places in the guide, to help you build your knowledge of Azure Stack HCI 20H2.
+If you're interested in learning more about what Azure Stack HCI 21H2 is, make sure you [check out the official documentation](https://docs.microsoft.com/en-us/azure-stack/hci/overview "What is Azure Stack HCI documentation"), before coming back to continue your workshop experience. We'll refer to the docs in various places in the guide, to help you build your knowledge of Azure Stack HCI 21H2.
 
 What is AKS on Azure Stack HCI?
 -----------
 
-If you've landed on this page, and you're still wondering what AKS on Azure Stack HCI is, Azure Kubernetes Service on Azure Stack HCI is an on-premises implementation of Azure Kubernetes Service (AKS), which automates running containerized applications at scale. Azure Kubernetes Service can run on Azure Stack HCI 20H2 and Windows Server 2019 Datacenter-based clusters, making it quicker to get started hosting Linux and Windows containers in your datacenter.
+If you've landed on this page, and you're still wondering what AKS on Azure Stack HCI is, Azure Kubernetes Service on Azure Stack HCI is an on-premises implementation of Azure Kubernetes Service (AKS), which automates running containerized applications at scale. Azure Kubernetes Service can run on Azure Stack HCI 21H2 and Windows Server 2019 Datacenter-based clusters, making it quicker to get started hosting Linux and Windows containers in your datacenter.
 
 If you're interested in learning more about what AKS on Azure Stack HCI is, make sure you [check out the official documentation](https://docs.microsoft.com/en-us/azure-stack/aks-hci/overview "What is Azure Kubernetes Service on Azure Stack HCI documentation"), before coming back to continue your workshop experience. We'll refer to the docs in various places in the guide, to help you build your knowledge of AKS on Azure Stack HCI.
 
@@ -66,11 +66,11 @@ If you're not familiar with nested virtualization, at a high level, it allows a 
 As you can see from the graphic, at the base layer, you have physical hardware, onto which you install a hypervisor. In this case, for our example, we're using Windows Server 2019 with the Hyper-V role enabled.  The hypervisor on the lowest level is considered L0 or the level 0 hypervisor.  In Azure, you don't have access or control over this. On that physical host, you create a virtual machine, and into that virtual machine, you deploy an OS that itself, has a hypervisor enabled.  In this example, that 1st Virtualized Layer is running a **nested** operating system with Hyper-V enabled - for instance, this could be Windows Server 2019. This would be an L1 or level 1 hypervisor. Finally, in our example, inside that OS, you could create a virtual machine to run a workload.  This could in fact also contain a hypervisor, which would be known as the L2 or level 2 hypervisor, and so the process continues, with multiple levels of nested virtualization possible.
 
 ### Important Note ###
-The use of nested virtualization in this workshop guide is aimed at providing flexibility for **evaluating Azure Stack HCI and AKS on Azure Stack HCI in a test environment**, and it shouldn't be seen as a substitute for real-world deployments, performance and scale testing etc. With each level of nesting, comes the trade-off of performance, hence for **production** use, **AKS on Azure Stack HCI should be deployed on validated physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI 20H2 Catalog](https://aka.ms/azurestackhcicatalog "Azure Stack HCI 20H2 Catalog") or the [Windows Server Catalog](https://www.windowsservercatalog.com/results.aspx?bCatID=1283&cpID=0&avc=126&ava=0&avq=0&OR=1&PGS=25 "Windows Server Catalog") for systems running Windows Server 2019 Datacenter edition.
+The use of nested virtualization in this workshop guide is aimed at providing flexibility for **evaluating Azure Stack HCI and AKS on Azure Stack HCI in a test environment**, and it shouldn't be seen as a substitute for real-world deployments, performance and scale testing etc. With each level of nesting, comes the trade-off of performance, hence for **production** use, **AKS on Azure Stack HCI should be deployed on validated physical hardware**, of which you can find a vast array of choices on the [Azure Stack HCI 21H2 Catalog](https://aka.ms/azurestackhcicatalog "Azure Stack HCI 21H2 Catalog") or the [Windows Server Catalog](https://www.windowsservercatalog.com/results.aspx?bCatID=1283&cpID=0&avc=126&ava=0&avq=0&OR=1&PGS=25 "Windows Server Catalog") for systems running Windows Server 2019 Datacenter edition.
 
 Deployment Overview
 -----------
-For those of you who don't have multiple server-class pieces of hardware running Azure Stack HCI 20H2 or Windows Server 2019, this workshop will guide you through deploying an Azure Stack HCI cluster, and AKS on Azure Stack HCI inside an Azure VM, using **nested virtualization**.
+For those of you who don't have multiple server-class pieces of hardware running Azure Stack HCI 21H2 or Windows Server 2019, this workshop will guide you through deploying an Azure Stack HCI cluster, and AKS on Azure Stack HCI inside an Azure VM, using **nested virtualization**.
 
 ![Architecture diagram](media/nested_virt_arch_ga.png "Architecture diagram")
 
@@ -85,11 +85,11 @@ This guide will walk you through deploying a sandboxed infrastructure. To accomm
 
 The general flow will be as follows:
 
-**Part 1 - Complete the pre-requisites - deploy your Azure VM**: In this step, you'll create a VM in Azure using an Azure Resource Manager template. This VM will run Windows Server 2019 Datacenter, with the full desktop experience. PowerShell DSC will automatically configure this VM with the appropriate roles and features, download the necessary binaries, and configure 2 Azure Stack HCI 20H2 nodes, ready for clustering.
+**Part 1 - Complete the pre-requisites - deploy your Azure VM**: In this step, you'll create a VM in Azure using an Azure Resource Manager template. This VM will run Windows Server 2019 Datacenter, with the full desktop experience. PowerShell DSC will automatically configure this VM with the appropriate roles and features, download the necessary binaries, and configure 2 Azure Stack HCI 21H2 nodes, ready for clustering.
 
-**Part 2 - Configure your Azure Stack HCI 20H2 Cluster**: In this step, you'll use **Windows Admin Center** to deploy an Azure Stack HCI 20H2 cluster - along with a File Share Witness, a Cluster Shared Volume, and finally, you'll register this cluster with Azure.
+**Part 2 - Configure your Azure Stack HCI 21H2 Cluster**: In this step, you'll use **Windows Admin Center** to deploy an Azure Stack HCI 21H2 cluster - along with a File Share Witness, a Cluster Shared Volume, and finally, you'll register this cluster with Azure.
 
-**Part 3 - Integrate Azure Stack HCI 20H2 with Azure**: In this step, you'll use **Windows Admin Center** to register your Azure Stack HCI Cluster with Azure and explore what's presented in the portal
+**Part 3 - Integrate Azure Stack HCI 21H2 with Azure**: In this step, you'll use **Windows Admin Center** to register your Azure Stack HCI Cluster with Azure and explore what's presented in the portal
 
 **Part 4 - Deploy your AKS-HCI infrastructure**: In this step, you'll use **Windows Admin Center** to deploy AKS on Azure Stack HCI - this will consist of first deploying the necessary management cluster, then followed by a target cluster, for running workloads.
 
@@ -99,8 +99,8 @@ Get started
 -----------
 
 * [**Part 1** - Complete the prerequisites - deploy your Azure VM](/steps/1_DeployAzureVM.md "Complete the prerequisites - deploy your Azure VM")
-* [**Part 2** - Configure your Azure Stack HCI 20H2 Cluster](/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 20H2 Cluster")
-* [**Part 3** - Integrate Azure Stack HCI 20H2 with Azure](/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 20H2 with Azure")
+* [**Part 2** - Configure your Azure Stack HCI 21H2 Cluster](/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 21H2 Cluster")
+* [**Part 3** - Integrate Azure Stack HCI 21H2 with Azure](/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 21H2 with Azure")
 * [**Part 4** - Deploy your AKS-HCI infrastructure](/steps/4_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
 * [**Part 5** - Explore the AKS on Azure Stack HCI Environment](/steps/5_ExploreAKSHCI.md "Explore the AKS on Azure Stack HCI Environment")
 
@@ -108,15 +108,15 @@ Product improvements
 -----------
 If, while you work through this guide, you have an idea to make the product better, whether it's something in Azure Stack HCI, AKS on Azure Stack HCI, Windows Admin Center, or the Azure Arc integration and experience, let us know! We want to hear from you!
 
-For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
+For **Azure Stack HCI**, [Head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where you can share your thoughts and ideas about making the technologies better and raise an issue if you're having trouble with the technology.
 
-For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI 20H2 GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
+For **AKS on Azure Stack HCI**, [Head on over to our AKS on Azure Stack HCI GitHub page](https://github.com/Azure/aks-hci/issues "AKS on Azure Stack HCI GitHub"), where you can share your thoughts and ideas about making the technologies better. If however, you have an issue that you'd like some help with, read on... 
 
 Raising issues
 -----------
 If you notice something is wrong with this guide, such as a step isn't working, or something just doesn't make sense - help us to make this guide better!  Raise an issue in GitHub, and we'll be sure to fix this as quickly as possible!
 
-If you're having an issue with Azure Stack HCI 20H2 **outside** of this guide, [head on over to the Azure Stack HCI 20H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 20H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
+If you're having an issue with Azure Stack HCI 21H2 **outside** of this guide, [head on over to the Azure Stack HCI 21H2 Q&A forum](https://docs.microsoft.com/en-us/answers/topics/azure-stack-hci.html "Azure Stack HCI 21H2 Q&A"), where Microsoft experts and valuable members of the community will do their best to help you.
 
 If you're having a problem with AKS on Azure Stack HCI **outside** of this guide, make sure you post to [our GitHub Issues page](https://github.com/Azure/aks-hci/issues "GitHub Issues"), where Microsoft experts and valuable members of the community will do their best to help you.
 
