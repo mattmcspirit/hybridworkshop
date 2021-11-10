@@ -72,8 +72,11 @@ In this step, you'll deploy a VM onto your new volume, using Windows Admin Cente
 You should still be over on **HybridHost001**, but if you're not, log into HybridHost001, and open the **Windows Admin Center**.
 
 1. Once logged into the **Windows Admin Center** on **HybridHost001**, click on your previously deployed cluster, **azshciclus.hybrid.local**
+
 2. On the left hand navigation, under **Compute** select **Virtual machines**.  The central **Virtual machines** page shows you no virtual machines deployed currently
+
 3. On the **Virtual machines** page, select the **Inventory** tab, and then select **New**
+
 4. In the **New virtual machine** pane, enter **VM001** for the name, and enter the following pieces of information, then click **Create**
 
     * Generation: **Generation 2 (Recommended)**
@@ -143,6 +146,39 @@ The final step we'll cover is using Windows Admin Center to live migrate VM001 f
 7. Click on **Yes** on the popup of Credential Security Service Provider CredSSP and then enter your username as **hybrid\azureuser** and password.
 
 8. On the left hand navigation, under **Compute** select **Virtual machines** to return to the VM dashboard view, which aggregates information across your cluster, for all of your VMs.
+
+### Arc enabled VM001 via Windows Admin Center ###
+
+You should still be over on **HybridHost001**, but if you're not, log into HybridHost001, and open the **Windows Admin Center**.
+
+1. Once logged into the **Windows Admin Center** on **HybridHost001**, click on your previously deployed cluster, **azshciclus.hybrid.local**
+
+2. On the left hand navigation, under **Compute** select **Virtual machines**.  The central **Virtual machines** page shows VM001 in a running state
+
+3. On the **Virtual machines** page, select the **Inventory** tab
+
+4. Next to **VM001**, click the tick box next to VM001, then click **Connect**.  You'll notice you can "Connect", "Download RDP file" and also "Use Windows Admin Center". Click **Use Windows Admin Center**. A new Windows Admin Center Tab will open.
+
+5. Select **Use another account for this connection**, provide the Username as **Administrator** and the password you have given while initialy deploying your Windows Server 2019 virtual machine. Leave the checkbox "use these credentials for all connections" unchecked! Click **Continue**
+
+6. In **Windows Admin Center** go to **Server Manager**, here you should now see the server (hostname of VM001) we just added to Windows Admin Center. Click on the name of the just added server.
+
+7. In the Tools section, click **Azure hybrid center**
+
+8. In the **Available Services** tab, under point 1, Set up Azure Arc, click **Set up**. This step will Azure Arc for servers for this specific server.
+
+9. Choose the right Azure subscription, create a new Resource group, with name **rg-myarcservers-hci**, and select Azure region **East US**. Click **Set up**. After a couple of minutes your virtual server running on your HCI cluster will be Arc enabled.
+
+### View your Arc enabled Server in the Azure Portal from Windows Admin Center###
+
+1. In **Windows Admin Center** go to **Server Manager**, here you should now see the server (hostname of VM001) we just added to Windows Admin Center. Click on the name of the just added server.
+
+2. In the Tools section, click **Azure hybrid center**
+
+3. Click on the **Installed Services** tab and click **View server in Azure**. This will open a new browser tab with a view in the Azure portal on the server you just have Arc enabled.
+
+4. From here you can operate the on-premises virtual machines from the Azure Control pane.
+
 
 Congratulations!
 -----------
