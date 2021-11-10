@@ -120,9 +120,15 @@ You should still be over on **HybridHost001**, but if you're not, log into Hybri
 
 15. Click **Install Now**, and select the version **Windows Server 2019 Standard Evaluation (Desktop Experience)**
 
-16. Accept the license terms and select **"Custom: Install Windows only (advanced)"** and then click **Next**. It will take around 10 minutes for the VM to boot. After that set the vm001 credetials. (do not forget them!)
+16. Accept the license terms and select **"Custom: Install Windows only (advanced)"** and then click **Next**. It will take around 10 minutes for the VM to boot. After that set the VM001 credetials. (do not forget them you will need them later!)
 
-17. Click **Disconnect**
+17. Click in **"Send Ctrl + Alt +Del"** at the top of the page now and login to the VM001
+
+18. Right clink on the Start button and click on Windows PowerShell (Admin)
+
+19. Execute the following PowerShell command **Rename-Computer -NewName VM001 -restart**. The hostname of the virtual machine will be changed to VM001 and the machine will restart.
+
+20. Click **Disconnect**
 
 You've successfully create a VM using the Windows Admin Center!
 
@@ -161,7 +167,7 @@ You should still be over on **HybridHost001**, but if you're not, log into Hybri
 
 5. Select **Use another account for this connection**, provide the Username as **Administrator** and the password you have given while initialy deploying your Windows Server 2019 virtual machine. Leave the checkbox "use these credentials for all connections" unchecked! Click **Continue**
 
-6. In **Windows Admin Center** go to **Server Manager**, here you should now see the server (hostname of VM001) we just added to Windows Admin Center. Click on the name of the just added server.
+6. In **Windows Admin Center** go to **Server Manager**, here you should now see the server VM001 we just added to Windows Admin Center. Click on **VM001**
 
 7. In the Tools section, click **Azure hybrid center**
 
@@ -171,7 +177,7 @@ You should still be over on **HybridHost001**, but if you're not, log into Hybri
 
 ### View your Arc enabled Server in the Azure Portal from Windows Admin Center ###
 
-1. In **Windows Admin Center** go to **Server Manager**, here you should now see the server (hostname of VM001) we just added to Windows Admin Center. Click on the name of the just added server.
+1. In **Windows Admin Center** go to **Server Manager**, here you should now see the server VM001. Click on **VM001**.
 
 2. In the Tools section, click **Azure hybrid center**
 
