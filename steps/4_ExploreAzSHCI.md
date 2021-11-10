@@ -9,7 +9,7 @@ Contents
 - [Overview](#overview)
 - [Contents](#contents)
 - [Create volumes for VMs](#create-volumes-for-vms)
-- [Download a Windows Server 2019 evaluation image](#Download-a-Windows-Server-2019-evaluation-image)
+- [Download a Windows Server 2019 evaluation image](#download-a-Windows-Server-2019-evaluation-image)
 - [Deploy a virtual machine](#deploy-a-virtual-machine)
 - [Congratulations!](#congratulations)
 - [Next Steps](#next-steps)
