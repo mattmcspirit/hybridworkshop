@@ -9,6 +9,7 @@ Contents
 - [Overview](#overview)
 - [Contents](#contents)
 - [Create volumes for VMs](#create-volumes-for-vms)
+- [Download a Windows Server 2019 evaluation image](#Download-a-Windows-Server-2019-evaluation-image)
 - [Deploy a virtual machine](#deploy-a-virtual-machine)
 - [Congratulations!](#congratulations)
 - [Next Steps](#next-steps)
@@ -39,7 +40,7 @@ In this step, you'll create a volume on the Azure Stack HCI 21H2 cluster by usin
 
 You now have a volume created and ready to accept workloads. Whilst we deployed the volume using the Windows Admin Center, you can also do the same through PowerShell. If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes"). For more information on planning volumes with Azure Stack HCI 21H2, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI 21H2").
 
-Download a Windows Server 2019 evaluation image (.ISO)
+Download a Windows Server 2019 evaluation image
 -----------
 1. Please download a Windows Server 2019 evaluation image (ISO) file from [here](https://www.microsoft.com/en-us/evalcenter/evaluate-windows-server-2019%253Ffiletype=ISO)
 
