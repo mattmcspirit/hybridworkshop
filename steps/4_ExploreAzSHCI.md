@@ -115,7 +115,7 @@ You should still be over on **HybridHost001**, but if you're not, log into Hybri
 
 14. From there you'll start the OOBE experience. Select the following settings according to your preferences: Language, Time currency and Keyboard
 
-15. Click Install Now, and select the version Windows Server 2019 Standard Evaluation (Desktop Experience)
+15. Click **Install Now**, and select the version **Windows Server 2019 Standard Evaluation (Desktop Experience)**
 
 16. Accept the license terms and select **"Custom: Install Windows only (advanced)"** and then click **Next**. It will take around 10 minutes for the VM to boot. After that set the vm001 credetials. (do not forget them!)
 
