@@ -169,7 +169,7 @@ You should still be over on **HybridHost001**, but if you're not, log into Hybri
 
 9. Choose the right Azure subscription, create a new Resource group, with name **rg-myarcservers-hci**, and select Azure region **East US**. Click **Set up**. After a couple of minutes your virtual server running on your HCI cluster will be Arc enabled.
 
-### View your Arc enabled Server in the Azure Portal from Windows Admin Center###
+### View your Arc enabled Server in the Azure Portal from Windows Admin Center ###
 
 1. In **Windows Admin Center** go to **Server Manager**, here you should now see the server (hostname of VM001) we just added to Windows Admin Center. Click on the name of the just added server.
 
