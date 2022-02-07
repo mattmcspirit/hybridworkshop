@@ -101,8 +101,9 @@ Get started
 * [**Part 1** - Complete the prerequisites - deploy your Azure VM](/steps/1_DeployAzureVM.md "Complete the prerequisites - deploy your Azure VM")
 * [**Part 2** - Configure your Azure Stack HCI 21H2 Cluster](/steps/2_DeployAzSHCI.md "Configure your Azure Stack HCI 21H2 Cluster")
 * [**Part 3** - Integrate Azure Stack HCI 21H2 with Azure](/steps/3_AzSHCIIntegration.md "Integrate Azure Stack HCI 21H2 with Azure")
-* [**Part 4** - Deploy your AKS-HCI infrastructure](/steps/4_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
-* [**Part 5** - Explore the AKS on Azure Stack HCI Environment](/steps/5_ExploreAKSHCI.md "Explore the AKS on Azure Stack HCI Environment")
+* [**Part 4** - Integrate Azure Stack HCI 21H2 with Azure](/steps/4_ExploreAzSHCI.md "Explore Azure Stack HCI 21H2")
+* [**Part 5** - Deploy your AKS-HCI infrastructure](/steps/5_DeployAKSHCI.md "Deploy your AKS-HCI infrastructure")
+* [**Part 6** - Explore the AKS on Azure Stack HCI Environment](/steps/5_ExploreAKSHCI.md "Explore the AKS on Azure Stack HCI Environment")
 
 Product improvements
 -----------
