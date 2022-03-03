@@ -234,6 +234,9 @@ With the cluster successfully created, you're now good to proceed on to configur
 
 5. The final step with storage, is to **Enable Storage Spaces Direct**, so click **Enable**.  This will take a few moments.
 
+> [!NOTE]
+> if the Enablement fails, give it some seconds and retry again, S2D is being provisioned in the background and takes some time.
+
 ![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled_ga.png "Storage Spaces Direct enabled in the Create Cluster wizard")
 
 6. With Storage Spaces Direct enabled, click **Next:SDN**
