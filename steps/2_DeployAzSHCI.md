@@ -27,7 +27,7 @@ As shown on the architecture graphic below, in this step, you'll take the nodes 
 
 Before you begin
 -----------
-With Windows Admin Center, you now have the ability to construct Azure Stack HCI 21H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your Cluster Creation extension is fully up to date and making a few changes to the Edge browser.
+With Windows Admin Center, you now have the ability to construct Azure Stack HCI 21H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your "Cluster Manager" and "Cluster Creation" extension is fully up to date and making a few changes to the Edge browser.
 
 ### Set Microsoft Edge as default browser ###
 
