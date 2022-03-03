@@ -62,7 +62,7 @@ Your Azure VM deployment automatically installed the latest version of Windows A
 
 ____________
 
-**NOTE** - Ensure that your Cluster Creation extension is the **latest available version**. If the **Status** is **Installed**, you have the latest version. If the **Status** shows **Update available (1.#.#)**, ensure you apply this update and refresh before proceeding.
+**NOTE** - Ensure that your Cluster Creation and Cluster Manager extension are the **latest available version**. If the **Status** is **Installed**, you have the latest version. If the **Status** shows **Update available (1.#.#)**, ensure you apply this update and refresh before proceeding.
 
 _____________
 
