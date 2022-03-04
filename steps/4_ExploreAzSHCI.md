@@ -32,7 +32,11 @@ In this step, you'll create a volume on the Azure Stack HCI 21H2 cluster by usin
 7. Under **Data type**, use the drop-down to select **Hyper-V**, then click **Create**.
 --->
 
+![Create a volume on Azure Stack HCI 21H2](https://user-images.githubusercontent.com/22824452/156740067-b67f3664-bfbd-476d-a42f-86d1a0eed9b0.png "Create a volume on Azure Stack HCI 21H2")
+
+<!---
 ![Create a volume on Azure Stack HCI 21H2](/media/wac_vm_storage_ga.png "Create a volume on Azure Stack HCI 21H2")
+--->
 
 8. Creating the volume can take a few minutes. Notifications in the upper-right will let you know when the volume is created. The new volume appears in the Inventory list
 
