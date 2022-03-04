@@ -1,0 +1,26 @@
+{
+    "_comment": "Use the Azure portal->Subsciptions->AccessControl(IAM)->Add->Add Custom Role and select the json tab to copy this json."
+    "properties": {
+        "roleName": "Azure Stack HCI registration role",
+        "description": "Custom Azure role to allow subscription-level access to register Azure Stack HCI",
+        "assignableScopes": [
+            "/subscriptions/7dde182d-968d-434d-92f6-01a5e8ebae0d"
+        ],
+        "permissions": [
+            {
+                "actions": [
+                    "Microsoft.Resources/subscriptions/resourceGroups/read",
+                    "Microsoft.AzureStackHCI/register/action",
+                    "Microsoft.AzureStackHCI/Unregister/Action",
+                    "Microsoft.AzureStackHCI/clusters/*",
+                    "Microsoft.Authorization/roleAssignments/write",
+                    "Microsoft.HybridCompute/register/action",
+                    "Microsoft.GuestConfiguration/register/action"
+                ],
+                "notActions": [],
+                "dataActions": [],
+                "notDataActions": []
+            }
+        ]
+    }
+}
