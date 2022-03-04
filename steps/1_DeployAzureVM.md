@@ -129,7 +129,7 @@ Secondly, the **Deploy to Azure** button, when clicked, will take you directly t
 <!--- 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattmcspirit%2Fhybridworkshop%2Fmain%2Fjson%2Fhybridhost.json "Deploy to Azure from Matt's") --->
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcarlosmayol%2Fhybridworkshop%2Fmain%2Fjson%2Fhybridhost.json "Deploy to Azure from Carlos's")
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcarlosmayol%2Fhybridworkshop%2F21H2%2Fjson%2Fhybridhost.json "Deploy to Azure from Carlos's")
 
 
 Upon clicking the **Deploy to Azure** button, enter the details, which should look something similar to those shown below, and click **Purchase**.
