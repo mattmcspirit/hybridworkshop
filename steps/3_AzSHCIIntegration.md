@@ -190,7 +190,7 @@ $customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
 Complete Registration
 -----------
 
-To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**. For this lab, it's recommended to use the PowerShell approach, due to a few unpredictible erros in the lab environment, likely due to WAC installed on the domain controller.
+To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**.
 
 #### Option 1 - Register using PowerShell ####
 We're going to perform the registration from the **HybridHost001** machine, which we've been using with the Windows Admin Center.
