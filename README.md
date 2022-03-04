@@ -91,9 +91,11 @@ The general flow will be as follows:
 
 **Part 3 - Integrate Azure Stack HCI 21H2 with Azure**: In this step, you'll use **Windows Admin Center** to register your Azure Stack HCI Cluster with Azure and explore what's presented in the portal
 
-**Part 4 - Deploy your AKS-HCI infrastructure**: In this step, you'll use **Windows Admin Center** to deploy AKS on Azure Stack HCI - this will consist of first deploying the necessary management cluster, then followed by a target cluster, for running workloads.
+**Part 4 -  Explore Azure Stack HCI 21H2 with WAC": In this step, you will use **Windows Admin Center** to explore over a few common activities of managing the HCI clusters and the cluster resources such Volumes and VMs.
 
-**Part 5 - Explore AKS on Azure Stack HCI Environment**: With your deployment completed, you're now ready to explore many of the aspects within AKS on Azure Stack HCI. We'll also provide links to further scenarios and resources to continue your learning.
+**Part 5 - Deploy your AKS-HCI infrastructure**: In this step, you'll use **Windows Admin Center** to deploy AKS on Azure Stack HCI - this will consist of first deploying the necessary management cluster, then followed by a target cluster, for running workloads.
+
+**Part 6 - Explore AKS on Azure Stack HCI Environment**: With your deployment completed, you're now ready to explore many of the aspects within AKS on Azure Stack HCI. We'll also provide links to further scenarios and resources to continue your learning.
 
 Get started
 -----------
