@@ -42,7 +42,9 @@ In this step, you'll create a volume on the Azure Stack HCI 21H2 cluster by usin
 
 ![Volume created on Azure Stack HCI 21H2](/media/wac_vm_storage_deployed_ga.png "Volume created on Azure Stack HCI 21H2")
 
+<!--- Removing as this is related to dedup that is gone from the UI for now
 **NOTE** - You'll notice there there are 3 options for **Data type**; default, Hyper-V and Backup.  If you're interested in learning more about Deduplication in Azure Stack HCI 21H2, you should [refer to our documentation](https://docs.microsoft.com/en-us/windows-server/storage/data-deduplication/overview "Deduplication overview")
+--->
 
 You now have a volume created and ready to accept workloads. Whilst we deployed the volume using the Windows Admin Center, you can also do the same through PowerShell. If you're interested in taking that approach, [check out the official docs that walk you through that process](https://docs.microsoft.com/en-us/azure-stack/hci/manage/create-volumes "Official documentation for creating volumes"). For more information on planning volumes with Azure Stack HCI 21H2, you should [refer to the official docs](https://docs.microsoft.com/en-us/azure-stack/hci/concepts/plan-volumes "Planning volumes for Azure Stack HCI 21H2").
 
