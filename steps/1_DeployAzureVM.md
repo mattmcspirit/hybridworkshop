@@ -126,8 +126,8 @@ Firstly, the **Visualize** button will launch the ARMVIZ designer view, where yo
 
 Secondly, the **Deploy to Azure** button, when clicked, will take you directly to the Azure portal, and upon login, provide you with a form to complete. If you want to open this in a new tab, **hold CTRL** when you click the button.
 
-[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattmcspirit%2Fhybridworkshop%2Fmain%2Fjson%2Fhybridhost.json "Deploy to Azure from Matt's")
-
+<!--- 
+[![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fmattmcspirit%2Fhybridworkshop%2Fmain%2Fjson%2Fhybridhost.json "Deploy to Azure from Matt's") --->
 
 [![Deploy to Azure](https://aka.ms/deploytoazurebutton)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2Fcarlosmayol%2Fhybridworkshop%2Fmain%2Fjson%2Fhybridhost.json "Deploy to Azure from Carlos's")
 
