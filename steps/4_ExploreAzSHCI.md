@@ -38,7 +38,7 @@ In this step, you'll create a volume on the Azure Stack HCI 21H2 cluster by usin
 ![Create a volume on Azure Stack HCI 21H2](/media/wac_vm_storage_ga.png "Create a volume on Azure Stack HCI 21H2")
 --->
 
-8. Creating the volume can take a few minutes. Notifications in the upper-right will let you know when the volume is created. The new volume appears in the Inventory list
+8. Creating the volume can take a few seconds. Notifications in the upper-right will let you know when the volume is created. The new volume appears in the Inventory list
 
 ![Volume created on Azure Stack HCI 21H2](/media/wac_vm_storage_deployed_ga.png "Volume created on Azure Stack HCI 21H2")
 
