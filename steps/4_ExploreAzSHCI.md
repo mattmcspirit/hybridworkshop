@@ -25,9 +25,12 @@ In this step, you'll create a volume on the Azure Stack HCI 21H2 cluster by usin
 2. On the left hand navigation, under **Storage** select **Volumes**.  The central **Volumes** page shows you should have a single volume currently
 3. On the Volumes page, select the **Inventory** tab, and then select **Create**
 4. In the **Create volume** pane, leave the default for for the volume name, and leave **Resiliency** as **Two-way mirror**
-5. In Size on HDD, specify **250GB** for the size of the volume
+5. In Size on HDD, specify **250GB** for the size of the volume, then click **Create**.
+
+<!--- Below option is removed from WAC - we were seeing customer pain with current dedup...
 6. Under **More options**, tick the box for **Use deduplication and compression**
 7. Under **Data type**, use the drop-down to select **Hyper-V**, then click **Create**.
+--->
 
 ![Create a volume on Azure Stack HCI 21H2](/media/wac_vm_storage_ga.png "Create a volume on Azure Stack HCI 21H2")
 
