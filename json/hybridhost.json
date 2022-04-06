@@ -300,8 +300,8 @@
     },
     "variables": {
         "dataDisksCount": 8,
-        "dscUri": "https://github.com/bartroels/hybridworkshop/raw/main/dsc/hybridhost.zip",
-        "artifactsLocation": "https://raw.githubusercontent.com/bartroels/hybridworkshop/main/",
+        "dscUri": "https://github.com/mattmcspirit/hybridworkshop/raw/main/dsc/hybridhost.zip",
+        "artifactsLocation": "https://raw.githubusercontent.com/mattmcspirit/hybridworkshop/main/",
         "randomGUID": "[substring(uniqueString(subscription().subscriptionId, resourceGroup().id, parameters('virtualMachineName')),0,6)]",
         "dnsNameForPublicIP": "[toLower(concat(parameters('virtualMachineName'), variables('randomGUID')))]",
         "environment": "AD Domain",
