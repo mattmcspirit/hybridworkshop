@@ -1,7 +1,7 @@
-Azure Stack Skilling Workshop
+Azure Stack HCI Skilling Workshop
 ==============
 
-## Welcome to the Azure Stack Skilling Workshop ##
+## Welcome to the Azure Stack HCI Skilling Workshop ##
 
 In this workshop, we'll walk you through deploying both [Azure Stack HCI](https://azure.microsoft.com/en-us/products/azure-stack/hci/ "link to the Azure Stack HCI landing page"), and  [Azure Kubernetes Service (AKS) on Azure Stack HCI in an Azure VM](https://docs.microsoft.com/en-us/azure-stack/aks-hci/overview "link to the What is Azure Kubernetes Service on Azure Stack HCI documentation landing page"), and set the foundation for you to explore in your own time.  You'll cover aspects such as:
 
