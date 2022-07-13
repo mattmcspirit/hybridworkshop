@@ -27,7 +27,7 @@ As shown on the architecture graphic below, in this step, you'll take the nodes 
 
 Before you begin
 -----------
-With Windows Admin Center, you now have the ability to construct Azure Stack HCI 21H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your Cluster Creation extension is fully up to date and making a few changes to the Edge browser.
+With Windows Admin Center, you now have the ability to construct Azure Stack HCI 21H2 clusters from the vanilla nodes.  There are no additional extensions to install, the workflow is built in and ready to go, however, it's worth checking to ensure that your "Cluster Manager" and "Cluster Creation" extension is fully up to date and making a few changes to the Edge browser.
 
 ### Set Microsoft Edge as default browser ###
 
@@ -62,7 +62,7 @@ Your Azure VM deployment automatically installed the latest version of Windows A
 
 ____________
 
-**NOTE** - Ensure that your Cluster Creation extension is the **latest available version**. If the **Status** is **Installed**, you have the latest version. If the **Status** shows **Update available (1.#.#)**, ensure you apply this update and refresh before proceeding.
+**NOTE** - Ensure that your Cluster Creation and Cluster Manager extension are the **latest available version**. If the **Status** is **Installed**, you have the latest version. If the **Status** shows **Update available (1.#.#)**, ensure you apply this update and refresh before proceeding.
 
 _____________
 
@@ -116,7 +116,13 @@ This section will walk through the key steps for you to set up the Azure Stack H
 ### Networking ###
 With the servers configured with the appropriate features, updated and rebooted, you're ready to configure your network.  You have a number of different choices here, so we'll try to explain why we're making each selection, so you can better apply it to your environment further down the road.
 
-Firstly, Windows Admin Center will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
+Firstly, Windows Admin Center will ask you if you want to configure the Host networking using Network ATC or Manually.
+Because of the nature of this LAB will use **Manually configured**
+
+![image](https://user-images.githubusercontent.com/22824452/156645134-7c8b626d-eb62-4c05-b5e0-33b3bb6b2984.png)
+
+
+Windows Admin Center then will verify your networking setup - it'll tell you how many NICs are in each node, along with relevant hardware information, MAC address and status information.  Review for accuracy, and then click **Next**
 
 ![Verify network in the Create Cluster wizard](/media/wac_verify_network_ga.png "Verify network in the Create Cluster wizard")
 
@@ -227,6 +233,9 @@ With the cluster successfully created, you're now good to proceed on to configur
 ![Storage verified in the Create Cluster wizard](/media/wac_storage_validated_ga.png "Storage verified in the Create Cluster wizard")
 
 5. The final step with storage, is to **Enable Storage Spaces Direct**, so click **Enable**.  This will take a few moments.
+
+> [!NOTE]
+> if the Enablement fails, give it some seconds and retry again, S2D is being provisioned in the background and takes some time.
 
 ![Storage Spaces Direct enabled in the Create Cluster wizard](/media/wac_s2d_enabled_ga.png "Storage Spaces Direct enabled in the Create Cluster wizard")
 
