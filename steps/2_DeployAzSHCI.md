@@ -74,7 +74,7 @@ You're now ready to begin deployment of your Azure Stack HCI cluster with Window
 * **Storage** - Configures Storage Spaces Direct
 
 ### Decide on cluster type ###
-Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
+Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distributed across two sites.
 
 * If you have 2 Azure Stack HCI 20H2 nodes, you will be able to create a **local cluster**
 * If you have 4 Azure Stack HCI 20H2 nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
