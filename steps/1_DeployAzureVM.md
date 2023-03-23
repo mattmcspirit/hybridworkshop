@@ -33,7 +33,7 @@ From an architecture perspective, the following graphic showcases the different 
 
 ![Architecture diagram for AKS on Azure Stack HCI in Azure](/media/nested_virt_arch_ga.png "Architecture diagram for AKS on Azure Stack HCI in Azure")
 
-The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompaying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run the following:
+The outer box represents the Azure Resource Group, which will contain all of the artifacts deployed in Azure, including the virtual machine itself, and accompanying network adapter, storage and so on. You'll deploy an Azure VM running Windows Server 2019 Datacenter. On top of this, you'll run the following:
 
 * A **2-node Azure Stack HCI 20H2 cluster**.
 * An **AKS-HCI infrastructure**, which includes a management cluster (Kubernetes virtual appliance) and a target cluster, which is where you ultimately run your applications.
