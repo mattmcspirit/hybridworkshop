@@ -190,7 +190,7 @@ $customADRole = New-AzureADMSRoleDefinition -RolePermissions $rolePermissions `
 Complete Registration
 -----------
 
-To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**. For this lab, it's recommended to use the PowerShell approach, due to a few unpredictible erros in the lab environment, likely due to WAC installed on the domain controller.
+To complete registration, you have 2 options - you can use **Windows Admin Center**, or you can use **PowerShell**. For this lab, it's recommended to use the PowerShell approach, due to a few unpredictable errors in the lab environment, likely due to WAC installed on the domain controller.
 
 #### Option 1 - Register using PowerShell ####
 We're going to perform the registration from the **HybridHost001** machine, which we've been using with the Windows Admin Center.
@@ -204,7 +204,7 @@ Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Force
 Install-Module Az.StackHCI
 ```
 
-**NOTE** - You may recieve a message that **PowerShellGet requires NuGet Provider...** - read the full message, and then click **Yes** to allow the appropriate dependencies to be installed. You may receive a second prompt to **install the modules from the PSGallery** - click **Yes to All** to proceed.
+**NOTE** - You may receive a message that **PowerShellGet requires NuGet Provider...** - read the full message, and then click **Yes** to allow the appropriate dependencies to be installed. You may receive a second prompt to **install the modules from the PSGallery** - click **Yes to All** to proceed.
 
 In addition, in future releases, installing the Azure PowerShell **Az** modules will include **StackHCI**, however today, you have to install this module specifically, using the command **Install-Module Az.StackHCI**
 

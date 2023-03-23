@@ -74,7 +74,7 @@ You're now ready to begin deployment of your Azure Stack HCI cluster with Window
 * **Storage** - Configures Storage Spaces Direct
 
 ### Decide on cluster type ###
-Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distrubuted across two sites.
+Not only does Azure Stack HCI 20H2 support a cluster in a single site (or a **local cluster** as we'll refer to it going forward) consisting of between 2 and 16 nodes, but, also supports a **Stretch Cluster**, where a single cluster can have nodes distributed across two sites.
 
 * If you have 2 Azure Stack HCI 20H2 nodes, you will be able to create a **local cluster**
 * If you have 4 Azure Stack HCI 20H2 nodes, you will have a choice of creating either a **local cluster** or a **stretch cluster**
@@ -93,7 +93,7 @@ This section will walk through the key steps for you to set up the Azure Stack H
 
 ![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type_ga.png "Choose cluster type in the Create Cluster wizard")
 
-1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
+1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and click **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
 3. On the **Add Servers** page, supply a **username**, which should be **hybrid\azureuser** and **password-you-used-at-VM-deployment-time** and then one by one, enter the node names of your Azure Stack HCI 20H2 nodes (AZSHCINODE01 and AZSHCINODE02), clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
 
