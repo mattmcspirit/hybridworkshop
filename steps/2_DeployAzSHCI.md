@@ -93,7 +93,7 @@ This section will walk through the key steps for you to set up the Azure Stack H
 
 ![Choose cluster type in the Create Cluster wizard](/media/wac_cluster_type_ga.png "Choose cluster type in the Create Cluster wizard")
 
-1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and cick **Create**
+1. Ensure you select **Azure Stack HCI**, select **All servers in one site** and click **Create**
 2. On the **Check the prerequisites** page, review the requirements and click **Next**
 3. On the **Add Servers** page, supply a **username**, which should be **hybrid\azureuser** and **password-you-used-at-VM-deployment-time** and then one by one, enter the node names of your Azure Stack HCI 20H2 nodes (AZSHCINODE01 and AZSHCINODE02), clicking **Add** after each one has been located.  Each node will be validated, and given a **Ready** status when fully validated.  This may take a few moments - once you've added all nodes, click **Next**
 
